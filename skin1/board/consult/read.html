@@ -1,0 +1,96 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+
+<div class="section inner-m" module="board_ReadPackage_9">
+    <!--@css(/css/module/board/readPackage_9.css)-->
+    <div module="board_title_9">
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
+    </div>
+
+    <div module="Board_Read_9" class="consult-read">
+        <!--
+            $delete_success_url = /board/consult/list.html
+            $login_page_url = /member/login.html
+        -->
+        <div class="ec-base-table gLayoutFixed">
+            <table border="1" >
+            <caption>1:1 맞춤상담 상세</caption>
+            <!-- <colgroup>
+                <col style="width:130px;" />
+                <col style="width:auto;" />
+                <col style="width:130px;" />
+                <col style="width:auto;" />
+            </colgroup> -->
+            <tbody>
+                <tr class="consult-subject">
+                    <th scope="row">제목</th>
+                    <td colspan="3">{$subject}</td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td>{$writer} <span class="{$config.display_ip|display}">(ip:{$ip})</span></td>
+                    <th scope="row">답변여부</th>
+                    <td>{$consult}</td>
+                </tr>
+                <tr class="{$config.use_date|display}">
+                    <th scope="row">문의일시</th>
+                    <td colspan="3">{$write_date}</td>
+                </tr>
+                <tr class="view">
+                    <td colspan="4">
+                        <div class="detail">{$content}{$content_image}</div>
+                    </td>
+                </tr>
+                <tr class="attach {$config.use_attach|display}" >
+                    <th scope="row">첨부파일</th>
+                    <td colspan="3">{$attach_file}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div class="consult-reply {$display_consult_reply}">
+            <div class="ec-base-table">
+                <table border="1" >
+                <caption>1:1 맞춤상담 답변</caption>
+                <!-- <colgroup>
+                    <col style="width:130px;" />
+                    <col style="width:auto;" />
+                </colgroup> -->
+                <tbody>
+                    <tr>
+                        <th scope="row">답변자</th>
+                        <td>{$reply_name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">답변일시</th>
+                        <td>{$reply_date}</td>
+                    </tr>
+                    <tr class="view">
+                        <td colspan="2">
+                            <div class="detail">{$reply_content}</div>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="ec-base-button gBottom gBreak">
+            <span class="gLeft">
+                <a href="#none" onclick="{$action_delete}" class="btnNormalFix sizeS {$delete_button_auth|display}">삭제</a>
+                <a href="/board/consult/modify.html{$param_modify}" class="btnNormalFix sizeS {$modify_button_auth|display}">수정</a>
+                <a href="/board/consult/reply.html{$param_reply}" class="btnSubmitFix sizeS {$reply_button_auth|display}">답변</a>
+            </span>
+		</div>
+        <div class="ec-base-box typeThinBg gBlank30 {$display_consult_noreply}">
+            <p>빠른시간내에 답변드리겠습니다. 잠시만 기다려 주세요!</p>
+        </div>
+
+        
+        <div class="gRight gBreak read-list-btn">
+            <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<!--@css(/_aisoul/layout/layout.css)-->
+<footer class="footer" data-ez-layout="layout1" id="footer" data-ez="contents-14dbr5a-1">
+    <ez-prop data-version="1.0.0" type="layout">
+        <ez-var data-namespace="ez.layout.footer.layout" data-prop="layout" data-type="array">
+            <ez-item data-id="layout1" data-name="기본형"></ez-item>
+            <ez-item data-id="layout2" data-name="좌우반전형"></ez-item>
+            <ez-item data-id="layout3" data-name="중앙형"></ez-item>
+        </ez-var>
+    </ez-prop>
+    <div class="" module="Layout_footer">
+        
+        <div class="bt_util" data-ez-group="shortcut">
+            <div data-ez-role="title" style="display:none;">바로가기</div>
+            <ul data-ez-role="list" class="footer-top__area">
+                <li data-ez-item="company"><a href="/shopinfo/company.html">회사소개</a></li>
+                <li data-ez-item="agreement"><a href="/member/mall_agreement.html">이용약관</a></li>
+                <li data-ez-item="privacy"><a href="/member/privacy.html"><strong>개인정보처리방침</strong></a></li>
+                <li data-ez-item="guide"><a href="/shopinfo/guide.html">이용안내</a></li>
+                <!-- <li data-ez-item="faq"><a href="/board/board/3">자주묻는질문(FAQ)</a></li> -->
+            </ul>
+        </div><!-- //bt_util -->
+
+        <div class="bt_wrap inner-m">
+            <div class="bt_logo"><a href="/"><img src="/_aisoul/img/footer-logo.png" alt="logo"></a></div><!-- //bt_logo -->
+            <div class="bt-info-title">(주)어떠케어 사업자정보 보기 <span><!--@import(/_aisoul/svg/arrow_bt.html)--></span></div>
+            <div class="bt_info" data-ez-group="info">
+                <!-- <div class="title" data-ez-role="title">쇼핑몰 기본정보</div> -->
+                <div class="bt_info_list" data-ez-role="list">
+                    <!-- <div data-ez-item="company_name"><span data-ez-role="field">상호명</span> <span
+                            data-ez-role="value">{$company_name}</span></div> -->
+                    <div data-ez-item="company_regno"><span data-ez-role="field" class="footer-info__field">사업자 등록번호</span> <span
+                            data-ez-role="value" class="footer-info__value">{$company_regno}</span></div>
+                    <div data-ez-item="network_regno"><span data-ez-role="field" class="footer-info__field">통신판매업 신고번호</span> <span
+                            data-ez-role="value" class="footer-info__value">{$network_regno} {$biz_no_link}</span></div>
+                    <div data-ez-item="president_name"><span data-ez-role="field" class="footer-info__field">대표이사</span> <span
+                            data-ez-role="value" class="footer-info__value">{$president_name}</span></div>
+                    <div data-ez-item="address"><span data-ez-role="field" class="footer-info__field">주소</span> <span
+                            data-ez-role="value" class="footer-info__value">{$mall_zipcode} {$mall_addr1} {$mall_addr2}</span></div>
+                    <!-- <div data-ez-item="phone"><span data-ez-role="field">대표 전화</span> <span
+                            data-ez-role="value">{$phone}</span></div> -->
+                    <!-- <div data-ez-item="cpo_name"><span data-ez-role="field">개인정보보호책임자</span> <span
+                            data-ez-role="value">{$cpo_name}</span></div> -->
+                </div><!-- //bt_info_list -->
+            </div><!-- //bt_info -->
+            <div class="bt_cscenter" data-ez-group="cs" module="Layout_Info">
+                <!-- <div class="title" data-ez-role="title">고객센터 정보</div> -->
+                <div data-ez-role="list">
+                    <div class="bt_txt01" data-ez-item="phone"><strong>고객센터</strong><span class="pdr10"></span><span data-ez-role="value">{$phone}</span></div>
+                    <ul class="cs-time">
+                        <li>
+                            <strong class="cs-time-label">평일</strong>
+                            <p>09:00~18:00</p>
+                        </li>
+                        <li>
+                            <strong class="cs-time-label">점심시간</strong>
+                            <p>12:00~13:00</p>
+                        </li>
+                        <li>
+                            <strong class="cs-time-label">주말/공휴일 휴무</strong>
+                        </li>
+                    </div>
+                </div>
+            </div><!-- //bt_cscenter -->
+            </div><!-- //bt_bank -->
+            <div class="bt_wrap2 inner-m">
+                <div class="bt_copyright">Copyright ©어떠케어. All Rights Reserved.</div><!-- //bt_copyright -->
+            </div>
+        <!-- //bt_wrap2 -->
+        </div><!-- //bt_wrap -->
+
+        <!-- 구매안전서비스 배너 -->
+        <!-- <div class="bt_escrow" data-ez-escrow style="display:none;">
+            <a data-ez-link="#link" href="#">
+                <img alt="올앳" class="bt_ew_allat" data-ez-escrow-id="allat" src="/SkinImg/img/bt_ew_allat.png">
+                <img alt="이니시스" class="bt_ew_iniapy" data-ez-escrow-id="inicis" src="/SkinImg/img/bt_ew_iniapy.png">
+                <img alt="NHN한국사이버결제" class="bt_ew_kcp" data-ez-escrow-id="kcp" src="/SkinImg/img/bt_ew_kcp.png">
+                <img alt="한국정보통신" class="bt_ew_kicc" data-ez-escrow-id="kicc" src="/SkinImg/img/bt_ew_kicc.png">
+                <img alt="케이에스넷" class="bt_ew_ksnet" data-ez-escrow-id="ksnet" src="/SkinImg/img/bt_ew_ksnet.png">
+                <img alt="나이스페이먼츠" class="bt_ew_nice" data-ez-escrow-id="nicepay" src="/SkinImg/img/bt_ew_nice.png">
+                <img alt="토스페이먼츠" class="bt_ew_payments" data-ez-escrow-id="dacom"
+                    src="/SkinImg/img/bt_ew_payments.png">
+                <img alt="세틀뱅크" class="bt_ew_settle" data-ez-escrow-id="settlebank" src="/SkinImg/img/bt_ew_settle.png">
+                <img alt="스마트로" class="bt_ew_smartro" data-ez-escrow-id="smartro" src="/SkinImg/img/bt_ew_smartro.png">
+                <span>고객님은 안전거래를 위해 결제시 저희 쇼핑몰에서 가입한 구매안전 서비스를 이용하실 수 있습니다. [서비스가입정보확인]</span>
+            </a>
+        </div> -->
+        <!-- //bt_escrow -->
+
+    </div><!-- //inner -->
+</footer>
+
+<!--#ez="1/2"-->

@@ -1,0 +1,90 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@js(/_aisoul/js/promotion.js)-->
+
+<!-- 배너매니저 스크립트 코드 -->
+<style>
+    [df-banner-code][hidden] {display: none !important}
+    .sub-header {display:none !important;}
+    .promotions-tab-box {margin: 40px 0 30px;}
+    .promotions-tab-box ul {display:flex;align-items: center;justify-content: center; gap:12px;}
+    .promotions-tab-box button {
+        height: 32px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: var(--coolNeutral-50);
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--neutral-500);
+        cursor: pointer;
+    }
+    .promotions-tab-box button.is-active {
+        background: var(--careBlue-900);
+        color: #fff;
+        font-weight: 600;
+    }
+    .promotions {margin-bottom: 30px;}
+    .promo-img {width:100%;aspect-ratio:2/1;margin-bottom:10px;overflow:hidden;border-radius:8px;}
+    .promo-img img {width:100%;height:100%;object-fit:cover;}
+    .promotion-desc {padding:0 4px;}
+    .promotion-desc .promo-title {margin-bottom:8px;font-size:12px;font-weight:600;color:var(--common-black);}
+    .promotion-desc .promo-date {font-size:12px;font-weight:500;color:var(--neutral-400);}
+    .df-bannermanager-promotion-list {display:flex;flex-direction:column;gap:30px;}
+    
+    .promotion-search {display:flex;align-items:center;width:100%;height:52px;margin-bottom: 40px;padding:0 14px 0 16px;border:1px solid var(--neutral-200);border-radius:8px;background:#fff;}
+    .promotion-search:focus-within {border-color:var(--neutral-500);}
+    .promotion-search-input {flex:1;min-width:0;height:100%;padding:0;border:0;outline:0;background:transparent;font-size:16px;font-weight:400;color:var(--common-black);}
+    .promotion-search-input::placeholder {color:var(--neutral-300);}
+    .promotion-search-input::-webkit-search-cancel-button {display:none;}
+    .promotion-search-button {display:flex;flex:none;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;background:transparent;cursor:pointer;}
+    .promotion-search-icon {display:flex;align-items:center;justify-content:center;width:24px;height:24px;}
+    .promotion-search-icon img,.promotion-search-icon svg {display:block;width:100%;height:100%;}
+
+    .promotion-empty {padding:80px 0;text-align:center;font-size:13px;color:var(--neutral-400);}
+
+    .promotion-pagination {display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .promotion-pagination button {display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 4px; background: transparent; font-size: 14px; color: var(--common-black); cursor: pointer;}
+    .promotion-pagination button.is-active {background: var(--neutral-900); color: var(--neutral-0);font-weight: 600 !important;}
+    .promotion-pagination button:disabled {opacity: .2; cursor: default;}
+    .promotion-pagination .paging-btn {width: 26px;}
+</style>
+
+<!--@import(/_aisoul/layout/prod_header.html)-->
+
+<section class="promotion-list inner-m">
+    <div class="promotions-tab-box">
+        <ul>
+            <li><button type="button" class="is-active" data-promotion-filter="all">전체</button></li>
+            <li><button type="button" data-promotion-filter="ongoing">진행중 프로모션</button></li>
+            <li><button type="button" data-promotion-filter="ended">종료된 프로모션</button></li>
+        </ul>
+    </div>
+
+    <div class="promotions">
+        <div df-banner-code="promotion-list" hidden>
+            <a href="{#href}" target="{#target}" df-banner-clone>
+                <figure class="promo-img">{#item}</figure>
+                {#html}
+            </a>
+        </div>
+    </div>
+    <div class="promotion-search">
+        <input type="search" class="promotion-search-input" placeholder="제목을 입력해 주세요" aria-label="프로모션 제목 검색">
+
+        <button type="button" class="promotion-search-button" aria-label="검색">
+            <span class="promotion-search-icon">
+                <!--@import(/_aisoul/svg/search.html)-->
+            </span>
+        </button>
+    </div>
+</section>
+
+<div id="promotion-pagination-arrow-template" hidden>
+    <!--@import(/_aisoul/svg/arrow_bt.html)-->
+</div>
+
+<script>
+if (!document.getElementById('dfbm-script-71775')) {
+    var dfbm_src = 'https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/0f9ee1e8edb403e071664c4b57fb3507.js';
+    document.write('<script id="dfbm-script-71775" src="' + dfbm_src + '?v=' + Date.now() + '"><\/script>');
+}
+</script>

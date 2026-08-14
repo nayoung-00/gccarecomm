@@ -1,0 +1,223 @@
+<template
+  id="calendar-app-template-mo"
+  data-ez="module-1dhpjse-1"
+>
+  <div
+    id="calendar_wrap"
+    class="mobile"
+    style="display: none"
+  >
+    <!-- 모바일 상세페이지 -->
+    <div
+      id="calendar_header"
+      style="display: none"
+    >
+      <div class="calendar_head">
+        <button
+          type="button"
+          class="btn_prev"
+          onclick="CAC_VIEW.backToCalendar()"
+        >
+          <span class="blind">이전</span>
+        </button>
+        <h1 class="title"></h1>
+      </div>
+
+      <div class="detail_view">
+        <section>
+          <div class="title">
+            <h1></h1>
+            <div class="calendar_groups"></div>
+          </div>
+          <div class="cont">
+            <div class="date"></div>
+            <div class="image"></div>
+            <div class="categories"></div>
+            <div class="board"></div>
+            <div class="url"></div>
+            <div class="description fr-view"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <!-- 모바일 상세페이지 -->
+
+    <div
+      class="calendar_head"
+      id="mobile_search_calendar_head"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn_prev"
+        onclick="CAC_VIEW.closeMobileSearch()"
+      >
+        <span class="blind">이전</span>
+      </button>
+      <h1 class="title">검색</h1>
+    </div>
+
+    <!-- calendar_view -->
+    <div class="calendar_view">
+      <div
+        id="calSearchMobile"
+        class="inputSearch"
+        style="display: none"
+      >
+        <input
+          type="text"
+          name=""
+          value=""
+          class="inputbox"
+          placeholder="검색"
+        />
+        <button
+          type="button"
+          class="btn_clear"
+        >
+          <span class="blind">텍스트 삭제</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn_search2"
+        >
+          <span class="blind">검색</span>
+        </button>
+      </div>
+
+      <div class="calendar_search">
+        <div
+          id="calSearch"
+          class="inputSearch"
+        >
+          <a
+            href="javascript:;"
+            class="btn_search"
+            onclick="CAC_VIEW.setSearchView(true)"
+            ><span class="blind">검색</span></a
+          >
+        </div>
+      </div>
+      <div class="calendar_filter">
+        <!-- mobile -->
+        <button
+          type="button"
+          class="btn_select_mobile"
+          onclick="CAC_VIEW.handleCheckCalendarGroupDisplay()"
+        >
+          <span>캘린더 목록 열기</span>
+        </button>
+        <section
+          id="layerCalendarList"
+          class="layer_popup"
+        >
+          <ul class="calendar_list"></ul>
+          <button
+            onclick="CAC_VIEW.closeLayer('layerCalendarList')"
+            class="close"
+          >
+            <span class="blind">닫기</span>
+          </button>
+        </section>
+        <!-- //mobile -->
+      </div>
+
+      <!-- 달력 -->
+      <div id="calendar"></div>
+      <!-- //달력 -->
+
+      <!-- 이벤트 상세보기 레이어 -->
+      <section
+        id="layerCalendarEvent"
+        class="layer_popup"
+      >
+        <h1></h1>
+        <div class="cont">
+          <div class="date"></div>
+          <div class="image"></div>
+          <div class="board">
+            <a
+              href="#url"
+              target="_blank"
+            ></a>
+          </div>
+          <div class="url">
+            <a
+              href="#url"
+              target="_blank"
+            ></a>
+          </div>
+          <div class="description fr-view"></div>
+        </div>
+        <div class="btn_wrap_layer">
+          <a
+            href="#"
+            onclick="CAC_VIEW.closeLayer('layerCalendarEvent')"
+            class="btn btn_line"
+            >닫기</a
+          >
+        </div>
+      </section>
+      <!-- //이벤트 상세보기 레이어 -->
+
+      <!-- 이벤트 전체보기 모바일용 레이어 -->
+      <section
+        id="layerAllEvent"
+        class="layer_popup"
+      >
+        <h1>2일 금요일</h1>
+        <div class="cont">
+          <div class="events">
+            <!-- 이벤트 -->
+            <a
+              href="2_calendar_m_detail.html"
+              style="--eventColor: rgb(51, 173, 110)"
+            >
+              <div class="title">eventInfo.title</div>
+              <div class="date">${eventStart} ~ ${eventEnd}</div>
+            </a>
+            <a
+              href="2_calendar_m_detail.html"
+              style="--eventColor: #1a54f5"
+            >
+              <div class="title">4월 스페셜 공구 진행</div>
+              <div class="date">2023.12.11 ~ 2023.12.16</div>
+            </a>
+            <a
+              href="2_calendar_m_detail.html"
+              style="--eventColor: #f9a580"
+            >
+              <div class="title">4월 깜짝 할인 이벤트</div>
+              <div class="date">2023.12.08 오전 10:00 ~ 2023.12.11 오후 5:00</div>
+            </a>
+            <a
+              href="2_calendar_m_detail.html"
+              style="--eventColor: #f5b81a"
+            >
+              <div class="title">4월 깜짝 할인 이벤트</div>
+              <div class="date">오후 2:00 ~ 오후 4:00</div>
+            </a>
+            <a
+              href="2_calendar_m_detail.html"
+              style="--eventColor: #f5b81a"
+            >
+              <div class="title">기모 와이드 무지 스웨드 케이블 니트 베스트 공구 일정</div>
+              <div class="date">오후 2:00 ~ 오후 4:00</div>
+            </a>
+            <!-- //이벤트 -->
+          </div>
+        </div>
+        <button
+          onclick="CAC_VIEW.closeLayer('layerAllEvent')"
+          class="close"
+        >
+          <span class="blind">닫기</span>
+        </button>
+      </section>
+      <!-- //이벤트 전체보기 모바일용 레이어 -->
+    </div>
+    <!-- //calendar_view -->
+  </div>
+</template>
+<!--#ez="1/1"-->

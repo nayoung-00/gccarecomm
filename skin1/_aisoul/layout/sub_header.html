@@ -1,0 +1,28 @@
+<!--@css(/_aisoul/layout/layout.css)-->
+<header class="header sub-header" data-ez="module-0o84y8t-1">
+    <div class="inner-m header-inner">
+        <div class="h-left">
+            <span module="Layout_MobileAction" class>
+                <a href="#none" onclick="{$go_back}" class="back-btn"><!--@import(/svg/icon-go-back.html)--><i
+                        class="sr-only">뒤로가기</i></a>
+            </span>
+        </div>
+        <h1 class="title"></h1>
+        <div class="h-right">
+            <a href="/" class="main"><!--@import(/_aisoul/svg/home.html)--><i class="sr-only">닫기</i></a>
+        </div>
+    </div>
+</header>
+<div data-ez-module="user-defined/1" data-ez-name="USER DEFINED" data-ez-type="plain" data-ez="module-04gi1pw-1">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            'use strict';
+            var $titleEl = document.querySelector('.title');
+            var $source = document.querySelector('.page-title-source');
+            if (!$titleEl || !$source) {return;}
+            var titleText = $source.textContent.trim();
+            $titleEl.textContent = titleText;
+        });
+    </script>
+</div>
+<!--#ez="1/2"-->

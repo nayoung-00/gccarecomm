@@ -1,0 +1,107 @@
+<template
+  id="calendar-app-template-pc"
+  data-ez="module-0od9nj5-1"
+>
+  <div
+    id="calendar_wrap"
+    style="display: none"
+  >
+    <!-- calendar_view -->
+    <div class="calendar_view">
+      <div class="calendar_search">
+        <div
+          id="calSearch"
+          class="inputSearch"
+        >
+          <!-- pc -->
+          <input
+            type="text"
+            name="inputSearch"
+            value=""
+            class="inputbox"
+            placeholder="검색"
+            onclick=""
+          /><button
+            type="button"
+            class="btn_clear"
+          >
+            <span class="blind">텍스트 삭제</span>
+          </button>
+          <div
+            class="calendar_search_layer"
+            style="display: none"
+          >
+            <ul></ul>
+          </div>
+          <div
+            style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); cursor: pointer"
+            id="pcSearchBtn"
+          >
+            <img
+              src="/calendar/app/img/ico_search.svg"
+              alt="검색"
+              width="16"
+              height="16"
+            />
+          </div>
+          <!-- //pc -->
+        </div>
+      </div>
+      <div class="calendar_filter">
+        <button
+          type="button"
+          class="btn_select eShopName"
+        >
+          $쇼핑몰명$ 캘린더
+        </button>
+        <div class="calendar_list_wrap">
+          <ul class="calendar_list"></ul>
+        </div>
+      </div>
+
+      <!-- 달력 -->
+      <div id="calendar"></div>
+      <!-- //달력 -->
+
+      <!-- 이벤트 상세보기 레이어 -->
+      <section
+        id="layerCalendarEvent"
+        class="layer_popup"
+      >
+        <div class="layer_popup_header">
+          <h1></h1>
+          <div class="calendar_groups"></div>
+        </div>
+        <div class="cont">
+          <div class="date"></div>
+          <div class="image"></div>
+          <div class="board">
+            <a
+              href="#url"
+              target="_blank"
+            ></a>
+          </div>
+          <div class="url">
+            <a
+              href="#url"
+              target="_blank"
+            ></a>
+          </div>
+          <div class="description fr-view"></div>
+        </div>
+        <br />
+        <div class="btn_wrap_layer">
+          <a
+            href="javascript:;"
+            onclick="CAC_VIEW.closeLayer('layerCalendarEvent')"
+            class="btn btn_submit"
+            >닫기</a
+          >
+        </div>
+      </section>
+      <!-- //이벤트 상세보기 레이어 -->
+    </div>
+    <!-- //calendar_view -->
+  </div>
+</template>
+<!--#ez="1/1"-->

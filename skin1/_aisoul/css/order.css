@@ -1,0 +1,220 @@
+/***************************************************** 
+ basket
+*****************************************************/
+.cart-product { margin-bottom: 40px; } 
+#wrap .cart-product .xans-order-selectorder { margin: 20px 0 0; padding-bottom: 20px; border-bottom: 1px solid var(--line-normal); } 
+.xans-order-selectorder.typeMulti .gLeft { display: flex; align-items: center; justify-content: space-between; } 
+.xans-order-selectorder.typeMulti .gLeft .basket-all-btn { display: flex; align-items: center; } 
+#wrap .xans-order-selectorder #product_select_all { flex: 0 0 24px; width: 24px; height: 24px; margin: 0; padding: 0; } 
+#wrap .xans-order-selectorder label[for="product_select_all"] { margin: 0 0 0 8px; font-size: 16px; font-weight: 400; line-height: 24px; color: var(--common-black); letter-spacing: -0.4px; cursor: pointer; } 
+.xans-order-selectorder label[for="product_select_all"] + .btnNormal { margin-left: auto; } 
+
+.xans-order-basketpackage .cart-container .cart-total { width: 100%; } 
+.cart-product .xans-order-list .ec-base-prdInfo .prdBox { gap: 8px; padding: 20px 0; } 
+.basket-item-layout { flex: 1; min-width: 0; } 
+.basket-prod-box { display: flex; align-items: self-start; gap: 8px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box { gap: 12px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box .thumbnail { flex-shrink: 0; width: 78px; margin: 0; aspect-ratio: 1 / 1; border: 1px solid var(--line-normal); border-radius: 8px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box .thumbnail a { line-height: 0; } 
+.ec-base-prdInfo .basket-prod-box .description { margin: 0 0 12px } 
+@media (min-width: 1025px) { 
+ .ec-base-prdInfo .basket-prod-box .description { margin: 0 0 12px; } 
+ } 
+.ec-base-prdInfo .prdBox .check { flex-shrink: 0; margin: 0; } 
+.ec-base-prdInfo .basket-prod-box .description .prdName { display: block; margin: 0 20px 6px 0; font-size: 14px; font-weight: 500; line-height: 1.5; letter-spacing: -0.4%; color: var(--common-black); } 
+.ec-base-prdInfo .basket-prod-box .description .prdName a { display: block; margin-bottom: 4px; } 
+#wrap .ec-base-prdInfo .basket-prod-box .description .price { margin-bottom: 16px; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
+#wrap .ec-base-prdInfo .description .price li { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
+#wrap .ec-base-prdInfo .description .price strong { font-weight: 700; } 
+.ec-base-prdInfo .basket-prod-box .description .info { display: flex; flex-direction: column; gap: 6px; margin: 0 0 12px; } 
+.ec-base-prdInfo .basket-prod-box .description .info .basket-shipping { margin: 0; font-size: 12px; font-weight: 500; line-height: 1.5; color: var(--neutral-300); } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup { margin: 0 0 16px; padding: 10px; background: var(--coolNeutral-50); border-radius: 8px; } 
+.ec-base-prdInfo .basket-option-quantity-box .optionGroup li { margin: 0; } 
+.xans-order-basketpackage .ec-base-prdInfo.gCheck .basket-option-quantity-box .quantity { margin: 0; padding: 0; } 
+
+.cart-total { margin-bottom: 10px; } 
+#wrap .xans-order-basketpackage .totalSummary { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 16px; border: 1px solid var(--line-normal); border-radius: 12px; } 
+.xans-order-basketpackage .cart-total .totalSummary__item { margin: 0; } 
+.xans-order-basketpackage .cart-total .totalSummary__item .title,
+.xans-order-basketpackage .cart-total .totalSummary__item .data,
+.xans-order-basketpackage .cart-total .totalSummary__item .data strong
+ { 
+ font-size: 12px; font-weight: 500; color: var(--neutral-600); } 
+.xans-order-basketpackage .cart-total .totalSummary__item .heading { margin: 0; } 
+.xans-order-basketpackage .cart-total .totalSummary .total { margin-top: 16px; padding-top: 16px; } 
+.xans-order-basketpackage .cart-total .totalSummary .total .title,
+.xans-order-basketpackage .cart-total .totalSummary .total .paymentPrice,
+.xans-order-basketpackage .cart-total .totalSummary .total .paymentPrice strong
+ { 
+ font-size: 14px; font-weight: 700; color: var(--common-black); } 
+
+.xans-order.ec-base-help .inner { border: none; border-top: none; border-radius: 12px; padding: 16px; background: var(--neutral-50); } 
+.xans-order.ec-base-help ul li { font-size: 14px; font-weight: 500; color: var(--neutral-500); } 
+/* .xans-order.ec-base-help ul li::before { content: ''; display: none; } */
+body .fixed-btn-comm { flex-direction: column; } 
+
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .name { padding: 0; margin-bottom: 10px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .option-modal-btn { text-align: right; font-size: 12px; font-weight: 500; color: var(--neutral-400); } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .name::before { content: '옵션'; position: unset; width: auto; height: auto; top: 0; padding: 1px 4px 2px; font-size: 10px; font-weight: 500; line-height: 1.6; color: var(--neutral-400); border: 1px solid var(--line-normal); border-radius: 4px; background: var(--neutral-0); } 
+.ec-base-prdInfo .basket-option-quantity-box .optionGroup li .product.displaynone + .optionStr { font-size: 12px; font-weight: 500; color: var(--neutral-700); } 
+
+
+/*********************************************
+ 옵션 변경 모달
+*********************************************/
+
+html.option-modal-open,
+body.option-modal-open { overflow:hidden; overscroll-behavior:none; } 
+#ec-basketOptionModifyLayer { z-index:99999; width:100%; height:100dvh; margin:0; background:rgba(0, 0, 0, 0.6); box-sizing:border-box; transform:none; } 
+#ec-basketOptionModifyLayer.is-open { display:flex !important; align-items:center; justify-content:center; } 
+#ec-basketOptionModifyLayer .ec-base-layer { 
+ position:relative; 
+ top:auto; 
+ width: 460px; 
+ max-height:calc(100dvh - 40px); 
+ border:0; 
+ border-radius:24px; 
+ background:var(--neutral-0); 
+ box-sizing:border-box; 
+ transform:none; 
+ } 
+#ec-basketOptionModifyLayer .option-layer-title { margin: 24px 24px 0; text-align: left; } 
+#ec-basketOptionModifyLayer .header 
+ { 
+ position:relative !important; 
+ z-index: 0 !important; 
+ display:flex; 
+ align-items:center; 
+ margin: 0 0 12px; 
+ padding: 0 0 16px; 
+ border-bottom:1px solid var(--line-normal); 
+ background:transparent; 
+ } 
+#ec-basketOptionModifyLayer .header h5 { font-size: 16px; font-weight: 500; letter-spacing: -2%; color: var(--neutral-900); } 
+#ec-basketOptionModifyLayer.optionModifyLayer .prdInfo li { margin: 0 0 16px; line-height: 1.5; font-size: 14px; font-weight: 500; letter-spacing: -0.4%; color: var(--neutral-900); } 
+.ec-base-prdInfo .optionModifyLayer .prdModify .title { font-size: 12px; letter-spacing: -0.4%; color: var(--neutral-700); } 
+#ec-basketOptionModifyLayer.optionModifyLayer .prdModify .optionDesc { display: none; } 
+
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box { display: flex; 
+ align-items: center; 
+ justify-content: center; 
+ gap: 8px; } 
+ #ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box::after { display: none !important; } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box a { 
+ display: inline-flex; 
+ align-items: center; 
+ justify-content: center; 
+ width: 100%; 
+ height: 56px; 
+ margin-left: 0; 
+ background-color: var(--coolNeutral-100); 
+ color: var(--common-black); 
+ } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box .btnSubmitFix { 
+ background-color: var(--brand-color); 
+ color: var(--neutral-0); 
+ } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box { 
+ display: flex; 
+ align-items: center; 
+ justify-content: space-between; 
+ gap: 8px; 
+ padding: 24px 16px 16px; 
+ margin: 0; } 
+
+#ec-basketOptionModifyLayer .btnClose::before, #ec-basketOptionModifyLayer .btnClose::after {display: none;}
+#ec-basketOptionModifyLayer .btnClose::before, #ec-basketOptionModifyLayer .btnClose {right: 16px;top: 16px;padding: 4px;transform: rotate(0);width: 32px;height: 32px;}
+
+.xans-order-basketpackage.section .ec-base-prdEmpty {padding: 120px 0 !important;}
+
+
+.v2 #header .headerMenu.gLeft [class*="btn"] {margin-left: 10px !important;}
+.orderResult .header .main-close {padding: 4px 12px;}
+#userStyle.orderResult.v2 {background: var(--neutral-0); color: var(--neutral-900); -webkit-text-size-adjust: none;}
+#userStyle.orderResult.v2 #header {border-bottom: 0; background: var(--neutral-0);}
+#userStyle.orderResult.v2 #header .header {position: relative; display: flex; align-items: center; justify-content: space-between; max-width: 768px !important; min-height: 52px; padding: 0 12px; border-bottom: 0;}
+#userStyle.orderResult.v2 #header .header h1 {position: absolute; left: 50%; transform: translateX(-50%); margin: 0 !important; font-size: 16px; font-weight: 600; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #header .headerMenu {display: flex; align-items: center; gap: 4px; float: none;}
+#userStyle.orderResult.v2 #header .headerMenu.gRight {margin-left: auto;}
+#userStyle.orderResult.v2 #header .headerMenu .main-close {display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0; background: none;}
+#userStyle.orderResult.v2 #header .titleArea, #userStyle.orderResult.v2 #titleArea.titleArea, #userStyle.orderResult.v2 #mCafe24Order .ec-base-fold > .title, #userStyle.orderResult.v2 #mCafe24Order .deliveryInfo > .title, #userStyle.orderResult.v2 .sr-only {position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-fold.eToggle > .title:before, #userStyle.orderResult.v2 #mCafe24Order .ec-base-fold.eToggle > .title:after {display: none; content: none;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader {width: 100%; max-width: var(--max-container); margin: 0 auto; padding: 0 0 180px; border: 0; background: var(--neutral-0);}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader > .ec-base-fold {margin: 0; padding: 20px; border: 0; border-top: 1px solid var(--line-normal); background: var(--neutral-0);}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader > .ec-base-fold > .contents {display: block; margin: 0; padding: 0; border: 0; background: none;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea {margin: 0; padding: 90px 20px 24px; border: 0; border-radius: 0; background: none; box-shadow: none; text-align: center;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea:before, #userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea:after, #userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .message:before, #userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .message:after {display: none !important; content: none !important; background: none !important;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .message {margin: 0; padding: 0; background: none; font-size: 20px; line-height: 1.4; letter-spacing: -.02em;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .message strong {font-weight: 700; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .resultInfo {margin: 20px 0 0; padding: 0; border: 0; background: none; text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .resultInfo .orderNumber, #userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .resultInfo .totalPrice {display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0; padding: 7px 0; border: 0; background: none; font-style: normal; font-size: 14px; color: var(--neutral-500); text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .resultInfo .totalPrice .txtEm {display: flex; align-items: baseline; width: 100%; font-weight: 600; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order.typeHeader .resultArea .resultInfo .v {margin-left: auto; font-weight: 600; color: var(--neutral-900); text-align: right;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table {margin: 0; border: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > thead, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > th, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > td {display: block; width: auto; height: auto; border: 0; background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > caption, #userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > colgroup {display: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr {display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 7px 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > th {flex: 0 0 auto; padding: 0; font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--neutral-500); text-align: left; white-space: nowrap;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > td {flex: 1 1 auto; min-width: 0; padding: 0; font-size: 14px; line-height: 1.5; color: var(--neutral-900); text-align: right; word-break: break-all;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > td.right {text-align: right;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > td.gridSet.gFull {text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr > td .gBlank5 {margin-left: 4px;}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo + .deliveryInfo {margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-normal);}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr {display: block; padding: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr > th {position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr > td {display: block; padding: 3px 0; font-size: 14px; line-height: 1.55; color: var(--neutral-700); text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr:first-of-type > td {padding-top: 0; font-size: 15px; font-weight: 700; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr:nth-of-type(2) > td {line-height: 1.6; word-break: keep-all;}
+#userStyle.orderResult.v2 #mCafe24Order .deliveryInfo .ec-base-table.typeView > table > tbody > tr:last-of-type > th {position: static !important; width: auto; height: auto; margin: 14px 0 6px; clip: auto; clip-path: none; font-size: 13px; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .orderArea {margin: 0; border: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo {margin: 0; padding: 14px 0; border: 0; border-bottom: 1px solid var(--line-normal); background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo:first-child {padding-top: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo:last-child {padding-bottom: 0; border-bottom: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox {display: flex; align-items: flex-start; gap: 12px; padding: 0; border: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .thumbnail {flex: 0 0 72px; width: 72px; margin: 0; padding: 0; border: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .thumbnail img {width: 72px; height: 72px; border: 1px solid var(--line-normal); border-radius: 8px; background: var(--neutral-50); object-fit: cover;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .description {flex: 1 1 auto; min-width: 0; padding: 0; text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .description .prdName {display: block; font-size: 14px; font-weight: 500; line-height: 1.45; color: var(--neutral-900); word-break: break-all;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .description .info {margin: 6px 0 0; padding: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .description .info > li {margin: 0; padding: 0; font-size: 13px; line-height: 1.5; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdBox .description .info > li + li {margin-top: 2px;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .optionWrap {display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .optionWrap > .optionItem:first-child {flex: 1 1 auto; min-width: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .optionWrap > .optionItem:last-child {flex: 0 0 auto; color: var(--neutral-500); white-space: nowrap;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .optionWrap .option {margin: 0; padding: 0; font-size: 13px; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo ul.option {margin: 4px 0 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo ul.option > li {padding: 2px 0 2px 8px; border-left: 2px solid var(--line-normal); font-size: 12px; color: var(--neutral-300);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo ul.option > li strong {display: block; font-weight: 500; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .proPrice {margin: 8px 0 0; font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--neutral-900); text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .proPrice .refer, #userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .proPrice span:not(:first-child) {font-size: 13px; font-weight: 400; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .txtWarn {color: var(--error-color);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdFoot {display: flex; align-items: center; justify-content: space-between; margin: 10px 0 0; padding: 10px 0 0; border: 0; border-top: 1px dashed var(--line-normal); font-size: 13px; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdFoot .gLeft, #userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdFoot .gRight {float: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-prdInfo .prdFoot .txtStrong {font-weight: 700; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .orderArea .totalPrice {margin: 0; padding: 0; border: 0; border-top: 1px solid var(--line-normal); background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .orderArea .totalPrice > .title {display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 14px 0 0; border: 0; background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .orderArea .totalPrice > .title > h3 {margin: 0; padding: 0; font-size: 14px; font-weight: 400; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .orderArea .totalPrice .deliveryFee {font-size: 14px; font-weight: 600; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .totalWeight {margin: 10px 0 0; font-size: 13px; color: var(--neutral-500); text-align: right;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-fold > .contents:has(> .totalPay), #userStyle.orderResult.v2 #mCafe24Order .ec-base-fold > .contents.hasTotal {display: flex; flex-direction: column;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-fold > .contents > .totalPay {order: -1;}
+#userStyle.orderResult.v2 #mCafe24Order .totalPay {display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 6px; padding: 0 0 12px; border: 0; border-radius: 0; background: none;}
+#userStyle.orderResult.v2 #mCafe24Order .totalPay > .heading {margin: 0; padding: 0; font-size: 16px; font-weight: 700; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .totalPay > .txtStrong, #userStyle.orderResult.v2 #mCafe24Order .totalPay > .txtEm {font-size: 18px; font-weight: 700; color: var(--neutral-900); text-align: right;}
+#userStyle.orderResult.v2 #mCafe24Order .totalPay .refer {display: block; font-size: 12px; font-weight: 400; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr.discountArea {display: block; padding: 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-table > table > tbody > tr.discountArea > td {display: block; width: 100%; padding: 0; text-align: left;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-box {margin: 6px 0 0; padding: 12px 14px; border: 0; border-radius: 8px; background: var(--neutral-50);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-box > .heading {display: block; margin: 0 0 4px; font-size: 13px; font-weight: 600; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-box .ec-base-table > table > tbody > tr {padding: 4px 0;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-box .ec-base-table > table > tbody > tr > th, #userStyle.orderResult.v2 #mCafe24Order .ec-base-box .ec-base-table > table > tbody > tr > td {font-size: 13px; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-order-expandwrap .ec-order-expand {font-weight: 400;}
+#userStyle.orderResult.v2 #mCafe24Order .methodButton {display: flex; gap: 6px; margin: 10px 0 0;}
+#userStyle.orderResult.v2 #mCafe24Order .methodButton .btnNormal {flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; height: 38px; border: 1px solid var(--line-accent); border-radius: 8px; background: var(--neutral-0); font-size: 13px; color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-button.fixed-btn-comm {position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 100; display: flex; gap: 8px; width: 100%; max-width: var(--max-container); margin: 0; padding: 10px 20px calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line-normal); background: var(--neutral-0);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-button.fixed-btn-comm > a {flex: 1 1 0; display: flex; align-items: center; justify-content: center; height: 52px; margin: 0; padding: 0; border-radius: 8px; font-size: 16px; font-weight: 700; line-height: 1; text-decoration: none;}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-button.fixed-btn-comm > a.fixed-btn-outline {border: 1px solid var(--line-accent); background: var(--neutral-0); color: var(--neutral-900);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-button.fixed-btn-comm > a.fixed-btn-fill {border: 1px solid var(--brand-color); background: var(--brand-color); color: var(--neutral-0);}
+#userStyle.orderResult.v2 #mCafe24Order .ec-base-help {margin: 4px 0 0; font-size: 12px; color: var(--neutral-500);}
+#userStyle.orderResult.v2 #mCafe24Order .gLeft, #userStyle.orderResult.v2 #mCafe24Order .gRight {float: none;}
+#userStyle.orderResult.v2 .displaynone, .v2.orderResult #mCafe24Order .ec-order-expandwrap .ec-order-expand:after {display: none !important;}

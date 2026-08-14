@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="format-detection" content="telephone=no"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes">
+
+    <!-- PG크로스브라우징필수내용 -->
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <!-- // PG크로스브라우징필수내용 -->
+
+    <title></title>
+    <!--@css(/layout/basic/css/common.css)--><!-- 해당 CSS는 쇼핑몰 전체 페이지에 영향을 줍니다. 삭제와 수정에 주의해주세요. -->
+    <!--@css(/layout/basic/css/layout.css)-->
+    <!--@css(/layout/basic/css/ec-base-ui.css)-->
+    <!--@css(/layout/basic/css/ec-base-button.css)-->
+    <!--@css(/layout/basic/css/ec-base-tab.css)-->
+    <!--@css(/layout/basic/css/ec-base-table.css)-->
+    <!--@css(/layout/basic/css/ec-base-tooltip.css)-->
+    <!--@css(/layout/basic/css/ec-base-help.css)-->
+    <!--@css(/layout/basic/css/ec-base-fold.css)-->
+    <!--@css(/layout/basic/css/ec-base-box.css)-->
+    <!--@css(/layout/basic/css/ec-base-desc.css)-->
+    <!--@css(/layout/basic/css/ec-base-product.css)-->
+  	<!--@css(/layout/basic/css/ec-base-prdInfo.css)-->
+    <!--@css(/layout/basic/css/ec-base-paginate.css)-->
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+	<link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'><!-- theme03 -->
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"><!-- theme03 -->
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet"><!-- theme04 -->
+    
+    <!-- front -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.19.0/dist/axios.min.js"></script>
+
+    <!--@css(/layout/basic/css/swiper.min.css)-->
+	<!--@js(/layout/basic/js/swiper-bundle.min.js)-->
+	<!--@js(/js/module/product/sale_price.js)-->
+
+    <!--@js(/layout/basic/js/basic.js)-->
+    <!--@js(/layout/basic/js/layout.js)-->
+    <!--@js(/js/common.js)-->
+    <script>try{window.EZST={q:[],register:function(a,b){this.push([a,(b.init||b)(),arguments])}}}catch(e){}</script>
+    <!--ez-favicon[-->
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/a04015c2b720ff82daf866c52d19abeb.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/31bc8395c87f6221a72d598a921ce3ee.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/26fb3ad3d152c903b6feb355034a7345.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/9ecb03eec0d9d2479355a2418088a735.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/0fe058ef2103cefe396215c15c2e8f4b.png">
+<link rel="icon" type="image/png" sizes="256x256" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/c6b7d0c3df55a9bde0d104dfa8f27f41.png">
+<link rel="icon" type="image/png" sizes="128x128" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/132f5831383a644c027b3bc3abca61cd.png">
+<link rel="icon" type="image/png" sizes="64x64" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/4f66ddf1894ff0f6e977021b116dc946.png">
+<link rel="icon" type="image/png" sizes="48x48" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/c4af985d882b15c656e2cf886bfbf15b.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/2cd9232f5f6c2a75613527071fbc474f.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/a7a1b7f6d149a66b3dd98f899034ba52.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/NNEditor/20260713/132f5831383a644c027b3bc3abca61cd.png">
+<meta name="theme-color" content="#ffffff">
+<!--ez-favicon]-->
+
+    <!--@js(/ez/init.js)-->
+<script type="text/ez-prop">
+	<ez-prop data-version="1.0.0">
+		<ez-var data-prop="theme" data-namespace="ez.layout.theme" data-type="array">
+			<ez-item data-id="theme01" data-name="MODERN" data-desc="(블랙+노토산스)" data-font="Noto Sans KR" data-background-color="#f5f5f5" override-value="html" data-font-css="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+				모던하고 차분한 스타일
+				<!-- HTML도 <b>이렇게</b> 가능합니다.<br>
+				세부 옵션은 <a href="https://sample.cafe24.com/theme01" target="_blank">이곳을</a> 통해 확인 할 수 있습니다. -->
+			</ez-item>
+			<ez-item data-id="theme02" data-name="SOFT" data-desc="은은하고 부드러운 스타일	" data-font="Noto Sans KR" data-background-color="#d8d9ed" data-font-css="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"></ez-item>
+			<ez-item data-id="theme03" data-name="BREEZY" data-desc="밝고 경쾌한 스타일" data-font="Spoqa Han Sans Neo" data-background-color="#ffc1a8" data-font-css="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"></ez-item>
+			<ez-item data-id="theme04" data-name="FRESH" data-desc="시원하고 산뜻한 스타일" data-font="Nanum Gothic" data-background-color="#c3e7e7" data-font-css="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Red+Hat+Display:wght@400;500;700&display=swap"></ez-item>
+		</ez-var>
+	</ez-prop>
+</script>
+    
+    <!---------------------------- 
+        custom
+    ---------------------------->
+    <!-- pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    
+    <!-- css -->
+    <!--@css(/_aisoul/css/reset.css)-->
+    <!--@css(/_aisoul/css/common.css)-->
+    <!--@css(/_aisoul/css/prod.css)-->
+    
+    <!-- js -->
+    <!--@js(/_aisoul/js/common.js)-->
+    <!--@js(/_aisoul/js/sale.js)-->
+    <!--@js(/_aisoul/js/prod.js)-->
+
+    
+</head>
+<body class="theme01" data-ez-theme="theme01">
+	<div id="skipNavigation">
+		<p><a href="#category">전체상품목록 바로가기</a></p>
+		<p><a href="#contents">본문 바로가기</a></p>
+	</div>
+	<div id="wrap" class="app-page">
+<!--@import(/_aisoul/layout/sub_header.html)-->
+<div id="container" data-ez="layout-0dwid34-1">
+			<div id="contents">
+				
+				<!--@contents-->
+			</div>
+		</div>
+<!--@import(/_aisoul/layout/footer.html)-->
+<!--#ez="1/1"-->
+</div><!-- //wrap -->
+
+	<div id="progressPaybar" style="display:none;">
+		<div id="progressPaybarBackground" class="layerProgress"></div>
+		<div id="progressPaybarView">
+			<div class="box">
+				<h3>현재 결제가 진행중입니다.</h3>
+				<p class="txt">
+					본 결제 창은 결제완료 후 자동으로 닫히며,결제 진행 중에 본 결제 창을 닫으시면<br>
+					주문이 되지 않으니 결제 완료 될 때 까지 닫지 마시기 바랍니다.
+				</p>
+				<div class="progressbar"><img src="//img.echosting.cafe24.com/skin/skin/common/img_loading.gif" alt="loading" loading="lazy"></div>
+			</div>
+		</div>
+	</div>
+
+	<div module="Layout_multishopShipping">
+		<!--@css(/layout/basic/css/ec-base-layer.css)-->
+		<!--@css(/css/module/layout/multishopShipping.css)-->
+		<!--@js(/js/module/layout/multishopShipping.js)-->
+		<div class="worldshipLayer ec-base-layer typeModal">
+			<div class="header">
+				<h3>WORLD SHIPPING</h3>
+			</div>
+			<div class="content">
+				<p class="desc">PLEASE SELECT THE DESTINATION COUNTRY AND LANGUAGE :</p>
+				<select module="Layout_multishopShippingCountrylist">
+					<option value="{$country_code}" {$country_default_selected}>SHIPPING TO : {$country_name}</option>
+					<option value="{$country_code}" {$country_default_selected}>SHIPPING TO : {$country_name}</option>
+				</select>
+				<select module="Layout_multishopShippingLanguagelist">
+					<option value="{$shop_domain}" {$shop_default_selected}>LANGUAGE : {$shop_language_name}</option>
+					<option value="{$shop_domain}" {$shop_default_selected}>LANGUAGE : {$shop_language_name}</option>
+				</select>
+			</div>
+			<div class="ec-base-button">
+				<a href="#none" class="btnSubmitFix sizeM">GO</a>
+			</div>
+			<a href="#none" class="btnClose">닫기</a>
+		</div>
+	</div>
+
+	<div class="layer_shadow" id="layer_shadow"></div>
+	<div id="layoutDimmed" class="dimmed"></div>
+
+	<!--@css(/layout/basic/css/sub_style.css)-->
+	<!--@css(/layout/basic/css/sub_theme.css)-->
+	<!--@css(/layout/basic/css/add_theme01.css)-->
+	<!--@css(/layout/basic/css/add_theme02.css)-->
+	<!--@css(/layout/basic/css/add_theme03.css)-->
+	<!--@css(/layout/basic/css/add_layout.css)-->
+</body>
+</html>

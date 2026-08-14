@@ -1,0 +1,162 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+
+<div class="section" module="Board_ListPackage_1002">
+    <!--@css(/css/module/board/listPackage.css)-->
+    <div module="board_title_1002">
+        
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
+    </div>
+
+    <div module="Layout_BoardInfo" class="ec-base-tab typeMenu gScroll  inner-m">
+        <ul class="menu">
+            <li><a href="{$board_list_url}" class="button">{$board_name}</a></li>
+            <li><a href="{$board_list_url}" class="button">{$board_name}</a></li>
+        </ul>
+    </div>
+
+    <div class="boardSort">
+        <span module="board_category_1002">{$form.board_category}</span>
+        <span module="board_ReplySort_1002">{$reply_sort}</span>
+    </div>
+
+    <div class="ec-base-table typeList inner-m">
+        <table border="1" >
+            <caption>게시판 목록</caption>
+            <!-- <colgroup module="board_listheader_1002">
+                <col style="width:80px;" />
+                <col style="width:auto;" />
+                <col style="width:100px;" class="{$config.is_category|display}" />
+                <col style="width:90px;" />
+                <col style="width:120px;" class="{$config.use_date|display}" />
+                <col style="width:74px;" class="{$config.use_cnt|display}" />
+                <col style="width:94px;" class="{$config.is_use_point|display}" />
+            </colgroup>
+            <thead module="board_listheader_1002">
+                <tr style="{$list_bg_color} {$list_char_color}" class="{$block_target_class}" {$block_data_attr}>
+                    <th scope="col" class="chk">{$checkbox} 번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col" class="{$config.is_category|display}">카테고리</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col" class="{$config.use_date|display}">작성일</th>
+                    <th scope="col" class="{$config.use_cnt|display}">조회</th>
+                    <th scope="col" class="{$config.is_use_point|display}">평점</th>
+                </tr>
+            </thead> -->
+            <tbody module="board_notice_1002" class="board-list board-list--notice">
+                <!--
+                    $count = 10
+                    $login_page_url = /member/login.html
+                    $deny_access_url = /index.html
+                -->
+                <tr style="{$list_bg_color} {$list_char_color}" class="{$block_target_class}" {$block_data_attr}>
+                    <td class="chk">{$checkbox}</td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <span class="notice-badge">{$notice_icon}</span> 
+                        <a href="{$link_board_detail}" style="{$link_color}" class="subject-link {$block_content_class}"><span class="subject-text">{$subject}</span></a>
+                    </td>
+                    <td class="write-box">
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="{$hit_display|display} write-count"><span class="">조회</span>{$hit_count}</span>
+                    </td>
+                </tr>
+                <tr style="{$list_bg_color} {$list_char_color}" class="{$block_target_class}" {$block_data_attr}>
+                    <td class="chk">{$checkbox}</td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <span class="notice-badge">{$notice_icon}</span> 
+                        <a href="{$link_board_detail}" style="{$link_color}" class="subject-link {$block_content_class}"><span class="subject-text">{$subject}</span></a>
+                    </td>
+                    <td class="write-box">
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="{$hit_display|display} write-count"><span class="">조회</span>{$hit_count}</span>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody module="board_list_1002" class="board-list board-list--normal">
+                <!--
+                    $count = 10
+                    $login_page_url = /member/login.html
+                    $deny_access_url = /index.html
+                -->
+
+                <tr style="{$list_bg_color} {$list_char_color}"class="{$block_target_class}"{$block_data_attr}>
+                    <td class="chk no">{$checkbox}<span class="RW">{$no}</span></td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <a href="{$link_board_detail}"style="{$link_color}"class="subject-link {$block_content_class}"><span class="subject-text">{$subject}</span>
+                            <span class="comment">{$comment_count}</span>
+                        </a>
+                    </td>
+                    <td class="write-box">
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="{$hit_display|display} write-count"><span class="">조회</span>{$hit_count}</span>
+                    </td>
+                </tr>
+
+                <tr style="{$list_bg_color} {$list_char_color}" class="{$block_target_class}" {$block_data_attr}>
+                    <td class="chk no">{$checkbox}<span class="RW">{$no}</span></td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <a href="{$link_board_detail}"style="{$link_color}"class="subject-link {$block_content_class}"><span class="subject-text">{$subject}</span>
+                            <span class="comment">{$comment_count}</span>
+                        </a>
+                    </td>
+                    <td class="write-box">
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="{$hit_display|display} write-count"><span class="">조회</span>{$hit_count}</span>
+                    </td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="message {$empty_display|display}" module="board_empty_1002">{$empty_message}</p>
+    </div>
+    
+    <!-- 검색/글쓰기 -->
+    <div module="board_search_1002" class="inner-m">
+        <!--@css(/css/module/board/search.css)-->
+        <fieldset class="boardSearch">
+            <legend>게시물 검색</legend>
+            <div class="form">
+                <div class="form-box"><input type="hidden" id="search_date" name="search_date" value="all"> {$form.search_key} {$form.search}</div>
+                <a href="#none" class="btnNormal" onclick="{$action_search}">검색</a>
+            </div>
+        </fieldset>
+    </div>
+    <div module="board_ButtonList_1002" class="ec-base-button gBottom {$write_display|display} inner-m">
+        <span class="gRight">
+            <a href="/board/free/write.html{$param_write}" class="btnSubmitFix sizeM {$write_display|display} board-write-btn">글쓰기</a>
+        </span>
+    </div>
+</div>
+
+<div module="board_paging_1002" class="section ec-base-paginate typeList inner-m">
+    <a href="{$param_prev}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+    <ol>
+        <li><a href="{$param_num}" class="{$param_class}">{$page_num}</a></li>
+        <li><a href="{$param_num}" class="{$param_class}">{$page_num}</a></li>
+    </ol>
+    <a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+</div>
+
+<!-- Admin only -->
+<!--<div class="section" module="board_catemove_1002">
+    @css(/css/module/board/catemove.css)
+    <span class="gColumn">{$board_catemove_selectbox}</span>
+    <span class="gColumn"><a href="#none" class="btnNormal sizeS" onclick="{$action_category_move}">{$category_move}</a></span>
+</div>
+
+<div class="section" module="board_function_1002">
+    @css(/css/module/board/function.css)
+    <span class="gColumn">{$board_function_selectbox}</span>
+    <span class="gColumn">
+        <a href="#none" class="btnNormal sizeS" onclick="{$action_article_move}">{$article_move}</a>
+        <a href="#none" class="btnNormal sizeS" onclick="{$action_article_copy}">{$article_copy}</a>
+    </span>
+    <span class="ec-base-help">{$board_function_help|replace:*,}</span>
+</div> -->
+<!-- // Admin only -->

@@ -1,0 +1,36 @@
+<section class="main-prod" data-ez="module-1q5eyaz-1">
+    <div class="inner-m">
+        <!-- 메인진열 -->
+        <div class="prod-tab-contents-box">
+            <!-- <div class="prod-tab-sort"><strong class="num">0</strong>개의 제품</div> -->
+            <ul class="tab-panels" id="main-product-panels">
+                <!-- 전체 -->
+                <li class="tabcontent" data-panel="blood-sugar">
+                    <div data-ez-holder="product_listmain">
+                        <div module="product_listmain_1" class="ec-base-product">
+                            <!--
+                                $count = 8
+                                $basket_result = /product/add_basket.html
+                                $basket_option = /product/basket_option.html
+                                $moreview = yes
+                                $cache = yes
+                            -->
+                            <ul class="prdList grid2" data-ez-role="layout ez-discount-tag">
+                                <!--@import(/product/list_product.html)-->
+                            </ul>
+                        </div>
+                        <div module="product_listmore_1" class="more">
+                            <a href="#none" onclick="{$more_action}" class="btnMore more-btn-comm">
+                                더보기
+                                <span class="prod-page-num"><span
+                                        id="more_current_page_{$display_group}">{$current_page}</span>/<span
+                                        id="more_total_page_{$display_group}">{$total_page}</span></span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--#ez="1/1"-->

@@ -1,0 +1,105 @@
+@charset 'utf-8';
+
+a, address, area, article, aside, audio, b, body, br, button, 
+canvas, caption, cite, col, colgroup, dd, div, dl, dt, em, embed, 
+fieldset, figcaption, figure, footer, form, frame, frameset, 
+h1, h2, h3, h4, h5, h6, head, header, hr, html, i, iframe, img, input, 
+label, legend, li, link, map, menu, meta, nav, object, ol, p, pre, q, rp, rt, ruby, 
+s, script, section, select, source, span, strong, style, sub, summary, sup, 
+table, tbody, td, textarea, tfoot, th, thead, time, title, tr, u, ul, video,xmp {margin: 0; padding: 0; box-sizing:border-box;}
+
+:host {word-break: break-all; -webkit-text-size-adjust:none;  box-sizing:border-box; font-family: "Noto Sans KR", sans-serif; font-weight: 400;}
+img, fieldset {border: 0;}
+img {vertical-align: middle;}
+ul,ol,li	{list-style: none;}
+legend {display: block; visibility: hidden; overflow: hidden; position: absolute; width: 0; height: 0; text-align: left; text-indent: -999em; line-height: 0; font-size: 0;}
+form, fieldset, iframe {border:none;}
+label, button {cursor: pointer; border: none; background: transparent;}
+button, input {-webkit-border-radius:0; border-radius:0; outline:none}
+
+a {text-decoration:none; color:inherit; -webkit-tap-highlight-color:rgba(0,0,0,.1)}
+a:link {text-decoration: none;}
+a:hover {text-decoration: none;}
+a:visited {text-decoration: none;}
+a:active {text-decoration: none;}
+a:focus {text-decoration: none;}
+
+/* font  style */
+:host, button, input, select, table, textarea,xmp {font-size: 14px; line-height: 1.4; color: #2B2B2B; font-family: "Noto Sans KR", sans-serif; font-weight: 400; box-sizing:border-box;}
+address, em {font-style: normal;}
+
+/* table */
+table {width: 100%; border-collapse: collapse; border-spacing: 0;}
+caption {text-align: left; text-indent: -999em; line-height: 0; font-size: 0;}
+
+/* form */
+::-webkit-input-placeholder {color: #ddd;} /* Chrome/Opera/Safari */
+:-ms-input-placeholder {color: #ddd;} /* IE 10+ */
+::-moz-placeholder {color: #ddd; opacity: 1;} /* Firefox 19+ */
+:-moz-placeholder {color: #ddd; opacity: 1;} /* Firefox 18- */
+
+input, select, textarea, label {vertical-align: middle;}
+input::-ms-clear,
+input::-ms-reveal{display:none;}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration{display:none;}
+
+/*ir */
+.blind {overflow:hidden; position: absolute; clip:rect(0 0 0 0); width:1px; height:1px; margin:-1px;}
+
+/* clfix */
+.clear {clear: both !important;}
+.clfix {display: block; *zoom: 1}
+.clfix:after {content: ''; display: block; clear: both;}
+* html .clfix {height: 1%;} /* hides from ie-mac */
+
+/* display */
+.fl_l {float: left !important;}
+.fl_r {float: right !important;}
+
+/* 강조색 */
+.txt_point {color: #f00 !important;} /* 가장 많이 사용하는 포인트 컬러 */ 
+.txt_sub {color: #687387 !important;} /* 서브용 컬러 */
+
+/* skip nav */
+#skipnav {overflow: hidden; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%;}
+#skipnav a {display: block; width: 100%; font-size: 0; line-height: 0; text-align: left;}
+#skipnav a:hover, 
+#skipnav a:focus, 
+#skipnav a:active {position: static; left: 0; width:100%; height: 16px; line-height: 16px; padding: 10px; background: #00b5e2; font-weight: bold; font-size: 12px; font-size: 1rem; color: #fff; text-align: center;}
+
+/* 운영용 스타일 (수정 금지) */
+.ta_c {text-align: center !important;}
+.ta_l {text-align: left !important;}
+.ta_r {text-align: right !important;}
+
+/* 운영용 스타일 : 구축시 사용 금지 (수정 금지) */
+.mg0 {margin: 0 !important;}
+.mt0 {margin-top: 0 !important;}
+.mt10 {margin-top: 10px !important;}
+.mt20 {margin-top: 20px !important;}
+.mt30 {margin-top: 30px !important;}
+.mt40 {margin-top: 40px !important;}
+.mt50 {margin-top: 50px !important;}
+.mb0 {margin-bottom: 0 !important;}
+.mb10 {margin-bottom: 10px !important;}
+.mb20 {margin-bottom: 20px !important;}
+.mb30 {margin-bottom: 30px !important;}
+.mb40 {margin-bottom: 40px !important;}
+.mb50 {margin-bottom: 50px !important;}
+
+.pd0 {padding: 0 !important;}
+.pt0 {padding-top: 0 !important;}
+.pt10 {padding-top: 10px !important;}
+.pt20 {padding-top: 20px !important;}
+.pt30 {padding-top: 30px !important;}
+.pt40 {padding-top: 40px !important;}
+.pt50 {padding-top: 50px !important;}
+.pb0 {padding-bottom: 0 !important;}
+.pb10 {padding-bottom: 10px !important;}
+.pb20 {padding-bottom: 20px !important;}
+.pb30 {padding-bottom: 30px !important;}
+.pb40 {padding-bottom: 40px !important;}
+.pb50 {padding-bottom: 50px !important;}

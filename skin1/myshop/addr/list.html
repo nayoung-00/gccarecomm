@@ -1,0 +1,124 @@
+<!--@layout(/layout/basic/layout.html)-->
+
+<style>
+.h-right {display: none;}
+
+.xans-myshop-addrlist {margin-bottom: 160px;}
+.xans-myshop-addrlist .ec-base-table {border: 0;}
+.xans-myshop-addrlist .ec-base-table table {display: block; width: 100%; border: 0;}
+.xans-myshop-addrlist .ec-base-table colgroup, .xans-myshop-addrlist .ec-base-table thead {display: none;}
+.xans-myshop-addrlist .ec-base-table tbody {display: block; width: 100%;}
+.xans-myshop-addrlist .ec-base-table tbody tr {display: block; width: 100%; padding: 20px 8px; border-bottom: 1px solid var(--line-normal);}
+.xans-myshop-addrlist .ec-base-table tbody td {display: block; width: 100%; height: auto; padding: 0; border: 0; text-align: left; font-size: 12px; line-height: 1.5; color: var(--neutral-600);}
+
+.addr-top-area {display: flex !important; align-items: center; gap: 20px; margin-bottom: 6px;}
+.addr-top-area > input[type="checkbox"] {flex: 0 0 auto;}
+.addr-name-box {display: flex; align-items: center; gap: 5px;}
+.addr-name-box p {display: flex;align-items: center;gap: 5px; font-size: 12px; font-weight: 600; line-height: 1.5; color: var(--common-black);}
+
+.addr-code {margin-bottom: 6px;color: var(--neutral-600);}
+
+.addr-phone-box {display: flex !important; align-items: center;  margin-bottom: 12px;}
+.addr-phone-box p {display: flex; align-items: center; color: var(--neutral-600);}
+.addr-phone-box p:first-child::after, .addr-name-box p:first-child::after {content: ""; display: block; width: 1px; height: 12px; margin: 0 10px; background: #ddd;}
+
+.addr-edit .btnNormal {display: inline-flex; align-items: center; justify-content: center; width: auto; min-width: 56px; height: 38px; padding: 0 14px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-size: 14px; font-weight: 500; color: #222;}
+
+.xans-myshop-addrlist .ec-base-button.gBottom {display: flex; gap: 12px; width: 100%; padding: 20px; box-sizing: border-box;}
+.xans-myshop-addrlist .ec-base-button.gBottom a {display: flex; align-items: center; justify-content: center; flex: 1; height: 56px; padding: 0; box-sizing: border-box; border-radius: 9px; font-size: 16px;}
+.xans-myshop-addrlist .ec-base-button.gBottom .btnNormalFix {border: 1px solid #ddd; background: #fff; color: #222;}
+.xans-myshop-addrlist .ec-base-button.gBottom .btnSubmitFix {border: 1px solid #63c36c; background: #63c36c; color: #fff;}
+
+.ec-base-help ul {display: flex;flex-direction: column;gap: 6px; padding: 16px;border-radius: 12px;background: var(--neutral-50);}
+.ec-base-help ul li {font-size: 14px;font-weight: 500;line-height: 1.5;color: var(--neutral-500);}
+#wrap .ec-base-help ul li::before {margin: 8px 9px 0 -12px !important;}
+</style>
+<div class="myshopArea">
+    <!-- 동적 타이틀 -->
+    <span class="page-title-source" hidden>배송 주소록 관리</span>
+
+	<div module="myshop_AddrList" class="inner-m">
+		<!--
+			$return_url = /myshop/addr/list.html
+		-->
+		<div class="ec-base-table typeList">
+			<table border="1" >
+				<caption>배송 주소록 목록</caption>
+				<colgroup>
+					<col style="width:27px" />
+					<col style="width:100px" />
+					<col style="width:95px" />
+					<col style="width:95px" />
+					<col style="width:120px" />
+					<col style="width:120px" />
+					<col style="width:auto" />
+					<col style="width:76px" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col"><span class="{$list_display|display}">{$sCheckAll}</span></th>
+						<th scope="col">주소록 고정</th>
+						<th scope="col">배송지명</th>
+						<th scope="col">수령인</th>
+						<th scope="col">일반전화</th>
+						<th scope="col">휴대전화</th>
+						<th scope="col">주소</th>
+						<th scope="col">수정</th>
+					</tr>
+				</thead>
+				<tbody class="{$list_display|display} center">
+					<tr>
+						<td class="addr-top-area">
+                            {$checkbox}
+                            <div class="addr-name-box">
+                                <p class="title">{$ma_rcv_title}</p>
+                                <p class="name">{$ma_rcv_name}</p>
+                            </div>
+                        </td>
+						<td class="addr-code">({$ma_rcv_zipcode}){$ma_rcv_addr1} {$ma_rcv_addr2}</td>
+						<td class="addr-phone-box">
+                            <p>{$ma_rcv_phone}</p>
+                            <p>{$ma_rcv_mobile_no}</p>
+                        </td>
+						<td class="addr-edit"><a href="modify.html?ma_idx={$ma_idx}" class="btnNormal sizeS {$notfix_display}">수정</a></td>
+					</tr>
+					<tr>
+						<td class="addr-top-area">
+                            {$checkbox}
+                            <div class="addr-name-box">
+                                <p class="title">{$ma_rcv_title}</p>
+                                <p class="name">{$ma_rcv_name}</p>
+                            </div>
+                        </td>
+						<td class="addr-code">({$ma_rcv_zipcode}){$ma_rcv_addr1} {$ma_rcv_addr2}</td>
+						<td class="addr-phone-box">
+                            <p>{$ma_rcv_phone}</p>
+                            <p>{$ma_rcv_mobile_no}</p>
+                        </td>
+						<td class="addr-edit"><a href="modify.html?ma_idx={$ma_idx}" class="btnNormal sizeS {$notfix_display}">수정</a></td>
+					</tr>
+				</tbody>
+				<tbody class="{$nodata_display|display}">
+					<tr>
+						<td colspan="8" class="message"><!--@import(/svg/icon-empty.html)-->등록된 주소가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="ec-base-button fixed-btn-comm">
+			<a href="#none" class="btnNormalFix sizeM fixed-btn-outline {$delete_display|display}" onclick="{$action_delete}; return false;">선택 주소록 삭제</a>
+			<a href="register.html" class="btnSubmitFix sizeM fixed-btn-fill">배송지 추가하기</a>
+		</div>
+	</div>
+
+	<div class="ec-base-help inner-m">
+        <ul>
+            <li>배송 주소록은 최대 50개까지 등록할 수 있으며, 별도로 등록하지 않을 경우 최근 배송 주소록 기준으로 자동 업데이트 됩니다.</li>
+            <li>자동 업데이트를 원하지 않을 경우 주소록 고정 선택을 선택하시면 선택된 주소록은 업데이트 대상에서 제외됩니다.</li>
+            <li>기본 배송지는 1개만 저장됩니다. 다른 배송지를 기본 배송지로 설정하시면 기본 배송지가 변경됩니다.</li>
+        </ul>
+	</div>
+    <!--@import(/myshop/myshop_main.html)-->
+
+</div>

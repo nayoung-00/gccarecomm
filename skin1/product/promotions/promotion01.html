@@ -1,0 +1,172 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@import(/_aisoul/layout/prod_header.html)-->
+
+<style>
+    [df-banner-code][hidden] {display: none !important}
+    .sub-header {display: none !important;}
+
+    .xans-project-package  {margin-top: 40px;}
+    .df-bannermanager-promotion01 {margin-bottom: 40px;}
+    .promotion-title {margin-bottom: 30px;text-align: center;}
+    .promotion-title h2 {margin-bottom: 6px;font-size: 16px;font-weight: 600;color: var(--common-black);}
+    .promotion-title p {font-size: 12px;font-weight: 500;color: var(--neutral-400);}
+    .promo-img {width: 100%;height: auto;}
+    .promo-img img {width: 100%;height: 100%; object-fit: cover;}
+
+    .promo-notice p {margin-bottom: 12px;font-size: 16px;font-weight: 700;color: var(--common-black);}
+    .promo-notice .notice-list {padding: 16px 10px;border-radius: 12px;background: var(--coolNeutral-50);}
+    .promo-notice .notice-list li {font-size: 14px;font-weight: 500;line-height: 1.5;color: var(--neutral-500);}
+</style>
+
+<div module="Project_Package" class="section">
+    <!--@css(/css/module/product/project_package.css)-->
+
+
+
+    <!----------------------------------------------------------------
+        💡수정 가능 위치
+            - 배너매니저 그룹 코드를 df-banner-code=""에 넣어주세요
+            - 이외의 것들은 수정하면 배너와 타이틀이 안 나올 수 있습니다.
+    ------------------------------------------------------------------>
+    <div df-banner-code="promotion01" hidden>
+        <a href="{#href}" target="{#target}" df-banner-clone>
+            {#html}
+            <figure class="promo-img">{#item}</figure>
+        </a>
+    </div>
+
+
+
+
+    <!--------------------------------------------------------------------------------------------------------
+        ❌ 이 아래로는 절대 지우지 말아주세요!!! ❌ 
+        해당 코드를 지우거나 임의로 수정할 경우 상품이 안 나올 수 있습니다
+    ---------------------------------------------------------------------------------------------------------->
+
+    <div class="section ec-base-tab typeMenu inner-m">
+        <ul class="menuCategory menu">
+            <li module="product_projectcategory" style="display:{$display};">
+                <!-- <a href="#{$cate_id}" class="button">{$category_name} <span class="count {$product_count_display|display}">({$product_count})</span></a> -->
+            </li>
+        </ul>
+    </div>
+    <div module="project_list" class="inner-m">
+        <!--
+            $basket_result = /product/add_basket.html
+            $basket_option = /product/basket_option.html
+        -->
+        <!-- <h3><span id="{$cate_id}"></span>{$category_name}</h3> -->
+        <h3><span id="{$cate_id}"></span>상품</h3>
+
+        <div module="project_productlist" class="ec-base-product promo-swiper">
+            <ul class="prdList swiper-wrapper">
+				<li id="anchorBoxId_{$product_no}" class="swiper-slide">
+					<div class="prdList__item">
+						<div class="thumbnail">
+							<a href="{$link_product_detail}"><img src="{$image_medium}" id="{$image_medium_id}" alt="{$seo_alt_tag}" loading="lazy"><span module="product_Imagestyle"><span class="prdIcon {$icon_class_name}" style="background-image:url('{$icon_url}');"></span></span></a>
+							<div class="likeButton {$disp_likeprd_class}"><button type="button">{$disp_likeprd_icon} <strong>{$disp_likeprd_count}</strong></button></div>
+							<div class="badge"><span></span></div>
+							<!-- <div class="icon__box">
+								<span class="wish">{$list_wish_icon}WISH</span>
+								<span class="cart">{$basket_icon}ADD</span>
+								<span class="option">{$option_preview_icon}OPTION</span>
+							</div> -->
+							<div class="icon">{$soldout_icon} {$stock_icon} {$recommend_icon} {$new_icon} {$product_icons} {$today_arrival_icon} {$pickup_icon} {$benefit_icons}</div>
+						</div>
+						<div class="description" ec-data-custom="{$product_custom}" ec-data-price="{$product_price}">
+							<div class="name"><a href="{$link_product_detail}" class="{$product_name_display|display}"><span class="title {$product_name_title_display|display}">{$product_name_title} :</span> {$product_name}</a></div>
+							<ul module="project_ListItem" class="spec">
+								<li class="{$item_display|display}">
+									<strong class="title {$item_title_display|display}">{$item_title} :</strong> {$item_content}
+								</li>
+								<li class="{$item_display|display}">
+									<strong class="title {$item_title_display|display}">{$item_title} :</strong> {$item_content}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li id="anchorBoxId_{$product_no}" class="swiper-slide">
+					<div class="prdList__item">
+						<div class="thumbnail">
+							<a href="{$link_product_detail}"><img src="{$image_medium}" id="{$image_medium_id}" alt="{$seo_alt_tag}" loading="lazy"><span module="product_Imagestyle"><span class="prdIcon {$icon_class_name}" style="background-image:url('{$icon_url}');"></span></span></a>
+							<div class="likeButton {$disp_likeprd_class}"><button type="button">{$disp_likeprd_icon} <strong>{$disp_likeprd_count}</strong></button></div>
+							<div class="badge"><span></span></div>
+							<!-- <div class="icon__box">
+								<span class="wish">{$list_wish_icon}WISH</span>
+								<span class="cart">{$basket_icon}ADD</span>
+								<span class="option">{$option_preview_icon}OPTION</span>
+							</div> -->
+							<div class="icon">{$soldout_icon} {$stock_icon} {$recommend_icon} {$new_icon} {$product_icons} {$today_arrival_icon} {$pickup_icon} {$benefit_icons}</div>
+						</div>
+						<div class="description" ec-data-custom="{$product_custom}" ec-data-price="{$product_price}">
+							<div class="name"><a href="{$link_product_detail}" class="{$product_name_display|display}"><span class="title {$product_name_title_display|display}">{$product_name_title} :</span> {$product_name}</a></div>
+							<ul module="project_ListItem" class="spec">
+								<li class="{$item_display|display}">
+									<strong class="title {$item_title_display|display}">{$item_title} :</strong> {$item_content}
+								</li>
+								<li class="{$item_display|display}">
+									<strong class="title {$item_title_display|display}">{$item_title} :</strong> {$item_content}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+            </ul>
+        </div>
+    </div>
+
+    <!--------------------------------------------------------------------------------------------------------
+        ❌ 이 위로는 절대 지우지 말아주세요!!! ❌
+        해당 코드를 지우거나 임의로 수정할 경우 상품이 안 나올 수 있습니다
+    ---------------------------------------------------------------------------------------------------------->
+    
+
+
+    <!----------------------------------------------------------------
+        💡수정 가능 위치
+            - [꼭 확인하세요!] 영역
+            - 프로모션의 주의 문구가 텍스트를 교체할 수 있습니다.
+    ------------------------------------------------------------------>
+    <div class="promo-notice inner-m">
+        <p>꼭 확인하세요!</p>
+        <ul class="notice-list">
+            <li>-프로모션/상품 관련 유의사항 내용이 들어갑니다.</li>
+            <li>-프로모션/상품 관련 유의사항 내용이 들어갑니다.</li>
+            <li>-프로모션/상품 관련 유의사항 내용이 들어갑니다.</li>
+        </ul>
+    </div>
+
+</div>
+
+
+<script>
+if (!document.getElementById('dfbm-script-71775')) {
+    var dfbm_src = 'https://ecimg.cafe24img.com/pg3115b02085582078/gccarecomm/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/0f9ee1e8edb403e071664c4b57fb3507.js';
+    document.write('<script id="dfbm-script-71775" src="' + dfbm_src + '?v=' + Date.now() + '"><\/script>');
+}
+
+(function () {
+    'use strict';
+
+    function initPromoSwiper() {
+        document.querySelectorAll('.promo-swiper').forEach(function (swiperElement) {
+            if (swiperElement.swiper) {
+                return;
+            }
+
+            new Swiper(swiperElement, {
+                slidesPerView: 3,
+                spaceBetween: 10,
+                speed: 500
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPromoSwiper);
+    } else {
+        initPromoSwiper();
+    }
+})();
+</script>

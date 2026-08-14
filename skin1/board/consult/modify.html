@@ -1,0 +1,115 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+<div class="section inner-m" module="board_ModifyPackage_9">
+    <!--@css(/css/module/board/modifyPackage_9.css)-->
+    <div module="board_title_9">
+        
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
+    </div>
+
+    <div module="board_modify_9">
+        <!--
+            $modify_success_url = /board/consult/read.html
+        -->
+        <div class="ec-base-table gLayoutFixed consult-table {$display_parent_form|display}">
+            <table border="1" >
+            <caption>1:1 맞춤상담 상세</caption>
+            <!-- <colgroup>
+                <col style="width:190px;" />
+                <col style="width:auto;" />
+                <col style="width:190px;" />
+                <col style="width:auto;" />
+            </colgroup> -->
+            <tbody>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td colspan="3">{$parent_subject}</td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td>{$parent_writer}</td>
+                    <th scope="row">답변여부</th>
+                    <td>{$parent_consult}</td>
+                </tr>
+                <tr class="{$config.use_date|display}">
+                    <th scope="row">문의일시</th>
+                    <td colspan="3">{$parent_write_date}</td>
+                </tr>
+                <!-- <tr class="view">
+                    <td colspan="4">
+                        <div class="detail">{$parent_content}</div>
+                    </td>
+                </tr> -->
+            </tbody>
+            </table>
+        </div>
+
+        <div class="ec-base-table typeWrite">
+            <table border="1" >
+            <caption>1:1 맞춤상담 쓰기 폼</caption>
+            <!-- <colgroup>
+                <col style="width:190px;" />
+                <col style="width:auto;" />
+            </colgroup> -->
+            <tbody>
+                <tr>
+                    <th scope="row" class="">제목</th>
+                    <td>{$form.subject}</td>
+                </tr>
+                <tr>
+                    <th scope="row">이메일</th>
+                    <td>
+                        <span class="board-write-email">{$form.email}</span> 
+                        <span class="board-email-confirm">
+                            답변여부를 메일로 받으시겠습니까?<span class="board-email-radio">{$form.cons_re}</span> </span>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody>
+                <tr>
+                    <th scope="row" class=" top">본문</th>
+                    <td>
+                        {$form.content}
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody class="{$config.use_attach|display}">
+                <tr class="file">
+                    <th scope="row">첨부파일1</th>
+                    <td>{$form.attach_file} {$attached_file1}</td>
+                </tr>
+                <tr class="file">
+                    <th scope="row">첨부파일2</th>
+                    <td>{$form.attach_file} {$attached_file2}</td>
+                </tr>
+                <tr class="file">
+                    <th scope="row">첨부파일3</th>
+                    <td>{$form.attach_file} {$attached_file3}</td>
+                </tr>
+                <tr class="file">
+                    <th scope="row">첨부파일4</th>
+                    <td>{$form.attach_file} {$attached_file4}</td>
+                </tr>
+                <tr class="file">
+                    <th scope="row">첨부파일5</th>
+                    <td>{$form.attach_file} {$attached_file5}</td>
+                </tr>
+            </tbody>
+
+            </table>
+        </div>
+
+        <div class="ec-base-button gBottom">
+            <span class="gLeft "><a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a></span>
+
+        </div>
+        <div class="fixed-write-btn fixed-btn-comm">
+            <a href="{$link_board_list}" class="btnNormalFix sizeM fixed-btn-outline">취소</a>
+            <a href="#none" onclick="{$action_modify}" class="btnSubmitFix sizeM fixed-btn-fill">등록</a>
+        </div>
+    </div>
+</div>

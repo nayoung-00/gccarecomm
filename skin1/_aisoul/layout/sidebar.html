@@ -1,0 +1,95 @@
+<aside id="aside" module="Layout_slidePackage" class="sidebar-panel" aria-hidden="true">
+    <div class="sidebar-head">
+      <p class="head-title">메뉴</p>
+        <!-- 로그인 전 -->
+        <!-- <div class="sidebar-state sidebar-state--logoff" module="Layout_stateLogoff">
+            <p class="sidebar-title">로그인 해주세요</p>
+            <p class="sidebar-description">
+                회원가입하고 다양한 혜택 받으세요
+            </p>
+        </div> -->
+
+        <!-- 로그인 후 -->
+        <!-- <div class="sidebar-state sidebar-state--logon" module="Layout_stateLogon">
+            <p class="sidebar-welcome">안녕하세요 <span class="member-name">{$name}님</span></p>
+            <p class="sidebar-description">
+                오늘도 건강한 쇼핑 되세요
+            </p>
+        </div> -->
+
+        <button type="button" class="btnClose">
+            <!--@import(/_aisoul/svg/close.html)-->
+            <i class="sr-only">메뉴 닫기</i>
+        </button>
+    </div>
+
+    <div class="navigation-member">
+
+        <!-- 로그인 전 버튼 -->
+        <div class="member-actions" module="Layout_stateLogoff">
+            <a href="/member/login.html">로그인</a>
+            <a href="/member/agreement.html">회원가입</a>
+        </div>
+
+        <!-- 로그인 후 버튼 -->
+        <div class="member-actions" module="Layout_stateLogon">
+            <!-- <a href="{$action_logout}">로그아웃</a> -->
+
+            <!-- <div class="member-cart" module="Layout_shoppingInfo">
+                <a href="/order/basket.html">
+                    장바구니
+                    <strong>{$basket_cnt}</strong>
+                </a>
+            </div> -->
+        </div>
+    </div>
+
+    <nav class="navigation-menu" aria-label="전체 메뉴">
+        <section class="navigation-section">
+            <h2 class="navigation-title"><a href="/product/promotion_list.html" class="">프로모션</a></h2>
+        </section>
+        <section class="navigation-section">
+            <h2 class="navigation-title"><a href="/product/list.html?cate_no=45" class="">실시간 혈당 관리</a></h2>
+        </section>
+        <section class="navigation-section">
+            <h2 class="navigation-title"><a href="/product/list.html?cate_no=46" class="">데일리 영양 관리</a></h2>
+        </section>
+
+        <section class="navigation-section">
+            <!-- 로그아웃 상태 -->
+            <h2 class="navigation-title" module="Layout_stateLogoff">
+                <a href="/member/login.html">나의 주문정보</a>
+            </h2>
+
+            <!-- 로그인 상태 -->
+            <h2 class="navigation-title" module="Layout_stateLogon">
+                <a href="/myshop/index.html">나의 주문정보</a>
+            </h2>
+
+            <!-- <ul class="customer-list">
+                <li>
+                    <a href="/myshop/order/list.html">주문내역</a>
+                </li>
+                <li>
+                    <a href="/myshop/order/cancel.html">취소/반품/교환 내역</a>
+                </li>
+                <li>
+                    <a href="/board/consult/list.html">1:1 문의</a>
+                </li>
+            </ul> -->
+        </section>
+
+        <section class="navigation-section">
+            <h2 class="navigation-title cs-center">고객센터</h2>
+
+            <ul class="customer-list">
+                <li><a href="/board/consult/list.html">문의하기</a></li>
+                <!-- <li><a href="/board/review/list.html">상품 리뷰</a></li> -->
+                <li><a href="/board/free/list.html?board_no=3">자주 묻는 질문</a></li>
+                <li><a href="/board/free/list.html?board_no=1">공지사항</a></li>
+            </ul>
+        </section>
+    </nav>
+</aside>
+
+<!--#ez="1/2"-->

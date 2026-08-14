@@ -1,0 +1,93 @@
+.xans-product-menupackage { margin:0 0 27px; }
+.xans-product-menupackage .title { min-height:30px; margin:10px 0 20px; }
+.xans-product-menupackage .title .banner { margin:0 0 20px; }
+.xans-product-menupackage .title h2 { color:#4a5164; font-size:16px; }
+.xans-product-menupackage .title h2,
+.xans-product-menupackage .title .likeButton { display:inline-block; vertical-align:middle; }
+.xans-product-menupackage .title .likeButton button { margin:0 0 0 10px; padding:0 0 0 20px; height:16px; font-family:verdana; color:#9a9a9a; letter-spacing:-1px; background:none; }
+.xans-product-menupackage .title .likeButton.selected button { color:#353535; }
+
+.xans-product-menupackage .menuCategory { border:1px solid #d7d5d5; font-size:0; line-height:0; }
+.xans-product-menupackage .menuCategory > li { display:inline-block; width:175px; margin:15px 0 15px 20px; padding:0 5px 0 0; font-size:12px; line-height:14px; vertical-align:top; }
+.xans-product-menupackage .menuCategory > li > a { padding:0 13px 0 0; font-weight:bold; color:#2e2e2e; background:url("//img.echosting.cafe24.com/skin/base_ko_KR/product/ico_menu_category.gif") no-repeat 100% 5px; }
+.xans-product-menupackage .menuCategory > li > a:hover { color:#008bcc; text-decoration:none; background-position:100% -95px }
+.xans-product-menupackage .menuCategory > li.selected > a { color:#008bcc; }
+.xans-product-menupackage .menuCategory > li .count { font-weight:normal; }
+.xans-product-menupackage .menuCategory > li > ul { padding:6px 0 0 0; }
+.xans-product-menupackage .menuCategory > li > ul > li { margin:8px 0 0 0; line-height:14px; }
+.xans-product-menupackage .menuCategory > li > ul > li > a { color:#575a63; }
+.xans-product-menupackage .menuCategory > li > ul > li > a:hover,
+.xans-product-menupackage .menuCategory > li > ul > li.selected > a { color:#008bcc; }
+.xans-product-menupackage .menuCategory > li > ul > li > .button { display:inline-block; position:relative; width:9px; height:14px; margin:1px 0 0 3px; vertical-align:top; }
+
+.xans-product-menupackage .subCategory { display:none; position:absolute; left:50%; top:13px; z-index:11; width:300px; margin:0 0 0 -151px; padding:6px 0; border:1px solid #565960; font-size:0; line-height:0; background:#fff url("//img.echosting.cafe24.com/skin/base_ko_KR/product/bg_sub_category_line.gif") repeat-y 150px 0; }
+.xans-product-menupackage .subCategory li { display:inline-block; width:130px; margin:8px 0 8px 18px; font-size:12px; line-height:14px; vertical-align:top; }
+.xans-product-menupackage .subCategory li a { color:#575a63; }
+.xans-product-menupackage .subCategory li a:hover,
+.xans-product-menupackage .subCategory li.selected a { color:#008bcc; }
+.xans-product-menupackage .menuCategory .button.selected { z-index:11; }
+.xans-product-menupackage .menuCategory .button.selected .subCategory { display:block; }
+
+/********************* Mobile *********************/
+@media all and (max-width:767px) {
+    .xans-product-menupackage .gInner {margin: 0 16px;}
+}
+
+/********************* Tablet *********************/
+@media all and (min-width:768px) {
+    .xans-product-menupackage .gInner {margin: 0 24px;}
+}
+
+/* 건강상품 카테고리 선택 */
+.health-category-selector { margin: 20px 0 12px; }
+.health-category-selector__button { display:inline-flex; align-items:center; gap:8px; padding:0; border:0; background:transparent; color:#222; font:inherit; font-size:18px; font-weight:700; line-height:28px; cursor:pointer; }
+.health-category-selector__current.is-loading { display:inline-block; width:92px; height:22px; border-radius:5px; color:transparent; background:linear-gradient(90deg, #eeeeee 25%, #f7f7f7 37%, #eeeeee 63%); background-size:400% 100%; animation:health-category-skeleton 1.1s ease infinite; }
+.health-category-selector__btn {display: flex;align-items: center;justify-content: center; width: 24px;height: 24px;border-radius: 4px; border: 1px solid var(--line-normal);}
+.health-category-selector__arrow { width:8px; height:8px; margin-top:-4px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); }
+.health-category-selector__dim { position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,.58); }
+.health-category-selector__sheet { position:fixed; z-index:1001; right:0; bottom:0; left:0; box-sizing:border-box; width:100%; max-width:768px; margin:0 auto; padding:9px 20px 28px; border-radius:24px 24px 0 0; background:#fff; box-shadow:0 -8px 24px rgba(0,0,0,.12); }
+.health-category-selector__handle { width:60px; height:6px; margin:0 auto 18px; border-radius:99px; background:#d4d4d4; }
+.health-category-selector__title { margin:0 0 14px; color:#9a9a9a; font-size:14px; line-height:20px; text-align:center; }
+.health-category-selector__sheet a { display:block; padding:12px 16px; border-radius:12px; color:#b4b4b4; font-size:18px; font-weight:500; line-height:28px; text-align:center; text-decoration:none; }
+.health-category-selector__sheet a + a { margin-top:2px; }
+.health-category-selector__sheet a.is-selected { background:#f7f7fb; color:#222; font-weight:700; }
+body.health-category-sheet-open { overflow:hidden; }
+
+@media all and (max-width:767px) {
+    .health-category-selector { padding:0 16px; }
+}
+
+@keyframes health-category-skeleton {
+    0% { background-position:100% 0; }
+    100% { background-position:0 0; }
+}
+
+.health-category-selector__sheet .menuCategory { border:0; font-size:18px; line-height:28px; }
+.health-category-selector__sheet .menuCategory > li,
+.health-category-selector__sheet .menuCategory > li > ul > li,
+.health-category-selector__sheet .subCategory li { display:block; width:auto; margin:0; padding:0; font-size:18px; line-height:28px; }
+.health-category-selector__sheet .menuCategory > li > a,
+.health-category-selector__sheet .menuCategory > li > ul > li > a,
+.health-category-selector__sheet .subCategory li a { display:block; padding:12px 16px; border-radius:12px; background:none; color:#b4b4b4; font-weight:500; text-align:center; text-decoration:none; }
+.health-category-selector__sheet .menuCategory li.selected > a { background:#f7f7fb; color:#222; font-weight:700; }
+.health-category-selector__sheet .menuCategory > li > ul,
+.health-category-selector__sheet .subCategory { display:block; position:static; width:auto; margin:0; padding:0; border:0; background:none; }
+.health-category-selector__sheet .menuCategory .iconWrap,
+.health-category-selector__sheet .menuCategory .button { display:none; }
+
+.health-category-selector__sheet .display_tablet_only { display:block !important; }
+.health-category-selector__sheet .display_pc_only { display:none !important; }
+
+/* 바텀시트 */
+.health-category-selector__sheet[hidden],
+.health-category-selector__dim[hidden] { display:none !important; }
+.health-category-selector__sheet:not([hidden]) { display:block !important; top:auto !important; right:0 !important; bottom:0 !important; left:0 !important; height:auto !important; min-height:0 !important; max-height:45vh !important; margin:0 auto !important; overflow-y:auto; }
+
+/* 바텀시트 레이아웃: 기본 탭 CSS보다 우선 적용 */
+.health-category-selector__sheet:not([hidden]) { position:fixed !important; top:auto !important; right:0 !important; bottom:0 !important; left:0 !important; width:100% !important; max-width:var(--max-container) !important; height:auto !important; min-height:0 !important; max-height:80vh !important; margin:0 auto !important; padding:12px 16px 28px !important; overflow-y:auto; border:0 !important; border-radius:24px 24px 0 0 !important; background:#fff !important; z-index: 1000 !important; }
+.health-category-selector__sheet > .display_tablet_only,
+.health-category-selector__sheet > .display_pc_only { display:none !important; }
+.health-category-selector__sheet-title { margin:0 0 8px; color:#b4b4b4; font-size:16px; font-weight:400; line-height:24px; text-align:center; }
+.health-category-selector__menu { display:flex; flex-direction:column; gap:2px; }
+.health-category-selector__menu a { display:block; padding:12px 16px; border-radius:12px; color:#b4b4b4; font-size:16px; font-weight:400; line-height:24px; text-align:center; text-decoration:none; }
+.health-category-selector__menu a.is-selected { background:#f7f7fb; color:#222; font-size: 18px; font-weight:500; }

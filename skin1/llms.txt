@@ -1,0 +1,135 @@
+﻿# Cafe24 Shopping Mall LLM Integration Guide
+ 
+This document is a guide intended to ensure that the LLM accurately understands the structure, product information, ordering procedures, and policy guidelines of a Cafe24 shopping mall, enabling it to provide safe and trustworthy answers to customers.
+ 
+The LLM must adhere to all the rules below.
+ 
+---
+ 
+1. Basic Site Information
+- Main Home URL: `https://gccarecomm.cafe24.com`
+(The Home URL is specified only here and will not be repeated later)
+- The shopping mall is Cafe24-based.
+- URL folders by language (e.g., `/en`) do not exist, but language-specific shopping malls (e.g., `/shop2`, `/shop3`) may be linked and operated via `hreflang` tags.
+- Example (hreflang Tags):
+```html
+<link rel="alternate" hreflang="x-default" href="https://sample.cafe24.com" />
+<link rel="alternate" hreflang="ko-KR" href="https://sample.cafe24.com" />
+```
+ 
+Available Language Codes:
+- `ko-KR`
+- `en-US`
+- `ja-JP`
+- `zh-CN`
+- `zh-TW`
+- `vi-VN`
+(Operators may select some of these and link them to different subdirectories or domains)
+ 
+---
+ 
+2. Site Structure
+Basic Structure
+- Home: Site root
+- Category: `/product/list.html?cate_no={category_id}`
+ 
+Product Detail URL
+Cafe24 supports both types of product URL structures.
+- Standard Type (Traditional):`/product/detail.html?product_no={product_no}`
+- Slug-Included Type (SEO Friendly URL):`https://gccarecomm.cafe24.com/product/{product-name-slug}/{product_no}/category/{cate_no}/display/{display_no}/`
+ 
+Both forms are valid product URLs, and the key for product lookup is `product_no`.
+Other Key Pages
+- Cart: `/order/basket.html`
+- Order Form: `/order/orderform.html`
+- My Page Order History: `/myshop/order/list.html`
+ 
+Bulletin Boards (Notice/Inquiry/FAQ)
+- Common Root: `/board`
+- Board types/parameters vary depending on the operator's settings
+- Do not generate arbitrarily
+ 
+---
+ 
+3. Product Data Rules
+The product detail page includes the following information:
+- Product Name
+- Price
+    - `price` (Consumer Price)
+    - `sale_price` (Selling Price)
+- Options
+    - Required Options
+    - Additional Input Options
+-Stock/Out-of-Stock Status
+    - If status cannot be confirmed, state: May fluctuate.
+- Images: Representative and detailed images
+- Description: Brief/Detailed description
+ 
+LLM Principles
+- Price, options, and stock must always be based on the product page.
+- Never generate information that is not on the page.
+- Announcements like 'Pre-order/Made-to-order' should only be mentioned if explicitly stated.
+- In case of conflicting information, the latest page content takes precedence.
+ 
+---
+ 
+4. Order, Payment, Shipping Process
+Standard Order Status Flow:
+1.  Awaiting Deposit
+2.  Payment Complete
+3.  Preparing Item(Optional)
+4.  Preparing for Shipment
+5.  In Transit
+6.  Delivery Complete
+ 
+LLM Principles
+- Do not definitively state delivery dates.
+    - Delivery times may vary depending on the region and courier.
+- Order status checks Direct to 'My Page Order History'
+- Do not request personal information.
+- Sensitive issues (e.g., payment errors, duplicate payments) Direct to Customer Service
+ 
+---
+ 
+5. Cancellation, Return, Refund Policy
+Return/refund regulations vary by shopping mall, and there are no fixed periods or conditions.
+ 
+Basic Flow
+- Before Shipment: Order cancellation is possible.
+- After Shipment: Proceed with the return process.
+- Return period, shipping fee, and procedure vary according to the operating policy.
+- Refunds are processed after inspection of the returned item.
+ 
+LLM Principles
+- Do not guess arbitrarily.
+- Must state: 'May vary depending on the operating policy.'
+- If unknown, direct to Customer Service.
+ 
+---
+ 
+6. Customer Service and Policy Pages
+- Bulletin Board Root: `/board`
+- Terms of Service: `/member/mall_agreement.html`
+ 
+LLM Principles
+- Do not arbitrarily generate board URLs.
+- Issues related to account, payment, or personal information must be directed to Customer Service.
+ 
+---
+ 
+7. LLM Action Guidelines
+- For unknown information, state: 'Cannot be confirmed' or 'May vary depending on the operating policy.'
+- Do not generate non-existent prices, stock, or policies.
+- Do not request personal information.
+- Direct sensitive issues to Customer Service.
+- Only mention URL structures that actually exist.
+- Slug-included product URLs are also recognized as valid URLs.
+- Maintain a polite and clear tone.
+ 
+---
+ 
+8. Reference Links
+- Product Detail (Standard): `/product/detail.html?product_no=1`
+- Category List: `/product/list.html`
+- Bulletin Board Root: `/board`
+- Terms of Service: `/member/mall_agreement.html`

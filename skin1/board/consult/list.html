@@ -1,0 +1,106 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+
+<div class="section" module="Board_ListPackage_9">
+    <!--@css(/css/module/board/listPackage.css)-->
+    <div module="board_title_9">
+
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
+    </div>
+
+    <div class="boardSort"  module="board_search_9">
+        {$form.consult} 
+    </div>
+
+    <div class="ec-base-table typeList inner-m">
+        <table border="1">
+            <caption>1:1 맞춤상담 목록</caption>
+            <!-- <colgroup module="board_listheader_9">
+                <col style="width:70px;" />
+                <col style="width:135px;" class="{$config.is_category|display}" />
+                <col style="width:auto;" />
+                <col style="width:84px;" />
+                <col style="width:90px;" class="{$config.use_date|display}" />
+                <col style="width:55px;" />
+            </colgroup>
+            <thead module="bolgrouoard_listheader_9">
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col" class="{$config.is_category|display}">카테고리</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col" class="{$config.use_date|display}">작성일</th>
+                    <th scope="col">답변</th>
+                </tr>
+            </thead> -->
+            <tbody module="board_list_9" class="board-list">
+                <!--
+                $login_page_url = /member/login.html
+             -->
+                <tr style="{$list_bg_color} {$list_char_color}">
+                    <td class="chk no"><span class="RW">{$no}</span></td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <a href="{$link_board_detail}" style="{$link_color}" class="subject-link">
+                            {$icon_new}{$icon_hit}{$icon_file}<span class="subject-text">{$subject}</span>
+                        </a>
+                    </td>
+                    <td class="write-box">
+                        <span class="write-writer">{$member_icon}{$writer}</span>
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="write-count"><span>답변</span>{$consult}</span>
+                    </td>
+                </tr>
+                <tr style="{$list_bg_color} {$list_char_color}">
+                    <td class="chk no"><span class="RW">{$no}</span></td>
+                    <td class="{$category_display|display} category-name">{$category_name}</td>
+                    <td class="subject">
+                        <a href="{$link_board_detail}" style="{$link_color}" class="subject-link">
+                            {$icon_new}{$icon_hit}{$icon_file}<span class="subject-text">{$subject}</span>
+                        </a>
+                    </td>
+                    <td class="write-box">
+                        <span class="write-writer">{$member_icon}{$writer}</span>
+                        <span class="{$date_display|display} write-date">{$write_date}</span>
+                        <span class="write-count"><span>답변</span>{$consult}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="message {$empty_display|display}" module="board_empty_9">{$empty_message}</p>
+    </div>
+</div>
+
+
+<div class="section inner-m" module="board_search_9">
+    <!--@css(/css/module/board/search.css)-->
+    <fieldset class="boardSearch">
+        <legend>게시물 검색</legend>
+        <div class="form">
+            <input type="hidden" id="search_date" name="search_date" value="all">
+            <div class="form-box">{$form.search_key} {$form.search}</div>
+            <a href="#none" class="btnNormal" onclick="{$action_search}">검색</a>
+        </div>
+    </fieldset>
+</div>
+
+<div module="board_ButtonList_9" class="ec-base-button gBottom inner-m">
+        <span class="gRight">
+            <a href="/board/consult/write.html{$param_write}"
+                class="btnSubmitFix sizeM {$write_display|display} board-write-btn">글쓰기</a>
+        </span>
+    </div>
+
+
+<div module="board_paging_9" class="section ec-base-paginate typeList inner-m">
+    <a href="{$param_prev}" class="paging-btn paging-prev-button"><i class="sr-only">이전
+            페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+    <ol>
+        <li><a href="{$param_num}" class="{$param_class}">{$page_num}</a></li>
+        <li><a href="{$param_num}" class="{$param_class}">{$page_num}</a></li>
+    </ol>
+    <a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음
+            페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+</div>
