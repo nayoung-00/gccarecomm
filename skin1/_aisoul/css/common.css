@@ -171,7 +171,7 @@ button svg { display: block; flex-shrink: 0; }
 #wrap [class^='btnEm'].disabled { background-color:var(--neutral-50); color:var( --neutral-600); } 
 #wrap .btnBasic.disabled,
 #wrap [class^='btnBasic'].disabled { color:var(--c-disabled); } 
-#wrap [class^='btn'] + [class^='btn'] { margin-left:6px; } 
+#wrap [class^='btn'] + [class^='btn'] { margin-left:4px; } 
 
 /* btnText */
 #wrap .btnText { display:inline-block; font-size:12px; line-height:18px; text-decoration:underline; } 
@@ -202,7 +202,7 @@ button svg { display: block; flex-shrink: 0; }
 /* ec-base-button 
  float -> 삭제
 */
-#wrap .ec-base-button { margin:20px 0; text-align:center; } 
+#wrap .ec-base-button { margin:0; text-align:center; } 
 #wrap .ec-base-button.justify { position:relative; } 
 #wrap .ec-base-button:after { display:block; content:""; clear:both; } 
 #wrap .ec-base-button .gLeft { text-align:left; float: none; } 
@@ -330,7 +330,7 @@ button svg { display: block; flex-shrink: 0; }
 #wrap input[type=password]:not(:disabled):hover { border-color:var(--common-black); transition:.3s; } 
 #wrap input[type=text]:disabled { background:var(--neutral-50); } 
 #wrap input[type=text][readonly] { border: 1px solid var(--line-accent); background:var(--neutral-50); } 
-#wrap textarea { padding:var(--padding-s) var(--padding-m); border:1px solid var(--line-normal); line-height:1.5; } 
+#wrap textarea { padding:10px; border:1px solid var(--line-normal); line-height:1.5; } 
 #wrap input:-ms-input-placeholder,
 #wrap textarea:-ms-input-placeholder { color:var(--neutral-300); } 
 #wrap input::-webkit-input-placeholder,
@@ -380,7 +380,7 @@ button svg { display: block; flex-shrink: 0; }
 #wrap .ec-base-chk { display:inline-block; position:relative; margin:0 8px 0 0; vertical-align:top; cursor:pointer; } 
 
 /* path */
-#wrap .path { overflow:hidden; margin:20px 0 0; height:30px; line-height:30px; } 
+#wrap .path { overflow:hidden; margin:20px 0 0; height:0; line-height:0;padding: 0; } 
 #wrap .path span { overflow:hidden; position:absolute; width:0; height:0; white-space:nowrap; text-indent:100%; } 
 #wrap .path ol { float:right; } 
 #wrap .path li { display:inline-block; } 

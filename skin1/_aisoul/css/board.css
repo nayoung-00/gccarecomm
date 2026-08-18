@@ -1,9 +1,11 @@
 @charset "utf-8"; 
 
 /*************************************************
- 게시판 공통 - notice / faq / consult / gallery /
+ 게시판 공통 - notice / faq / consult / gallery / qna
 **************************************************/
 
+.adminAnswer {display: flex;align-items: center;justify-content: end;gap: 8px;}
+.board-write-btn {margin-top: 12px !important;}
 /* 게시글 목록: 모바일형 블록 레이아웃 */
 .ec-base-table.typeList table { width: 100%; border: 0; border-collapse: collapse; } 
 
@@ -123,7 +125,7 @@
 .read-movement ul li strong { display: flex; align-items: center; gap: 6px; padding: 16px 12px; font-size: 12px; font-weight: 700; line-height: 1.5; color: var(--neutral-500); } 
 .read-movement ul li strong .icon-arrow { width: 16px; height: 16px; padding: 2px 0; } 
 #wrap .read-list-btn a { width: 100%; line-height: 1.2 !important; } 
-.xans-board-read .gBreak .gLeft { display: flex; align-items: center; gap: 6px; } 
+/* .xans-board-read .gBreak .gLeft { display: flex; align-items: center; gap: 6px; margin-bottom: 20px;}  */
 
 /*******************************************
 
@@ -210,3 +212,33 @@ form .file input[name="attach_file[]"]::file-selector-button { padding: 8px 14px
 .consult-table tr:first-child td { padding: 12px !important; font-size: 12px; font-weight: 600; } 
 
 .consult-table tr.view td { padding: 10px 16px; border-bottom: none; } 
+
+
+
+/*******************************************
+
+QNA
+
+*******************************************/
+.xans-board-4 .ec-base-box.typeProduct {display: flex;gap: 12px; margin-top: 20px;padding: 12px;border: 1px solid var(--line-normal);border-radius: 12px;}
+.xans-board-4 .ec-base-box.typeProduct .thumbnail {
+  flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border: 1px solid var(--line-normal);
+    border-radius: 8px;
+}
+.xans-board-4 .ec-base-box.typeProduct .thumbnail a {    width: 100%;height: 100%;line-height: 0;}
+.xans-board-4 .ec-base-box.typeProduct .thumbnail a img{width: 100%;height: 100%;object-fit: contain;max-width: 100% !important;}
+.xans-board-4 .xans-board-product .information h3,
+.xans-board-4 .ec-base-box.typeProduct .information h3 #sPrdName
+ {margin-bottom: 6px; font-size: 12px;font-weight: 500;line-height: 1.5;}
+.xans-board-4 .xans-board-product .information .price,
+.xans-board-4 .ec-base-box.typeProduct .information .price #sPrdPrice
+ {font-size: 12px; font-weight: 600;}
+.xans-board-4 .ec-base-box.typeProduct .information .button {margin-top: 8px;}
+.board-read-control {display: block !important;margin-bottom: 12px;text-align: left;}
+.read-control-box {display: block; margin-bottom: 16px;}
+.board-read-reply__btn {display: flex;align-items: center;justify-content: center;width: 100%;}
+.board-read-reply__btn .sizeL {width: 100%;border-color: var(--brand-color) !important;}
