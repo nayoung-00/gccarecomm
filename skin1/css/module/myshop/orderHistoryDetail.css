@@ -102,7 +102,7 @@ page = order detail
 .xans-myshop-orderhistorydetail .ec-base-fold.theme1 > .title::after {width: 7px; height: 7px;}
 .xans-myshop-orderhistorydetail .ec-base-fold.theme1 + .ec-base-fold.theme1 {margin-top: 0;}
 #wrap .xans-myshop-orderhistorydetail .ec-base-table {margin-bottom: 0;}
-.xans-myshop-orderhistorydetail .ec-base-table th {padding: 12px 10px;background: var(--neutral-50);min-height: 54px;width: 144px;font-size: 14px;font-weight: 500;color: var(--neutral-600);}
+.xans-myshop-orderhistorydetail .ec-base-table th {padding: 12px 10px;background: var(--neutral-50);min-height: 54px;width: 110px;font-size: 14px;font-weight: 500;color: var(--neutral-600);}
 .xans-myshop-orderhistorydetail .ec-base-table td {padding: 12px 10px;font-size: 14px;font-weight: 500;color: var(--common-black);}
 .xans-myshop-orderhistorydetail .ec-base-table .bold-price,
 .xans-myshop-orderhistorydetail .ec-base-table .bold-price > * {font-weight: 700 !important;}
@@ -279,3 +279,10 @@ body .ec-base-layer.typeLayer > .btnClose:after { transform: rotate(-45deg); }
 .ec-base-desc.typeDot dt:before, .ec-base-desc.typeDot .term:before {display: none !important;}
 
 .cash-btn {display: flex;margin: 16px 0 !important;}
+
+.xans-myshop-orderhistorydetailrefundnew .ec-base-table .productList {
+    padding: 0 !important;
+}
+.xans-myshop-orderhistorydetailrefundnew .ec-base-table .subTitle {color: var(--neutral-600) !important;}
+.xans-myshop-ordadd th {width: 100%;}
+.xans-myshop-ordadd td {display: none;}

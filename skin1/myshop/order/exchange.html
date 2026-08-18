@@ -1,19 +1,14 @@
 <!--@layout(/layout/basic/layout.html)-->
-<div class="section path">
-    <span>현재 위치</span>
-    <ol>
-        <li><a href="/">홈</a></li>
-        <li><a href="/myshop/index.html">마이쇼핑</a></li>
-        <li title="현재 위치"><strong>교환신청</strong></li>
-    </ol>
-</div>
+<!--@css(/_aisoul/css/myshop.css)-->
+
+
+<!-- 동적 타이틀 (게시판) -->
+<span class="page-title-source" hidden>교환신청</span>
 
 <div class="myshopArea">
-    <div class="titleArea titleArea--myshop">
-        <h2>교환신청</h2>
-    </div>
 
-    <div module="Myshop_OrderHistoryApplyExchange">
+
+    <div module="Myshop_OrderHistoryApplyExchange" class="inner-m">
         <!--@css(/layout/basic/css/ec-base-layer.css)-->
         <!--@css(/css/module/myshop/orderHistoryApplyExchange.css)-->
         <!--
@@ -27,8 +22,8 @@
             <div class="{$product_no_receiver_display|display}">
                 <div module="Myshop_products">
                     <div class="ec-base-prdInfo gCheck">
+                        <span class="check">{$form.checkbox}</span>
                         <div class="prdBox">
-                            <span class="check">{$form.checkbox}</span>
                             <div class="thumbnail"><a href="/product/detail.html{$param_product}"><img src="{$product_image}" onerror="this.src='//img.echosting.cafe24.com/thumb/img_product_small.gif';" alt="" /></a></div>
                             <div class="description">
                                 <strong class="name">{$product_name_link}</strong>
@@ -47,14 +42,14 @@
                                     </ul>
                                     <p class="free {$card_installment_display|display}">무이자할부 상품</p>
                                 </div>
-                            </div>
-                            <div class="quantity">
-                                <span class="ec-base-qty">
-                                    <a href="javascript:;" class="down" onclick="{$out_shortcut}">수량감소</a>
-                                    {$form.quantity}
-                                    <a href="javascript:;" class="up" onclick="{$add_shortcut}">수량증가</a>
-                                </span>
-                                <a class="btnNormal sizeQty" href="javascript:;" onclick="{$action_modify}">변경</a>
+                                <div class="quantity">
+                                    <span class="ec-base-qty">
+                                        <a href="javascript:;" class="down" onclick="{$out_shortcut}">수량감소</a>
+                                        {$form.quantity}
+                                        <a href="javascript:;" class="up" onclick="{$add_shortcut}">수량증가</a>
+                                    </span>
+                                    <a class="btnNormal sizeQty" href="javascript:;" onclick="{$action_modify}">변경</a>
+                                </div>
                             </div>
                         </div>
                         <div class="prdFoot" title="주문처리상태">
@@ -64,8 +59,8 @@
                         </div>
                     </div>
                     <div class="ec-base-prdInfo gCheck">
+                        <span class="check">{$form.checkbox}</span>
                         <div class="prdBox">
-                            <span class="check">{$form.checkbox}</span>
                             <div class="thumbnail"><a href="/product/detail.html{$param_product}"><img src="{$product_image}" onerror="this.src='//img.echosting.cafe24.com/thumb/img_product_small.gif';" alt="" /></a></div>
                             <div class="description">
                                 <strong class="name">{$product_name_link}</strong>
@@ -84,14 +79,14 @@
                                     </ul>
                                     <p class="free {$card_installment_display|display}">무이자할부 상품</p>
                                 </div>
-                            </div>
-                            <div class="quantity">
-                                <span class="ec-base-qty">
-                                    <a href="javascript:;" class="down" onclick="{$out_shortcut}">수량감소</a>
-                                    {$form.quantity}
-                                    <a href="javascript:;" class="up" onclick="{$add_shortcut}">수량증가</a>
-                                </span>
-                                <a class="btnNormal sizeQty" href="javascript:;" onclick="{$action_modify}">변경</a>
+                                <div class="quantity">
+                                    <span class="ec-base-qty">
+                                        <a href="javascript:;" class="down" onclick="{$out_shortcut}">수량감소</a>
+                                        {$form.quantity}
+                                        <a href="javascript:;" class="up" onclick="{$add_shortcut}">수량증가</a>
+                                    </span>
+                                    <a class="btnNormal sizeQty" href="javascript:;" onclick="{$action_modify}">변경</a>
+                                </div>
                             </div>
                         </div>
                         <div class="prdFoot" title="주문처리상태">
@@ -130,13 +125,13 @@
         <div class="ec-base-table typeWrite">
             <table border="1" >
                 <caption>교환사유</caption>
-                <colgroup>
+                <!-- <colgroup>
                     <col style="width:200px;" />
                     <col style="width:auto;" />
-                </colgroup>
+                </colgroup> -->
                 <tbody>
                     <tr>
-                        <th scope="row">사유선택</th>
+                        <!-- <th scope="row">사유선택</th> -->
                         <td>
                             {$form.reason_select}
                             <span id="{$cs_shipfee_paid_by_id}" class="{$cs_shipfee_paid_by_display|display}">[교환배송비 <span id="{$cs_shipfee_paid_by_who_id}" class="txtEm"></span> 부담]</span>
@@ -158,10 +153,10 @@
             <div class="ec-base-table typeWrite">
                 <table border="1" >
                     <caption>추가 정보</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:200px;" />
                         <col style="width:auto;" />
-                    </colgroup>
+                    </colgroup> -->
                     <tbody module="Myshop_Csadd">
                         <tr>
                             <th scope="row">{$item_title}</th>
@@ -189,10 +184,10 @@
             <div class="ec-base-table typeWrite">
                 <table border="1" >
                     <caption>수거신청</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:200px;" />
                         <col style="width:auto;" />
-                    </colgroup>
+                    </colgroup> -->
                     <tbody>
                         <tr>
                             <th scope="row">수거신청 여부</th>
@@ -219,10 +214,10 @@
             <div class="ec-base-table typeWrite">
                 <table border="1" >
                     <caption>수거지 정보</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:200px;" />
                         <col style="width:auto;" />
-                    </colgroup>
+                    </colgroup> -->
                     <tbody>
                         <tr>
                             <th scope="row">수거지 선택</th>
@@ -271,10 +266,10 @@
             <div class="ec-base-table typeWrite">
                 <table border="1" >
                     <caption>교환배송비 결제 정보</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:200px;" />
                         <col style="width:auto;" />
-                    </colgroup>
+                    </colgroup> -->
                     <tbody>
                     <tr>
                         <th scope="row">교환배송비</th>
@@ -306,10 +301,10 @@
             <div class="ec-base-table typeWrite">
                 <table border="1" >
                     <caption>환불 계좌 정보</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:200px;" />
                         <col style="width:auto;" />
-                    </colgroup>
+                    </colgroup> -->
                     <tbody class="{$refund_notice_display|display}">
                         <tr>
                             <th scope="row">환불예정금액</th>
@@ -334,13 +329,13 @@
             </div>
             <p class="ec-base-help {$refund_account_display|display}"><span class="txtWarn">현금환불 발생시 등록된 환불계좌로 환불 처리 됩니다.</span></p>
         </div>
-        <div class="ec-base-button gBottom">
-            <a href="/myshop/order/list.html{$back_page_param}" class="btnNormalFix sizeM">이전페이지</a>
-            <a href="#none" class="btnSubmitFix sizeM" onclick="OrderApply.apply(); return false;">교환신청</a>
+        <div class="ec-base-button fixed-btn-comm">
+            <a href="/myshop/order/list.html{$back_page_param}" class="btnNormalFix sizeM fixed-btn-outline">이전페이지</a>
+            <a href="#none" class="btnSubmitFix sizeM fixed-btn-fill" onclick="OrderApply.apply(); return false;">교환신청</a>
         </div>
     </div>
 
-    <div class="ec-base-help">
+    <div class="ec-base-help inner-m exchange-help-info">
         <h3>이용안내</h3>
         <div class="inner">
             <h4>가상계좌, 에스크로(가상계좌) 이용안내</h4>

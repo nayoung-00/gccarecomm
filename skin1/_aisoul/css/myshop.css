@@ -43,12 +43,46 @@
 주문취소,교환,환불
 
 *******************************************/
-.xans-myshop-orderhistoryapplycancel {margin-top: 20px;}
-.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo {padding: 12px 0 0;}
-#wrap .xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .prdBox {padding: 10px 0 0;}
-.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo.gCheck .quantity {padding-left: 0px; margin: 0;}
-.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .check {width: 24px;}
+.xans-myshop-orderhistoryapplycancel,
+.xans-myshop-orderhistoryapplyreturn,
+.xans-myshop-orderhistoryapplyexchange {margin-top: 20px;}
+.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo,
+.xans-myshop-orderhistoryapplyreturn .ec-base-prdInfo,
+.xans-myshop-orderhistoryapplyexchange .ec-base-prdInfo{padding: 12px 0 0;}
+#wrap .xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .prdBox,
+#wrap .xans-myshop-orderhistoryapplyreturn .ec-base-prdInfo .prdBox,
+#wrap .xans-myshop-orderhistoryapplyexchange .ec-base-prdInfo .prdBox
+{padding: 10px 0 0;}
+.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo.gCheck .quantity,
+.xans-myshop-orderhistoryapplyreturn .ec-base-prdInfo.gCheck .quantity,
+.xans-myshop-orderhistoryapplyexchange .ec-base-prdInfo.gCheck .quantity
+{padding-left: 0px; margin: 0;}
 .xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .check,
+.xans-myshop-orderhistoryapplyreturn .ec-base-prdInfo .check,
+.xans-myshop-orderhistoryapplyexchange .ec-base-prdInfo .check{width: 24px;}
+/* .xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .check,
 .xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .thumbnail,
-.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .description {margin: 0;}
+.xans-myshop-orderhistoryapplycancel .ec-base-prdInfo .description {margin: 0;} */
 #wrap .ec-base-prdInfo .optionGroup {margin: 6px 0 12px;}
+
+.xans-myshop-orderhistoryapplycancel .ec-base-table.typeWrite tbody,
+.xans-myshop-orderhistoryapplyreturn .ec-base-table.typeWrite tbody,
+.xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody{display: block;}
+
+.xans-myshop-orderhistoryapplycancel .ec-base-table.typeWrite tbody tr,
+.xans-myshop-orderhistoryapplyreturn .ec-base-table.typeWrite tbody tr,
+.xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody tr {display: flex;flex-direction: column;}
+
+.xans-myshop-orderhistoryapplycancel .ec-base-table.typeWrite tbody th,
+.xans-myshop-orderhistoryapplyreturn .ec-base-table.typeWrite tbody th,
+.xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody th {background: transparent;border: none;padding: 0 4px 4px;font-size: 14px;font-weight: 500;color: var(--neutral-600);}
+
+.xans-myshop-orderhistoryapplycancel .ec-base-table.typeWrite tbody td,
+.xans-myshop-orderhistoryapplyreturn .ec-base-table.typeWrite tbody td,
+.xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody td {padding: 0 0 12px !important;border: none;}
+
+.xans-myshop-orderhistoryapplycancel .ec-base-table.typeWrite tbody td select,
+.xans-myshop-orderhistoryapplyreturn .ec-base-table.typeWrite tbody td select,
+.xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody td select {width: 100% !important;}
+
+.exchange-help-info .inner {border-top: none !important;}
