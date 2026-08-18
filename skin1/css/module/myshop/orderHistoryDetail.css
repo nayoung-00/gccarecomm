@@ -114,6 +114,9 @@ page = order detail
 .ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .description .prdName a,
 .ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .description .price
 {font-size: 12px;font-weight: 500;color: var(--common-black);}
+.ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .description .price,
+.ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .description .price strong
+{font-weight: 700 !important;}
 .ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .description .notranslate {display: none !important;}
 .ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .optionGroup {margin-top: 4px;font-size: 12px;font-weight: 500;color: var(--neutral-400);}
 .ec-base-fold .xans-myshop-orderhistorydetailbasic .ec-base-prdInfo .prdFoot {border: none;padding: 0 12px 16px;}
@@ -274,3 +277,5 @@ body #order_layer_detail.ec-base-layer > .btnClose:after,
 body .ec-base-layer.typeLayer > .btnClose:after { transform: rotate(-45deg); }
 
 .ec-base-desc.typeDot dt:before, .ec-base-desc.typeDot .term:before {display: none !important;}
+
+.cash-btn {display: flex;margin: 16px 0 !important;}

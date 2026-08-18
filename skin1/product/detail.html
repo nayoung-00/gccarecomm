@@ -12,6 +12,8 @@ js -> /_aisoul/js/detail.js
 
 <!--@import(/_aisoul/layout/prod_header.html)-->
 
+
+<!-- 상단 상세 정보 섹션 -->
 <div class="section" module="product_detail">
 
     <!--@css(/css/module/product/detail.css)-->
@@ -655,8 +657,9 @@ js -> /_aisoul/js/detail.js
     </div> -->
 </div>
 <!--@import(/coupon/coupon_productdetail.html)-->
+<!-- //:상단 상세 정보 섹션 -->
 
-<!-- 하단 내용 -->
+<!-- 하단 상세 정보 섹션 -->
 <div class="section" module="product_additional">
     <!--@css(/css/module/product/additional.css)-->
 	<!--@import(/board/report_popup.html)-->
@@ -975,14 +978,17 @@ js -> /_aisoul/js/detail.js
 				</div>
 			</div>
 
-      <!-- 의학 고지 -->
+      <!-- 
+        의학 고지
+        className="medical-notice"
+        data-contents="medical"
+       -->
 			<div class="ec-base-fold theme1 selected eToggle medical-notice">
 				<div class="title">
 					<h2>의학 고지</h2>
 				</div>
 				<div class="contents">
-					<div class="info">
-						<!-- {$service_info} -->
+					<div class="info" data-contents="medical">
              본 제품은 의약품이 아니며, 의학적 진단이나 치료를 대체하지 않습니다.
              <br>본 내용은 일반적인 건강 정보로 참고용으로만 활용해 주세요.
 					</div>
@@ -993,6 +999,7 @@ js -> /_aisoul/js/detail.js
   <!-- //prdInfo -->
 
 </div>
+<!-- //:하단 상세 정보 섹션 -->
 
 
 <!--@define(cmc_log)-->

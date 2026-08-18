@@ -25,10 +25,10 @@
                         <li class="{$config.use_date|display}">
                             <span class="txtNum">{$write_date}</span>
                         </li>
-                        <li class="{$config.is_use_recom|display} displaynone">
+                        <!-- <li class="{$config.is_use_recom|display} displaynone">
                             <span>추천</span>
                             <span class="txtNum">{$vote_count} <a href="#none" class="btnNormal sizeS" onclick="{$action_vote}">추천하기</a></span>
-                        </li>
+                        </li> -->
                         <li class="{$config.use_cnt|display}">
                             <span>조회</span> <span class="txtNum">{$hit_count}</span>
                         </li>
@@ -63,11 +63,11 @@
                     <a href="#none" onclick="{$action_spam_cancle}" class="btnNormalFix sizeS {$is_global_display|display}">스팸해제</a>
                 </span>
                 <a href="#none" onclick="{$action_delete}" class="btnNormalFix sizeS {$delete_button_auth|display}">삭제</a>
-                <a href="/board/product/modify.html{$param_modify}" class="btnNormalFix sizeS {$modify_button_auth|display}">수정</a>
+                <a href="#none" onclick="{$action_modify}" class="btnNormalFix sizeS {$modify_button_auth|display}">수정</a>
             </span>
             <span class="gRight gBreak">
                 <!-- <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a> -->
-                <a href="/board/product/reply.html{$param_reply}" class="btnSubmitFix sizeM {$reply_button_auth|display}">답변쓰기</a>
+                <a href="/board/free/reply.html{$param_reply}" class="btnSubmitFix sizeM {$reply_button_auth|display}">답변쓰기</a>
             </span>
         </div>
     </div>

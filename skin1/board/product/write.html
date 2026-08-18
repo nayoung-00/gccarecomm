@@ -1,19 +1,11 @@
 ﻿<!--@layout(/layout/basic/layout.html)-->
-<div class="section" module="board_writePackage_4">
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+<div class="section inner-m" module="board_writePackage_4">
     <!--@css(/css/module/board/writePackage.css)-->
     <div module="board_title_4">
-        <div class="path">
-            <span>현재 위치</span>
-            <ol>
-                <li><a href="/">홈</a></li>
-                <li><a href="#">게시판</a></li>
-                <li title="현재 위치"><strong>{$board_name}</strong></li>
-            </ol>
-        </div>
-
-        <div class="titleArea">
-            <h2>{$board_title}</h2>
-        </div>
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
     </div>
 
     <div module="board_write_4">
@@ -41,10 +33,10 @@
         <div class="ec-base-table typeWrite">
             <table border="1" >
             <caption>글쓰기 폼</caption>
-            <colgroup>
+            <!-- <colgroup>
                 <col style="width:190px;" />
                 <col style="width:auto;" />
-            </colgroup>
+            </colgroup> -->
             <tbody>
                 <tr>
                     <th scope="row" class="RW">제목</th>
@@ -124,7 +116,7 @@
             </table>
         </div>
 
-        <ul class="info">
+        <ul class="info board-write-info">
             <li>- 상품과 관련없는 내용 또는 이미지, 욕설/비방, 개인정보유출, 광고/홍보글 등 적절하지 않은 게시물은 별도의 고지없이 비공개 처리 될 수 있습니다. </li>
             <li>- 작성된 게시물(사진, 동영상 포함)은 운영 및 마케팅에 활용될 수 있습니다.</li>
         </ul>
@@ -134,10 +126,14 @@
                 <span class="{$config.is_admin|display}"><a href="#none" class="btnNormalFix sizeM" onclick="{$action_comment_admin}">관리자 답변보기</a></span>
                 <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a>
             </span>
-            <span class="gRight">
+            <!-- <span class="gRight">
                 <a href="{$link_board_list}" class="btnNormalFix sizeM">취소</a>
                 <a href="#none" class="btnSubmitFix sizeM" onclick="{$action_write}">등록</a>
-            </span>
+            </span> -->
+        </div>
+        <div class="fixed-write-btn fixed-btn-comm">
+            <a href="{$link_board_list}" class="btnNormalFix sizeM fixed-btn-outline">취소</a>
+            <a href="#none" onclick="{$action_write}" class="btnSubmitFix sizeM fixed-btn-fill">등록</a>
         </div>
     </div>
 </div>

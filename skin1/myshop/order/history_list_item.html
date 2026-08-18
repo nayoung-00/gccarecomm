@@ -1,4 +1,4 @@
-<div module="Myshop_OrderHistoryListitem">
+<div module="Myshop_OrderHistoryListitem" class="inner-m">
     <!--@css(/css/module/myshop/orderHistoryListItem.css)-->
     <!--
         $login_url = /member/login.html
@@ -63,12 +63,12 @@
 					</div>
 				</div>
             </div>
-            <div class="ec-base-button gMColumn {$cs_button_display_column|display}">
+            <div class="ec-base-button gMColumn {$cs_button_display_column|display} order-cs-btn">
                 <span class="gRight">
-                    <a href="#none" class="btnNormalFix sizeM {$direct_cancel_display|display}" onclick="{$action_direct_cancel}">주문취소</a>
-                    <a href="/myshop/order/cancel.html{$param_apply}" class="btnNormalFix sizeM {$apply_cancel_display|display}">취소신청</a>
-                    <a href="/myshop/order/exchange.html{$param_apply}"  class="btnNormalFix sizeM {$apply_exchange_display|display}">교환신청</a>
-                    <a href="/myshop/order/return.html{$param_apply}" class="btnNormalFix sizeM {$apply_return_display|display}">반품신청</a>
+                    <a href="#none" class="btnNormalFix sizeS {$direct_cancel_display|display}" onclick="{$action_direct_cancel}">주문취소</a>
+                    <a href="/myshop/order/cancel.html{$param_apply}" class="btnNormalFix sizeS {$apply_cancel_display|display}">취소신청</a>
+                    <a href="/myshop/order/exchange.html{$param_apply}"  class="btnNormalFix sizeS {$apply_exchange_display|display}">교환신청</a>
+                    <a href="/myshop/order/return.html{$param_apply}" class="btnNormalFix sizeS {$apply_return_display|display}">반품신청</a>
                 </span>
             </div>
             <a href="/myshop/order/detail.html{$param_detail}" class="btnDetail {$display_column|display}">상세보기 <i aria-hidden="true" class="icon icoArrowRight"></i></a>
@@ -132,27 +132,27 @@
 					</div>
 				</div>
             </div>
-            <div class="ec-base-button gMColumn {$cs_button_display_column|display}">
+            <div class="ec-base-button gMColumn {$cs_button_display_column|display} order-cs-btn">
                 <span class="gRight">
-                    <a href="#none" class="btnNormalFix sizeM {$direct_cancel_display|display}" onclick="{$action_direct_cancel}">주문취소</a>
-                    <a href="/myshop/order/cancel.html{$param_apply}" class="btnNormalFix sizeM {$apply_cancel_display|display}">취소신청</a>
-                    <a href="/myshop/order/exchange.html{$param_apply}"  class="btnNormalFix sizeM {$apply_exchange_display|display}">교환신청</a>
-                    <a href="/myshop/order/return.html{$param_apply}" class="btnNormalFix sizeM {$apply_return_display|display}">반품신청</a>
+                    <a href="#none" class="btnNormalFix sizeS {$direct_cancel_display|display}" onclick="{$action_direct_cancel}">주문취소</a>
+                    <a href="/myshop/order/cancel.html{$param_apply}" class="btnNormalFix sizeS {$apply_cancel_display|display}">취소신청</a>
+                    <a href="/myshop/order/exchange.html{$param_apply}"  class="btnNormalFix sizeS {$apply_exchange_display|display}">교환신청</a>
+                    <a href="/myshop/order/return.html{$param_apply}" class="btnNormalFix sizeS {$apply_return_display|display}">반품신청</a>
                 </span>
             </div>
             <a href="/myshop/order/detail.html{$param_detail}" class="btnDetail {$display_column|display}">상세보기 <i aria-hidden="true" class="icon icoArrowRight"></i></a>
         </div>
     </div>
-    <p class="ec-base-prdEmpty {$empty_display|display}"><!--@import(/svg/icon-empty.html)-->주문 내역이 없습니다.</p>
+    <p class="ec-base-prdEmpty {$empty_display|display}">주문 내역이 없습니다.</p>
 </div>
 
-<div module="Myshop_OrderHistoryPaging" class="ec-base-paginate typeList">
-    <a href="{$param_first}" class="first">첫 페이지</a>
-    <a href="{$param_prev}">이전 페이지</a>
+<div module="Myshop_OrderHistoryPaging" class="ec-base-paginate typeList inner-m">
+    <!-- <a href="{$param_first}" class="first">첫 페이지</a> -->
+    <a href="{$param_prev}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
     <ol>
         <li><a href="{$param_page}" class="{$param_class}">{$num}</a></li>
         <li><a href="{$param_page}" class="{$param_class}">{$num}</a></li>
     </ol>
-    <a href="{$param_next}">다음 페이지</a>
-    <a href="{$param_last}" class="last">마지막 페이지</a>
+    <a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+    <!-- <a href="{$param_last}" class="last">마지막 페이지</a> -->
 </div>

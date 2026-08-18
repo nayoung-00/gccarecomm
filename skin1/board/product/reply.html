@@ -1,19 +1,12 @@
 ﻿<!--@layout(/layout/basic/layout.html)-->
-<div class="section" module="board_ReplyPackage_4">
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+
+<div class="section inner-m" module="board_ReplyPackage_4">
     <!--@css(/css/module/board/replyPackage.css)-->
     <div module="board_title_4">
-        <div class="path">
-            <span>현재 위치</span>
-            <ol>
-                <li><a href="/">홈</a></li>
-                <li><a href="#">게시판</a></li>
-                <li title="현재 위치"><strong>{$board_name}</strong></li>
-            </ol>
-        </div>
-
-        <div class="titleArea">
-            <h2>{$board_title}</h2>
-        </div>
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
     </div>
 
     <div module="board_reply_4">
@@ -31,7 +24,11 @@
             <tbody>
                 <tr>
                     <th scope="row" class="RW">제목</th>
-                    <td>{$form.board_category}{$form.subject}<span class="ec-base-label">{$form.notice}</span><span class="ec-base-label">{$form.is_post}</span></td>
+                    <td>
+                      {$form.board_category}{$form.subject}
+                      <span class="ec-base-label">{$form.notice}</span>
+                      <span class="ec-base-label">{$form.is_post}</span>
+                    </td>
                 </tr>
                 <tr class="{$config.is_login|display}">
                     <th scope="row">작성자</th>
@@ -106,10 +103,11 @@
                 <span class="{$config.is_admin|display}"><a href="#none" class="btnNormalFix sizeM" onclick="{$action_comment_admin}">관리자 답변보기</a></span>
                 <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a>
             </span>
-            <span class="gRight">
-                <a href="{$link_board_list}" class="btnNormalFix sizeM">취소</a>
-                <a href="#none" class="btnSubmitFix sizeM" onclick="{$action_reply}">등록</a>
-            </span>
+
+        </div>
+        <div class="fixed-write-btn fixed-btn-comm">
+            <a href="{$link_board_list}" class="btnNormalFix sizeM fixed-btn-outline">취소</a>
+            <a href="#none" onclick="{$action_reply}" class="btnSubmitFix sizeM fixed-btn-fill">등록</a>
         </div>
     </div>
 </div>

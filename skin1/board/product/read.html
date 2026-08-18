@@ -1,21 +1,13 @@
 <!--@layout(/layout/basic/layout.html)-->
-<div class="section" module="board_ReadPackage_4">
+<!--@css(/_aisoul/css/board.css)-->
+<!--@js(/_aisoul/js/board.js)-->
+
+<div class="section inner-m" module="board_ReadPackage_4">
     <!--@css(/css/module/board/readPackage.css)-->
     <!--@js(/js/module/board/readPackage.js)-->
     <div module="board_title_4">
-        <div class="path">
-            <span>현재 위치</span>
-            <ol>
-                <li><a href="/">홈</a></li>
-                <li><a href="#">게시판</a></li>
-                <li title="현재 위치"><strong>{$board_name}</strong></li>
-            </ol>
-        </div>
-
-        <div class="titleArea">
-            <h2>{$board_title} {$board_adult_icon}</h2>
-            <p>{$board_info}</p>
-        </div>
+        <!-- 동적 타이틀 (게시판) -->
+        <span class="page-title-source" hidden>{$board_title}</span>
     </div>
 
     <div module="board_Product_4" class="ec-base-box typeProduct">
@@ -42,7 +34,7 @@
             <div class="head">
                 <h3 class="{$block_content_class}">{$subject}</h3>
                 <div class="description">
-                    <span class="name">{$member_icon} {$writer} <span class="{$config.display_ip|display}">(ip:{$ip})</span> {$admin_mileage}</span>
+                    <!-- <span class="name">{$member_icon} {$writer} <span class="{$config.display_ip|display}">(ip:{$ip})</span> {$admin_mileage}</span> -->
                     <ul class="etcArea">
                         <li class="{$config.use_date|display}">
                             <span class="txtNum">{$write_date}</span>
@@ -76,25 +68,32 @@
 			<!--@import(/board/report_popup.html)-->
         </div>
         <div class="ec-base-button gBottom gBreak">
-            <span class="gLeft">
-                <span class="{$config.is_admin|display}">
-                    <a href="#none" onclick="{$action_post}" class="btnNormalFix sizeS admin {$config.is_post|display}">{$admin_publish_message}</a>
-                    <a href="#none" onclick="{$action_post}" class="btnNormalFix sizeS admin {$config.not_post|display}">{$not_publish_message}</a>
-                    <a href="#none" onclick="{$action_spam}" class="btnNormalFix sizeS {$is_global_display|display}">스팸신고</a>
-                    <a href="#none" onclick="{$action_spam_cancle}" class="btnNormalFix sizeS {$is_global_display|display}">스팸해제</a>
-                </span>
-                <a href="#none" onclick="{$action_delete}" class="btnNormalFix sizeM {$delete_button_auth|display}">삭제</a>
-                <a href="/board/product/modify.html{$param_modify}" class="btnNormalFix sizeM {$modify_button_auth|display}">수정</a>
+            
+            <span class="gLeft gBreak read-control-box">
+              <span class="board-read-control">
+                <a href="#none" onclick="{$action_delete}" class="btnNormalFix sizeS {$delete_button_auth|display}">삭제</a>
+                <a href="/board/product/modify.html{$param_modify}" class="btnNormalFix sizeS {$modify_button_auth|display}">수정</a>
+              </span>
+              <span class="board-read-reply__btn">
+                <a href="/board/product/reply.html{$param_reply}" class="btnSubmitFix sizeL {$reply_button_auth|display}">답변</a>
+              </span>
+                <!-- <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a> -->
             </span>
-            <span class="gRight gBreak">
-                <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a>
-                <a href="/board/product/reply.html{$param_reply}" class="btnSubmitFix sizeM {$reply_button_auth|display}">답변쓰기</a>
+
+
+            <span class="gLeft">
+              <span class="{$config.is_admin|display}">
+                <a href="#none" onclick="{$action_post}" class="btnNormalFix sizeS admin {$config.is_post|display}">{$admin_publish_message}</a>
+                <a href="#none" onclick="{$action_post}" class="btnNormalFix sizeS admin {$config.not_post|display}">{$not_publish_message}</a>
+                <a href="#none" onclick="{$action_spam}" class="btnNormalFix sizeS {$is_global_display|display}">스팸신고</a>
+                <a href="#none" onclick="{$action_spam_cancle}" class="btnNormalFix sizeS {$is_global_display|display}">스팸해제</a>
+              </span>
             </span>
         </div>
     </div>
 </div>
 
-<div class="section" module="board_CommentPackage_4">
+<div class="section inner-m" module="board_CommentPackage_4">
     <!--@css(/css/module/board/commentPackage.css)-->
     <div module="board_commentlist_4">
         <!--
@@ -221,7 +220,7 @@
                                 <label>{$form.secure}비밀댓글</label>
                             </span>
                             <span class="ec-base-help {$password_rule_help_display|display}">영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자</span>
-                            <a href="#none" onclick="{$action_comment_insert}" class="btnSubmit {$comment_button|display}">등록</a>
+                            <a href="#none" onclick="{$action_comment_insert}" class="btnSubmit {$comment_button|display} sizeM">등록</a>
                         </span>
                     </div>
                 </div>
@@ -287,86 +286,31 @@
     </div>
 </div>
 
-<div class="section" module="board_movement_4">
+<div class="inner-m section read-movement" module="board_movement_4">
     <!--@css(/css/module/board/movement.css)-->
     <ul>
-        <li class="prev {$prev_display|display}">
-            <strong>이전<i aria-hidden="true" class="icon icoArrowTop"></i></strong><a href="{$link_board_detail_prev}">{$prev_subject}</a>
-        </li>
-        <li class="next {$next_display|display}">
-            <strong>다음<i aria-hidden="true" class="icon icoArrowBottom"></i></strong><a href="{$link_board_detail_next}">{$next_subject}</a>
-        </li>
+        <li class="prev {$prev_display|display}"><strong>이전<i aria-hidden="true" class="icon-arrow"><!--@import(/_aisoul/svg/arrow_bt.html)--></i></strong><a href="{$link_board_detail_prev}">{$prev_subject}</a></li>
+        <li class="next {$next_display|display}"><strong>다음<i aria-hidden="true" class="icon-arrow"><!--@import(/_aisoul/svg/arrow_bt.html)--></i></strong><a href="{$link_board_detail_next}">{$next_subject}</a></li>
     </ul>
 </div>
 
-<div class="section" module="board_listsgroup_4">
-    <h4>관련 글 보기</h4>
-    <!--@css(/css/module/board/listsgroup.css)-->
-    <!--
-        $count = 5
-        $product_name_cut = 30
-    -->
-    <div class="ec-base-table typeList gBorder">
-        <table border="1" >
-            <caption>관련글 모음</caption>
-            <colgroup>
-                <col style="width:70px;"/>
-                <col style="width:134px;"/>
-                <col style="width:auto;"/>
-                <col style="width:84px;"/>
-                <col style="width:77px;" class="{$config.use_date|display}"/>
-                <col style="width:55px;" class="{$config.use_cnt|display}"/>
-            </colgroup>
-            <thead>
-                <tr>
-                    <th scope="col">번호</th>
-                    <th scope="col">상품명</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col" class="{$config.use_date|display}">작성일</th>
-                    <th scope="col" class="{$config.use_cnt|display}">조회</th>
-                </tr>
-            </thead>
-            <tbody class="center">
-                <tr class="{$block_target_class}" {$block_data_attr}>
-                    <td>{$idx}</td>
-                    <td><span>{$product_name}</span></td>
-                    <td class="subject left txtBreak">
-                        {$icon_re}{$icon_lock}
-                        <a href="{$link_board_detail}" class="{$block_content_class}">{$subject}</a> {$icon_new}{$icon_hit}{$icon_file}
-                    </td>
-                    <td>{$member_icon}{$writer}</td>
-                    <td class="{$date_display|display}"><span class="txtNum">{$write_date}</span></td>
-                    <td class="{$hit_display|display}"><span class="txtNum">{$hit_count}</span></td>
-                </tr>
-                <tr class="{$block_target_class}" {$block_data_attr}>
-                    <td>{$idx}</td>
-                    <td><span>{$product_name}</span></td>
-                    <td class="subject left txtBreak">
-                        {$icon_re}{$icon_lock}
-                        <a href="{$link_board_detail}" class="{$block_content_class}">{$subject}</a> {$icon_new}{$icon_hit}{$icon_file}
-                    </td>
-                    <td>{$member_icon}{$writer}</td>
-                    <td class="{$date_display|display}"><span class="txtNum">{$write_date}</span></td>
-                    <td class="{$hit_display|display}"><span class="txtNum">{$hit_count}</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="gRight gBreak inner-m read-list-btn" module="board_read_1002">
+    <a href="{$link_board_list}" class="btnNormalFix sizeM">목록</a>
 </div>
 
+
 <!-- Admin only -->
-<div class="section" module="board_function_4">
+<!-- <div class="section" module="board_function_4"> -->
     <!--@css(/css/module/board/function.css)-->
     <!--
     	$success_return_url = /board/product/list.html
     -->
-    <span class="gColumn">{$board_function_selectbox}</span>
+    <!-- <span class="gColumn">{$board_function_selectbox}</span>
     <span class="gColumn">
         <a href="#none" class="btnNormal sizeS" onclick="{$action_article_move}">{$article_move}</a>
         <a href="#none" class="btnNormal sizeS" onclick="{$action_article_copy}">{$article_copy}</a>
     </span>
     <span class="ec-base-help">{$board_function_help|replace:*,}</span>
-</div>
+</div> -->
 <!-- // Admin only -->
 <!--@define(cmc_log)-->

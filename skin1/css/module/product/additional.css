@@ -26,10 +26,10 @@
 .xans-product-additional .btnNormal .icon.icoArrowBottom { vertical-align:top; margin:0 0 0 15px; }
 .xans-product-additional .boardComment {  background:#f6f6f6; }
 .xans-product-additional .boardComment li { position:relative; overflow:hidden; border-top:1px solid #e0e0e0; text-align:left; line-height:14px; }
-.xans-product-additional .boardComment li:before { content:""; position:absolute; display:inline-block; overflow:hidden; width:9px; height:11px; border-left:1px solid #a7a7a7; border-bottom:1px solid #a7a7a7; }
+/* .xans-product-additional .boardComment li:before { content:""; position:absolute; display:inline-block; overflow:hidden; width:9px; height:11px; border-left:1px solid #a7a7a7; border-bottom:1px solid #a7a7a7; } */
 .xans-product-additional .boardComment .commentInfo .name { color:#000; }
 .xans-product-additional .boardComment .commentInfo .date { margin:0 20px; line-height:17px; vertical-align:top; color:#6d6d6d; }
-.xans-product-additional .boardComment .comment { margin:17px 0 0; line-height:18px; color:#545454; word-break:break-all; }
+.xans-product-additional .boardComment .comment { margin:4px 0 0; line-height:18px; color:#545454; word-break:break-all; }
 .xans-product-additional .boardComment .replyArea { margin:-1px 0 0; border-top:1px solid #e0e0e0; background:#f6f6f6; }
 .xans-product-additional .boardComment .replyArea .commentSecret { margin-right:30px; }
 .xans-product-additional .memoCont { text-align:left; border-top:1px solid #e5e5e5; background:#f6f6f6; }
@@ -59,7 +59,7 @@
     .xans-product-additional .view.secret { padding-bottom:25px; }
     .xans-product-additional .view .ec-base-button { margin:20px 0;  }
     .xans-product-additional .boardComment li { padding:25px 25px 0 36px; }
-    .xans-product-additional .boardComment li:before { top:24px; left:17px; }
+    /* .xans-product-additional .boardComment li:before { top:24px; left:17px; } */
     .xans-product-additional .boardComment .ec-base-button { margin:20px 0;  }
     .xans-product-additional .boardComment .replyArea { padding:26px 26px 30px 58px; }
     .xans-product-additional .boardComment .replyArea:before { left:36px; }
@@ -84,7 +84,7 @@
     .xans-product-additional .view { padding:25px 25px 0; }
     .xans-product-additional .view.secret { padding-bottom:25px; }
     .xans-product-additional .boardComment li { padding:25px 25px 25px 50px; }
-    .xans-product-additional .boardComment li:before { top:24px; left:25px; }
+    /* .xans-product-additional .boardComment li:before { top:24px; left:25px; } */
     .xans-product-additional .boardComment .ec-base-button { margin:20px 0 0; }
     .xans-product-additional .boardComment .replyArea { padding:26px 26px 30px 75px; }
     .xans-product-additional .boardComment .replyArea:before { left:50px; }
