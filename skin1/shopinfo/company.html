@@ -1,15 +1,16 @@
 <!--@layout(/layout/basic/layout.html)-->
-<div class="section path">
-    <span>현재 위치</span>
-    <ol>
-        <li><a href="/">홈</a></li>
-        <li title="현재 위치"><strong>회사소개</strong></li>
-    </ol>
-</div>
-<div class="section titleArea">
-    <h2>회사소개</h2>
-</div>
-<div module="mall_company" class="section">
+
+<style>
+    .section.xans-mall-company .info {border-color: var(--line-normal);padding: 16px 0;}
+    .section .ec-base-table th {font-size: 14px;font-weight: 500;color: var(--neutral-800);}
+    .section .ec-base-table td {font-size: 14px;font-weight: 500;color: var(--neutral-800);}
+</style>
+
+
+<!-- 동적 타이틀 -->
+<span class="page-title-source" hidden>건강상품</span>
+
+<div module="mall_company" class="section inner-m">
     <!--@css(/css/module/mall/company.css)-->
 
     <div class="titleArea titleArea--middle">
@@ -29,7 +30,7 @@
         <table border="1">
             <caption>회사소개</caption>
             <colgroup>
-                <col style="width:180px;">
+                <col style="width:120px;">
                 <col style="width:auto;">
             </colgroup>
             <tbody>

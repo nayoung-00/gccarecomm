@@ -1,17 +1,20 @@
 <!--@layout(/layout/basic/layout.html)-->
-<div class="section path">
-    <span>현재 위치</span>
-    <ol>
-        <li><a href="/">홈</a></li>
-        <li title="현재 위치"><strong>이용안내</strong></li>
-    </ol>
+<style>
+    .section .ec-base-fold.theme1 > .title h3 {font-size: 14px;font-weight: 500;}
+    .section .ec-base-fold.theme1.gBottomLine > .title {border-bottom: 1px solid var(--line-normal);}
+    .section .ec-base-fold.theme1 + .ec-base-fold.theme1 {margin-top: 0;}
+</style>
+
+
+<!-- 동적 타이틀 -->
+<span class="page-title-source" hidden>건강상품</span>
+
+
+<div class="section inner-m titleArea--middle">
+    <h3>이용안내</h3>
 </div>
 
-<div class="section titleArea">
-    <h2>이용안내</h2>
-</div>
-
-<div module="mall_faq" class="section">
+<div module="mall_faq" class="section inner-m">
     <!--@css(/css/module/mall/faq.css)-->
     <div class="ec-base-fold theme1 gBottomLine selected eToggle">
     	<div class="title">
