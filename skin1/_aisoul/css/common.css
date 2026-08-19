@@ -13,7 +13,7 @@ button svg { display: block; flex-shrink: 0; }
 
 /* 바텀 고정 버튼 */
 .fixed-btn-comm { display: flex; text-align: initial; justify-content: space-between; gap: 8px; position: fixed; width: 100%; max-width: 768px; margin: 0 auto; bottom: 0; left: 50%; transform: translateX(-50%); padding: 20px 16px; background: var(--neutral-0);z-index: 100; box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04); } 
-.fixed-btn-comm a,.fixed-btn-comm button { padding: 12px !important; border-radius: 8px; width: 100%; border-color: var(--brand-color) !important; background-color: #fff !important; height: 50px !important; line-height: 1.6 !important; font-size: 16px !important; font-weight: 500; color: var(--common-black) !important; } 
+.fixed-btn-comm a,.fixed-btn-comm button { padding: 12px 12px max(12px,min(env(safe-area-inset-bottom, 0px), 34px)) !important; border-radius: 8px; width: 100%; border-color: var(--brand-color) !important; background-color: #fff !important; height: 50px !important; line-height: 1.6 !important; font-size: 16px !important; font-weight: 500; color: var(--common-black) !important; } 
 .fixed-btn-comm .fixed-btn-fill { background: var(--brand-color) !important; color: var(--neutral-0) !important; } 
 
 /********************************************************* 

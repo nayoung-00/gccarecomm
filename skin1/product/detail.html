@@ -21,6 +21,17 @@ js -> /_aisoul/js/detail.js
 		$coupon_download_page = /coupon/coupon_productdetail.html
     -->
      <div class="detailArea">
+        <div class="product-detail-skeleton" aria-hidden="true">
+            <div class="product-detail-skeleton__image"></div>
+            <div class="product-detail-skeleton__info">
+                <div class="product-detail-skeleton__line product-detail-skeleton__line--tag"></div>
+                <div class="product-detail-skeleton__line product-detail-skeleton__line--name"></div>
+                <div class="product-detail-skeleton__line product-detail-skeleton__line--name product-detail-skeleton__line--name-short"></div>
+                <div class="product-detail-skeleton__line product-detail-skeleton__line--price"></div>
+                <div class="product-detail-skeleton__line product-detail-skeleton__line--benefit"></div>
+            </div>
+        </div>
+        <script>document.documentElement.classList.add('has-detail-skeleton');</script>
         <div class="imgArea" module="product_image">
             <!--@js(/js/module/product/product_image.js)-->
 

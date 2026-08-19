@@ -6,19 +6,20 @@
 /* .header { position:relative; } */
 .header-inner { display:flex; align-items:center; justify-content:space-between; position: relative; height: stretch;} 
 .sub-header { background:var(--neutral-0); border-bottom:1px solid var(--line-normal); } 
-.h-left { display:flex; align-items:center; } 
+.h-left { display:flex; align-items:center;} 
 .header h1 { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); } 
 .header h1 a, .header .title { color:var(--common-black); font-size:16px; font-weight:700; line-height:1.5; } 
-.header .back-btn {padding: 5px 4px 8px;}
+.header .back-btn {padding: 6px 4px 4px;}
 .cart-wrap { position:relative; } 
-.cart-wrap strong { position:absolute; top:4px; left: 24px;text-align: center;} 
+.cart-wrap a {line-height: 0; } 
+.cart-wrap strong { position:absolute; top:13px; left: 22px;text-align: center;} 
 .cart-wrap strong span:last-child { display:none; } 
 .main { padding:10px 10px 12px 6px; line-height:0; } 
 .header.is-hidden { transform: translate(-50%, -100%); } 
-
+.h-right {line-height: 0;}
 /* 장바구니 아이콘 */
 #xans_myshop_basket_cnt { padding:2px 4px; border-radius:99px; background:var(--brand-color); font-size:8px; font-weight:700; color:var(--neutral-0); } 
-.header { position: fixed !important; top: 0; left: 50%; transform: translate(-50%, 0); width: 100%; max-width: var(--max-container); height: 48px; z-index: 100; margin: 0 auto; transition: transform 0.3s ease; background: #fff; } 
+.header { position: fixed !important; top: 0; left: 50%; transform: translate(-50%, 0); width: 100%; max-width: var(--max-container); height: 48px; padding: 2px 0 0; z-index: 100; margin: 0 auto; transition: transform 0.3s ease; background: #fff; } 
 
 .cart-wrap strong.is-zero,
 .member-cart strong.is-zero {

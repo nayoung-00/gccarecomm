@@ -187,7 +187,46 @@
             initProductDetailMore($);
             initQnaList($);
             initDetailTabScroll($);
+            initDetailSkeleton($);
         });
+    }
+
+    /* 모바일 첫 화면 스켈레톤 */
+    function initDetailSkeleton($) {
+        var FALLBACK_TIMEOUT_MS = 2500;
+        var $skeleton = $('.product-detail-skeleton').first();
+        if (!$skeleton.length) return;
+
+        var hidden = false;
+        var fallbackTimer = null;
+
+        var $prdDetailImgEl = $('#prdDetailImg');
+        var $mainImage = $prdDetailImgEl.is('img') ? $prdDetailImgEl : $prdDetailImgEl.find('img').first();
+        if (!$mainImage.length) {
+            $mainImage = $('.xans-product-detail .imgArea .RW .prdImg .thumbnail img').first();
+        }
+
+        function hideSkeleton() {
+            if (hidden) return;
+            hidden = true;
+            window.clearTimeout(fallbackTimer);
+            if ($mainImage.length) {
+                $mainImage.off('load.detailSkeleton error.detailSkeleton');
+            }
+            $skeleton.addClass('is-hidden');
+        }
+ 
+        fallbackTimer = window.setTimeout(hideSkeleton, FALLBACK_TIMEOUT_MS);
+
+        if (!$mainImage.length) return;
+
+        if ($mainImage[0].complete) {
+            hideSkeleton();
+            return;
+        }
+
+        $mainImage.off('load.detailSkeleton error.detailSkeleton')
+            .on('load.detailSkeleton error.detailSkeleton', hideSkeleton);
     }
 
     /* 상품정보고시 */

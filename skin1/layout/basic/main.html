@@ -80,7 +80,44 @@
     <!--@js(/_aisoul/js/sale.js)-->
     <!--@js(/_aisoul/js/prod.js)-->
 
-    
+    <script>
+    document.documentElement.classList.add('is-page-loading');
+</script>
+<style>
+    html.is-page-loading #wrap {opacity: 0;}
+    #wrap {opacity: 1;transition: opacity 0.2s ease;}
+    html.is-page-loaded #wrap {opacity: 1;}
+    @media (prefers-reduced-motion: reduce) {#wrap {transition: none;}}
+</style>
+
+<script>
+    (function () {
+        var fallbackTimer = window.setTimeout(showPage, 2000);
+
+        function showPage() {
+            window.clearTimeout(fallbackTimer);
+
+            document.documentElement.classList.remove('is-page-loading');
+            document.documentElement.classList.add('is-page-loaded');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showPage, {
+                once: true
+            });
+        } else {
+            showPage();
+        }
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                showPage();
+            }
+        });
+    }());
+</script>
+
+
     
 </head>
 <body class="theme01" data-ez-theme="theme01">

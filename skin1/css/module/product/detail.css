@@ -307,7 +307,7 @@
 #mCafe24Order .product_detail #totalProducts tbody .option_product td .quantity .up { left: 50px; top: 0; } 
 #mCafe24Order .product_detail #totalProducts tbody .option_product td .quantity .down { left: -1px; } 
 #mCafe24Order .product_detail #totalProducts .quantity a:before { left: 7px; } 
-/* 배송비 차등부과 레이어 */
+/* 배송비 차등부과 레이어 */ 
 .differentialShipping { display:none; overflow:hidden; position:absolute; z-index:100; border:1px solid #000; background:#fff; } 
 .differentialShipping h3.title { height:60px; margin:0 20px; padding:20px 0; font-size:16px; color:#000; box-sizing:border-box; border-bottom:1px solid #e5e5e5; } 
 .differentialShipping .content { padding:12px 18px 14px 18px; border-top:0; text-align:center; background:#fff; } 
@@ -1139,3 +1139,72 @@
 .detail-popup-scroll img {display: block;width: 100%;max-width: none !important;height: auto;margin: 0;}
 html.detail-popup-open,
 body.detail-popup-open {overflow: hidden;}
+
+/**************************************************
+    스켈레톤 UI (신규 - 독립 네임스페이스, 기존 규칙과 무관)
+**************************************************/
+.product-detail-skeleton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease, visibility 0.2s ease 0.2s;
+}
+.product-detail-skeleton.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.product-detail-skeleton__image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 37%, #f0f0f0 63%);
+    background-size: 400% 100%;
+    animation: product-detail-skeleton-shimmer 1.4s ease infinite;
+}
+.product-detail-skeleton__info {
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.product-detail-skeleton__line {
+    height: 14px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 37%, #f0f0f0 63%);
+    background-size: 400% 100%;
+    animation: product-detail-skeleton-shimmer 1.4s ease infinite;
+}
+.product-detail-skeleton__line--tag { width: 30%; height: 12px; }
+.product-detail-skeleton__line--name { width: 70%; height: 18px; }
+.product-detail-skeleton__line--name-short { width: 45%; }
+.product-detail-skeleton__line--price { width: 40%; height: 22px; margin-top: 4px; }
+.product-detail-skeleton__line--benefit { width: 90%; height: 40px; border-radius: 8px; }
+
+@keyframes product-detail-skeleton-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-detail-skeleton,
+    .product-detail-skeleton.is-hidden {
+        transition: none;
+    }
+    .product-detail-skeleton__image,
+    .product-detail-skeleton__line {
+        animation: none;
+    }
+}
+
+/* layout.html 전역 #wrap 로딩(opacity) 페이드와 중복 적용 방지 */
+html.has-detail-skeleton.is-page-loading #wrap {
+    opacity: 1 !important;
+}
