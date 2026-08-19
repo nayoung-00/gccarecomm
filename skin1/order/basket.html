@@ -2,7 +2,6 @@
 <!--@css(/_aisoul/css/order.css)-->
 
 <div class="section titleArea">
-    <!-- <h2>장바구니</h2> -->
      
     <!-- 동적 타이틀 (헤더) -->
     <span class="page-title-source" hidden>장바구니</span>
@@ -1474,3 +1473,27 @@
         </ul>
     </div>
 </div>
+
+<script>
+(function () {
+    'use strict';
+
+    var cartLink = document.querySelector('.sub-header .cart-wrap > a');
+
+    if (!cartLink) {
+        return;
+    }
+
+    var cartIcon = cartLink.querySelector('svg');
+
+    if (cartIcon) {
+        cartIcon.outerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <path d="M28.0923 19.2785C28.1137 19.061 28.098 18.8403 28.046 18.6309C27.994 18.4215 27.9071 18.228 27.7907 18.063C27.673 17.8968 27.5281 17.7636 27.3656 17.6722C27.2031 17.5809 27.0268 17.5335 26.8484 17.5332H13.3547C13.1763 17.5335 13 17.5809 12.8375 17.6722C12.6751 17.7636 12.5301 17.8968 12.4124 18.063C12.2961 18.228 12.2091 18.4215 12.1571 18.6309C12.1052 18.8403 12.0894 19.061 12.1109 19.2785L13.0532 28.6285C13.0902 29.0086 13.2388 29.3585 13.4705 29.6114C13.7022 29.8643 14.0009 30.0026 14.3096 29.9998H25.9187C26.2274 30.0026 26.526 29.8643 26.7578 29.6114C26.9895 29.3585 27.138 29.0086 27.1751 28.6285L28.0923 19.2785Z" stroke="#0AC262" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15.1016 17.4731V16.8258C15.1016 15.2807 15.6283 13.7989 16.566 12.7063C17.5037 11.6138 18.7755 11 20.1016 11C21.4276 11 22.6994 11.6138 23.6371 12.7063C24.5748 13.7989 25.1016 15.2807 25.1016 16.8258V17.4731" stroke="#0AC262" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
+    }
+
+})();
+</script>

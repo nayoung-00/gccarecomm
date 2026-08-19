@@ -220,12 +220,12 @@ span.noBorder input { border:none !important; width:auto !important; height:auto
     .path { margin:0 24px; }
 } */
 
+.titleArea--middle { margin:50px 0 20px; text-align:left; }
 /********************* PC *********************/
 @media all and (min-width:1025px) {
     /* .titleArea { margin:45px 0 40px; text-align:center; } */
     .titleArea h2 { display:inline-block; color:#000; color:var(--font-color-heading); font-size:30px; }
     .titleArea h3 { color:#000; color:var(--font-color-heading); font-size:16px; font-weight:normal; }
-    	.titleArea--middle { margin:50px 0 20px; text-align:left; }
     	.titleArea--middle h2 { color:#000; color:var(--font-color-heading); font-size:16px; font-weight:normal; }
         .titleArea.titleArea--myshop { margin:50px 0 20px; text-align:left; }
         .titleArea.titleArea--myshop h2 { color:#000; color:var(--font-color-heading); font-size:16px; font-weight:normal; }

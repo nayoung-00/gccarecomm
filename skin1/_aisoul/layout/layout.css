@@ -9,7 +9,7 @@
 .h-left { display:flex; align-items:center; } 
 .header h1 { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); } 
 .header h1 a, .header .title { color:var(--common-black); font-size:16px; font-weight:700; line-height:1.5; } 
-.header .back-btn {padding: 4px 4px 8px;}
+.header .back-btn {padding: 5px 4px 8px;}
 .cart-wrap { position:relative; } 
 .cart-wrap strong { position:absolute; top:4px; left: 24px;text-align: center;} 
 .cart-wrap strong span:last-child { display:none; } 
@@ -114,7 +114,7 @@ body.sidebar-open { height:100%; overflow:hidden; touch-action:none; }
 /* .bt_info { margin-bottom:30px; }  */
 .bt-info-title { display:flex; gap:10px; font-size:14px; font-weight:700; color:var(--neutral-300); cursor:pointer; } 
 .bt_info_list { display:flex; flex-direction:column; gap:6px; padding:10px 0 0; } 
-.bt_info_list span { font-size:12px; font-weight:400; color:var(--neutral-300); letter-spacing:-0.24px; } 
+.bt_info_list span { font-size:12px; font-weight:400; color:var(--neutral-300); letter-spacing:-0.24px;line-height: 1.5; } 
 .bt_info_list .footer-info__field { font-weight:700; } 
 
 .bt_txt01 { margin:30px 0 16px; font-size:16px; font-weight:600; line-height:1.5; color:var(--neutral-400); } 
