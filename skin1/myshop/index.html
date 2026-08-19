@@ -4,6 +4,7 @@
     css/bankbook.css
 -->
 <style>
+    .sub-header {display: none !important;}
     .section .xans-myshop-asyncbankbook {width: 100% !important; border: none !important; margin-left: 0 !important;}
     .xans-myshop-orderstate {margin-bottom: 18px;}
     .xans-myshop-asyncbankbook {margin-bottom: 30px;padding-top: 40px;border: none;}
@@ -36,13 +37,10 @@
     .myshop-logout a {padding: 12px 4px;font-size: 12px;font-weight: 500;line-height: 1.5; text-decoration: underline;color: #9b9b9b;}
 </style>
 
-<!-- <div class="section path">
-    <span>현재 위치</span>
-    <ol>
-        <li><a href="/">홈</a></li>
-        <li title="현재 위치">마이 쇼핑</li>
-    </ol>
-</div> -->
+<!--@import(/_aisoul/layout/header.html)-->
+
+<!-- 동적 타이틀 (게시판) -->
+<span class="page-title-source" hidden>나의 주문정보</span>
 
 <div module="layout_logincheck">
     <!--
@@ -52,8 +50,6 @@
 <!-- <div class="section titleArea">
 	<h2>마이 쇼핑</h2>
 </div> -->
- <!-- 동적 타이틀 (게시판) -->
-<span class="page-title-source" hidden>마이페이지</span>
 
 <div class="section benefit">
     <div module="myshop_asyncbankbook">

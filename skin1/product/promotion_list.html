@@ -4,7 +4,6 @@
 <!-- 배너매니저 스크립트 코드 -->
 <style>
     [df-banner-code][hidden] {display: none !important}
-    .sub-header {display:none !important;}
     .promotions-tab-box {margin: 40px 0 30px;}
     .promotions-tab-box ul {display:flex;align-items: center;justify-content: center; gap:12px;}
     .promotions-tab-box button {
@@ -48,7 +47,8 @@
     .promotion-pagination .paging-btn {width: 26px;}
 </style>
 
-<!--@import(/_aisoul/layout/prod_header.html)-->
+<!-- 동적 타이틀 (게시판) -->
+<span class="page-title-source" hidden>프로모션</span>
 
 <section class="promotion-list inner-m">
     <div class="promotions-tab-box">

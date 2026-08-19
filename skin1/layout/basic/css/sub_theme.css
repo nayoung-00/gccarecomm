@@ -54,7 +54,7 @@ input[type="checkbox"]:checked::-ms-check {background:url('/SkinImg/img/checkbox
 
 @media screen and (max-width:1024px) {
 	/* 공통 타이틀 */
-	.titleArea {margin:0;padding:20px 0;}
+	/* .titleArea {margin:0;padding:20px 0;} */
 	.titleArea h2 {font-size:16px;}
 	.xans-project-package .title {margin:20px -4% 0;padding-bottom:20px;border-bottom:1px solid #e8e8e8;}
 	.xans-project-package .title h2 {font-size:16px;margin:0;}

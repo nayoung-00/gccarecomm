@@ -66,7 +66,7 @@
   transform: translateX(0);
   transition: transform 0.35s ease, visibility 0s;
 }
-.sidebar-dim { position:fixed; z-index:1000; top:0; bottom:0; left:max(0px, calc(50% - 250px)); width:100%; max-width:var(--max-container); background:rgba(0, 0, 0, 0.2); opacity:0; visibility:hidden; pointer-events:none; transition:
+.sidebar-dim { position:fixed; z-index:1000; top:0; bottom:0; left:max(0px, calc(50% - 384px)); width:100%; max-width:var(--max-container); background:rgba(0, 0, 0, 0.2); opacity:0; visibility:hidden; pointer-events:none; transition:
  opacity 0.35s ease,
  visibility 0s 0.35s; } 
 .sidebar-dim.is-open { opacity:1; visibility:visible; pointer-events:auto; transition:

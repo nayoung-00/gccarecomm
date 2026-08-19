@@ -3,7 +3,7 @@
 
     var JQUERY_WAIT_INTERVAL = 50;
     var JQUERY_WAIT_MAX_TRY = 100;
-    var ALL_VISIBLE_LIMIT = 8;
+    // var ALL_VISIBLE_LIMIT = 8;
 
     waitForJQuery(init);
 
@@ -16,7 +16,7 @@
         }
 
         if (currentTry >= JQUERY_WAIT_MAX_TRY) {
-            console.error('[MAIN] jQuery 로드 타임아웃 - 메인 페이지 기능 비활성화');
+            console.error('메인 페이지 기능 비활성화');
             return;
         }
 

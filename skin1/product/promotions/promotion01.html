@@ -1,9 +1,9 @@
 <!--@layout(/layout/basic/layout.html)-->
-<!--@import(/_aisoul/layout/prod_header.html)-->
+
 
 <style>
     [df-banner-code][hidden] {display: none !important}
-    .sub-header {display: none !important;}
+    .cart-wrap, .main-close {display: none;}
 
     .xans-project-package  {margin-top: 40px;}
     .df-bannermanager-promotion01 {margin-bottom: 40px;}
@@ -17,6 +17,9 @@
     .promo-notice .notice-list {padding: 16px 10px;border-radius: 12px;background: var(--coolNeutral-50);}
     .promo-notice .notice-list li {font-size: 14px;font-weight: 500;line-height: 1.5;color: var(--neutral-500);}
 </style>
+
+<!-- 동적 타이틀 -->
+<span class="page-title-source" hidden>프로모션</span>
 
 <div module="Project_Package" class="section">
     <!--@css(/css/module/product/project_package.css)-->
