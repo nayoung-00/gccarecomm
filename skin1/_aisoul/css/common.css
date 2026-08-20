@@ -1,6 +1,6 @@
 @charset "utf-8"; 
 #container { flex: 1; } 
-#wrap.app-page { display: flex; flex-direction: column; max-width: var(--max-container); width: 100%; min-height: 100vh; margin: 0 auto; padding-top: 50px; background: #fff; } 
+#wrap.app-page { display: flex; flex-direction: column; max-width: var(--max-container); width: 100%; min-height: 100dvh; margin: 0 auto; padding-top: 50px; background: #fff; } 
 .inner-m { padding: 0 16px; } 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; } 
 button { display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; line-height: 1; background: transparent; } 
@@ -12,9 +12,16 @@ button svg { display: block; flex-shrink: 0; }
 #wrap .myshopArea { width: 100% !important; max-width: 768px !important; padding: 0 !important; min-height: auto !important; } 
 
 /* 바텀 고정 버튼 */
-.fixed-btn-comm { display: flex; text-align: initial; justify-content: space-between; gap: 8px; position: fixed; width: 100%; max-width: 768px; margin: 0 auto; bottom: 0; left: 50%; transform: translateX(-50%); padding: 20px 16px; background: var(--neutral-0);z-index: 100; box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04); } 
-.fixed-btn-comm a,.fixed-btn-comm button { padding: 12px 12px max(12px,min(env(safe-area-inset-bottom, 0px), 34px)) !important; border-radius: 8px; width: 100%; border-color: var(--brand-color) !important; background-color: #fff !important; height: 50px !important; line-height: 1.6 !important; font-size: 16px !important; font-weight: 500; color: var(--common-black) !important; } 
-.fixed-btn-comm .fixed-btn-fill { background: var(--brand-color) !important; color: var(--neutral-0) !important; } 
+.fixed-btn-comm { display: flex; text-align: initial; justify-content: space-between; gap: 8px; position: fixed; bottom: 0; left: 50%; z-index: 100; width: 100%; max-width: 768px; margin: 0 auto; padding: 24px 16px calc(20px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: var(--neutral-0); box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04); transform: translateX(-50%); }
+.fixed-btn-comm a, .fixed-btn-comm button { width: 100%; height: 50px !important; padding: 12px !important; border-color: var(--brand-color) !important; border-radius: 8px; background-color: #fff !important; color: var(--common-black) !important; font-size: 16px !important; font-weight: 500; line-height: 1.6 !important; -webkit-appearance: none; appearance: none; }
+.fixed-btn-comm .fixed-btn-fill { background-color: var(--brand-color) !important; color: var(--neutral-0) !important; }
+
+/* ios 버튼 컬러 상속 */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {color: inherit;font: inherit;}
+
 
 /********************************************************* 
  ec-base-button 
