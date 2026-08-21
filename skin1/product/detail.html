@@ -669,6 +669,11 @@ js -> /_aisoul/js/detail.js
 <!--@import(/coupon/coupon_productdetail.html)-->
 <!-- //:상단 상세 정보 섹션 -->
 
+<!-- 🌈 상세 베스트 리뷰 -->
+<div class="alpha_widget best-review-section inner-m" data-code="1e637e5f" data-value="{$product_no}" ></div>
+<!-- 🌈 베스트 리뷰 -->
+
+
 <!-- 하단 상세 정보 섹션 -->
 <div class="section" module="product_additional">
     <!--@css(/css/module/product/additional.css)-->
@@ -677,7 +682,10 @@ js -> /_aisoul/js/detail.js
 	<div class="detail_tab">
 		<ul class="cboth title_detail">
 			<li class="tab_open"><a href="#detail">상세정보</a></li>
-			<li><a href="#review">상품후기 <span>{$review_count}</span></a></li>
+			<!-- 🌈 알파리뷰 ( 리뷰 갯수 원본 백업 및 복제 ) -->
+			<!-- <li><a href="#review">상품후기 <span>{$review_count}</span></a></li> -->
+			<!-- 🌈 /알파리뷰 -->
+			<li><a href="#review">상품후기 <span class="alpha_review_count">-</span></a></li>
 			<li><a href="#qna">Q&A 
                 <!-- <span>{$qna_count}</span> -->
             </a></li>
@@ -688,7 +696,10 @@ js -> /_aisoul/js/detail.js
     <div id="tabProduct" class="tabProduct inner-m">
         <ul>
             <li class="selected"><a href="#prdDetail" target="_self">상세정보</a></li>
-            <li class="{$review_display|display}"><a href="#prdReview" name="use_review_mobile">리뷰 <span>({$review_count})</span></a></li>
+            <!-- 🌈 알파리뷰 ( 리뷰 갯수 원본 백업 및 복제 ) -->
+            <!-- <li class="{$review_display|display}"><a href="#prdReview" name="use_review_mobile">리뷰 <span>({$review_count})</span></a></li> -->
+            <!-- 🌈 /알파리뷰 -->
+            <li class="{$review_display|display}"><a href="#prdReview" name="use_review_mobile">리뷰 <span>(<span class="alpha_review_count">-</span>)</span></a></li>
             <li><a href="#prdRelation">추천상품</a></li>
             <li class="{$qna_display|display}"><a href="#prdQnA" name="use_qna_mobile">Q&A<!-- <span>{$qna_count}</span> --></a></li>
         </ul>
@@ -724,73 +735,88 @@ js -> /_aisoul/js/detail.js
 				<p>고객님의 소중한 후기를 남겨주세요</p>
 			</div>
 			<div class="contents">
-				<div module="product_review">
-					<!--@js(/js/module/product/review.js)-->
-					<a name="use_review"></a>
-					<p class="noAccess {$deny_display|display}">글읽기 권한이 없습니다.</p>
-					<div class="minor {$adult_display|display}">
-						<p><img src="//img.echosting.cafe24.com/skin/skin/product/ico_under19.gif"> <strong class="txtEm">"19세 미만의 미성년자"</strong>는 출입을 금합니다!</p>
-						<p class="button"><a href="/intro/board.html{$returnParam}" class="btnSubmit sizeS">성인인증 하기</a></p>
-					</div>
-					<div class="ec-base-table typeList">
-						<table border="1" class="{$list_display|display}">
-							<caption>상품사용후기</caption>
-							<colgroup>
-								<col style="width:70px;" class="RW">
-								<col style="width:auto">
-								<col style="width:100px;">
-								<col style="width:100px;">
-								<col style="width:80px;">
-								<col style="width:80px;" class="{$use_point_display|display}">
-							</colgroup>
-							<thead>
-								<tr>
-									<th scope="col" class="RW">번호</th>
-									<th scope="col">제목</th>
-									<th scope="col">작성자</th>
-									<th scope="col">작성일</th>
-									<th scope="col">조회</th>
-									<th scope="col" class="{$use_point_display|display}">평점</th>
-								</tr>
-							</thead>
-							<tbody class="center">
-								<tr class="{$block_target_class}" {$block_data_attr}>
-									<td class="RW">{$no}</td>
-									<td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}" class="{$block_content_class}">{$subject}</a> {$icon_file}<span class="comment">{$comment_count}</span>{$icon_hit}{$icon_new}</td>
-									<td>{$member_icon} {$writer}</td>
-									<td>{$write_date}</td>
-									<td>{$hit_count}</td>
-									<td class="{$use_point_display|display}"><img src="//img.echosting.cafe24.com/skin/skin/board/icon-star-rating{$point_count}.svg" alt="{$point_count}점"></td>
-								</tr>
-								<tr class="{$block_target_class}" {$block_data_attr}>
-									<td class="RW">{$no}</td>
-									<td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}" class="{$block_content_class}">{$subject}</a> {$icon_file}<span class="comment">{$comment_count}</span>{$icon_hit}{$icon_new}</td>
-									<td>{$member_icon} {$writer}</td>
-									<td>{$write_date}</td>
-									<td>{$hit_count}</td>
-									<td class="{$use_point_display|display}"><img src="//img.echosting.cafe24.com/skin/skin/board/icon-star-rating{$point_count}.svg" alt="{$point_count}점"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+
+				<!-- 🌈 알파리뷰 ( 상세 리뷰탭 영역 상단 열기 및 위젯 설치 ) -->
+				<div id="alph_new_board" style="min-height:10px; margin-bottom: 16px;">
+				    <div class="alpha_widget" data-code="dd2cc920" data-value="{$product_no}"></div>
 				</div>
+				<div id="alph_origin_board" style="display:none">
+				<!-- 🌈 /알파리뷰 -->
+
+                    <div module="product_review">
+                        <!--@js(/js/module/product/review.js)-->
+                        <a name="use_review"></a>
+                        <p class="noAccess {$deny_display|display}">글읽기 권한이 없습니다.</p>
+                        <div class="minor {$adult_display|display}">
+                            <p><img src="//img.echosting.cafe24.com/skin/skin/product/ico_under19.gif"> <strong class="txtEm">"19세 미만의 미성년자"</strong>는 출입을 금합니다!</p>
+                            <p class="button"><a href="/intro/board.html{$returnParam}" class="btnSubmit sizeS">성인인증 하기</a></p>
+                        </div>
+                        <div class="ec-base-table typeList">
+                            <table border="1" class="{$list_display|display}">
+                                <caption>상품사용후기</caption>
+                                <colgroup>
+                                    <col style="width:70px;" class="RW">
+                                    <col style="width:auto">
+                                    <col style="width:100px;">
+                                    <col style="width:100px;">
+                                    <col style="width:80px;">
+                                    <col style="width:80px;" class="{$use_point_display|display}">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="RW">번호</th>
+                                        <th scope="col">제목</th>
+                                        <th scope="col">작성자</th>
+                                        <th scope="col">작성일</th>
+                                        <th scope="col">조회</th>
+                                        <th scope="col" class="{$use_point_display|display}">평점</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="center">
+                                    <tr class="{$block_target_class}" {$block_data_attr}>
+                                        <td class="RW">{$no}</td>
+                                        <td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}" class="{$block_content_class}">{$subject}</a> {$icon_file}<span class="comment">{$comment_count}</span>{$icon_hit}{$icon_new}</td>
+                                        <td>{$member_icon} {$writer}</td>
+                                        <td>{$write_date}</td>
+                                        <td>{$hit_count}</td>
+                                        <td class="{$use_point_display|display}"><img src="//img.echosting.cafe24.com/skin/skin/board/icon-star-rating{$point_count}.svg" alt="{$point_count}점"></td>
+                                    </tr>
+                                    <tr class="{$block_target_class}" {$block_data_attr}>
+                                        <td class="RW">{$no}</td>
+                                        <td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}" class="{$block_content_class}">{$subject}</a> {$icon_file}<span class="comment">{$comment_count}</span>{$icon_hit}{$icon_new}</td>
+                                        <td>{$member_icon} {$writer}</td>
+                                        <td>{$write_date}</td>
+                                        <td>{$hit_count}</td>
+                                        <td class="{$use_point_display|display}"><img src="//img.echosting.cafe24.com/skin/skin/board/icon-star-rating{$point_count}.svg" alt="{$point_count}점"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div module="product_reviewpaging" class="ec-base-paginate typeList">
+                        <!-- <a href="{$param_first}" class="first">첫 페이지</a> -->
+                        <a href="{$param_before}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+                        <ol>
+                            <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                            <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                            <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                            <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                            <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                        </ol>
+                        <a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+                        <!-- <a href="{$param_last}" class="last">마지막 페이지</a> -->
+                    </div>
+
+				<!-- 🌈 알파리뷰 ( 상세 리뷰탭 영역 닫기 ) -->
+				</div>
+				<!-- 🌈 /알파리뷰 -->
+
+                <!-- 리뷰작성/리뷰게시판 이동 버튼 -->
                 <div class="ec-base-button">
-					<a href="{$review_list}" class="btnNormalFix fixed-btn-outline">전체보기</a>
-					<a href="{$review_write}" class="btnNormalFix fixed-btn-fill">리뷰작성</a>
-				</div>
-				<div module="product_reviewpaging" class="ec-base-paginate typeList">
-					<!-- <a href="{$param_first}" class="first">첫 페이지</a> -->
-					<a href="{$param_before}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
-					<ol>
-						<li><a href="{$param}" class="{$param_class}">{$no}</a></li>
-						<li><a href="{$param}" class="{$param_class}">{$no}</a></li>
-						<li><a href="{$param}" class="{$param_class}">{$no}</a></li>
-						<li><a href="{$param}" class="{$param_class}">{$no}</a></li>
-						<li><a href="{$param}" class="{$param_class}">{$no}</a></li>
-					</ol>
-					<a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
-					<!-- <a href="{$param_last}" class="last">마지막 페이지</a> -->
-				</div>
+                    <a href="{$review_list}" class="btnNormalFix fixed-btn-outline">전체보기</a>
+                    <a href="{$review_write}" class="btnNormalFix fixed-btn-fill">리뷰작성</a>
+                </div> 
 			</div>
 		</div><!-- //상품리뷰 -->
 	</div>
@@ -999,8 +1025,6 @@ js -> /_aisoul/js/detail.js
 				</div>
 				<div class="contents">
 					<div class="info" data-contents="medical">
-             본 제품은 의약품이 아니며, 의학적 진단이나 치료를 대체하지 않습니다.
-             <br>본 내용은 일반적인 건강 정보로 참고용으로만 활용해 주세요.
 					</div>
 				</div>
 			</div>
@@ -1013,3 +1037,4 @@ js -> /_aisoul/js/detail.js
 
 
 <!--@define(cmc_log)-->
+

@@ -1,4 +1,11 @@
 <!--@layout(/layout/basic/popup.html)-->
+
+<style>
+    .ec-base-layer > .content {padding: 40px 20px 20px !important;}
+    .ec-base-prdInfo {padding: 0 0 20px;}
+    .xans-order-boardlistpackage .ec-base-prdInfo .buttonGroup {margin: 0;padding: 0 4px;text-align: right;}
+</style>
+
 <div module="Order_BoardListPackage" class="ec-base-layer">
     <!--@css(/layout/basic/css/ec-base-prdInfo.css)-->
     <!--@css(/css/module/order/boardListPackage.css)-->
@@ -20,9 +27,9 @@
                             <li>{$order_date}</li>
                         </ul>
                     </div>
-                    <div class="buttonGroup">
-                        <a href="#none" class="btnNormal sizeS" onclick="{$action_product_select}">선택</a>
-                    </div>
+                </div>
+                <div class="buttonGroup">
+                    <a href="#none" class="btnNormal sizeS" onclick="{$action_product_select}">선택</a>
                 </div>
             </div>
             <div class="ec-base-prdInfo">
@@ -36,15 +43,15 @@
                             <li>{$order_date}</li>
                         </ul>
                     </div>
-                    <div class="buttonGroup">
-                        <a href="#none" class="btnNormal sizeS" onclick="{$action_product_select}">선택</a>
-                    </div>
+                </div>
+                <div class="buttonGroup">
+                    <a href="#none" class="btnNormal sizeS" onclick="{$action_product_select}">선택</a>
                 </div>
             </div>
         </div>
 
         <div module="Order_BoardPaging" class="ec-base-paginate typeList">
-            <a href="{$param_first}" class="first">첫 페이지</a>
+            <!-- <a href="{$param_first}" class="first">첫 페이지</a> -->
             <a href="{$param_before}">이전 페이지</a>
             <ol>
                 <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
@@ -54,7 +61,7 @@
                 <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
             </ol>
             <a href="{$param_next}">다음 페이지</a>
-            <a href="{$param_last}" class="last">마지막 페이지</a>
+            <!-- <a href="{$param_last}" class="last">마지막 페이지</a> -->
         </div>
     </div>
 </div>

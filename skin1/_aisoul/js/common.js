@@ -98,11 +98,11 @@
     }
 
     if (!header) {
-      console.warn('[HEADER_SCROLL] 화면에 보이는 .header를 못 찾음');
+    //   console.warn('[HEADER_SCROLL] 화면에 보이는 .header를 못 찾음');
       return;
     }
 
-    console.log('[HEADER_SCROLL] 초기화 완료, 대상:', header.className);
+    // console.log('[HEADER_SCROLL] 초기화 완료, 대상:', header.className);
 
     var lastScrollY = window.scrollY;
     var ticking = false;
@@ -195,7 +195,7 @@ function initBasketCountLabel($) {
       .first();
 
     if (!$original.length) {
-      console.log('[FIXED BUTTON] 원본을 찾지 못함');
+    //   console.log('[FIXED BUTTON] 원본을 찾지 못함');
       return;
     }
 

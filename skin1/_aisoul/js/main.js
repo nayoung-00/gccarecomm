@@ -28,7 +28,7 @@
     function init($) {
         $(function () {
             initVisualSwiper($);
-            initMainProd($);
+            // initMainProd($);
         });
     }
 

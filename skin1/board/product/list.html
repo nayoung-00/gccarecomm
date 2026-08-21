@@ -19,6 +19,14 @@
         </ul>
     </div>
 
+
+    <!-- 🌈 알파리뷰 ( 게시판 영역 상단 열기 및 위젯 설치 ) -->
+    <div id="alph_new_board" style="min-height:10px;">
+    <div class="alpha_widget" data-code="a30ff848" data-value="{$product_no}"></div>
+    </div>
+    <div id="alph_origin_board" style="display:none">
+    <!-- 🌈 /알파리뷰 -->
+
     <div class="boardSort">
         <span module="board_category_4">{$form.board_category}</span>
         <span module="board_ReplySort_4">{$reply_sort}</span>
@@ -114,11 +122,25 @@
             </div>
         </fieldset>
     </div>
+
     <div module="board_ButtonList_4" class="{$write_display|display} ec-base-button gBottom inner-m">
         <a href="/board/product/write.html{$param_write}" class="btnSubmitFix {$write_display|display} board-write-btn">글쓰기</a>
     </div>
+
+
+    <!-- 🌈 알파리뷰 ( 게시판 영역 상단 닫기 ) -->
+    </div>
+    <!-- 🌈 /알파리뷰 -->
+
+
+
 </div>
 
+
+
+<!-- 🌈 알파리뷰 ( 게시판 영역 하단 열기 ) -->
+<div class="alph_origin_board" style="display:none">
+<!-- 🌈 /알파리뷰 -->
 
 <div module="board_paging_4" class="section ec-base-paginate typeList">
     <a href="{$param_prev}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
@@ -129,3 +151,8 @@
     <a href="{$param_next}" class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
 </div>
 
+
+
+<!-- 🌈 알파리뷰 ( 게시판 영역 하단 닫기 ) -->
+</div>
+<!-- 🌈 /알파리뷰 -->

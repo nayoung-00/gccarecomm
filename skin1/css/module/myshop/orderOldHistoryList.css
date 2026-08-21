@@ -12,3 +12,38 @@
 @media all and (min-width:1025px) {
     .xans-myshop-orderoldhistorylist .order h3 { margin:60px 0 0; }
 }
+
+
+
+.xans-myshop-orderoldhistorylist .order { position:relative; }
+.xans-myshop-orderoldhistorylist .order__number { overflow:hidden; padding:12px 10px; font-size:12px; background-color:var(--neutral-50); border-top:1px solid #000; }
+.xans-myshop-orderoldhistorylist .order:first-child .order__number { margin-top:0; }
+.xans-myshop-orderoldhistorylist .order__number .date { font-weight:bold;line-height: 1.5;margin-bottom: 2px;display: block; }
+.xans-myshop-orderoldhistorylist .order__number .number { font-weight: 500;color: var(--neutral-300); line-height: 1.5; }
+.xans-myshop-orderoldhistorylist .btnDetail { position:absolute; top:16px; right:10px;display: flex;align-items: center;gap: 4px; font-size: 12px;font-weight: 500;color: var(--neutral-700); }
+.xans-myshop-orderoldhistorylist .btnDetail .icoArrowRight { width: 12px;height: 12px; }
+.xans-myshop-orderoldhistorylist .request { position:relative; overflow:hidden; padding:25px 0 0; text-align:right; }
+.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail {display:flex;flex-direction:row-reverse;padding:0 0 18px 0;line-height:26px;font-size:13px;}
+.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .gRight {float:right;text-align:right;}
+.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail strong {font-weight:400;}
+.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .title:before {content:" = ";line-height:26px;font-size:13px;color:#000;padding:0 5px;font-family:Arial, sans-serif !important;}
+.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .title > strong {margin-right:5px;}
+
+.xans-myshop-orderoldhistorylist .order__number { margin:30px 0 0; }
+/********************* Mobile / Tablet *********************/
+@media all and (max-width:1024px) {
+    .xans-myshop-orderoldhistorylist .request { padding:25px 16px; }
+
+	.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail {display:block;padding:18px 16px;line-height:26px;font-size:12px;border-top:1px solid #e5e5e5;}
+	.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .title {font-size:14px;margin-bottom:10px;}
+	.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .title:before {display:none;}
+	.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .title .gRight strong {font-weight:700;}
+	.xans-myshop-orderoldhistorylist .ec-base-prdInfo .payDetail .contents {word-break:keep-all;}
+}
+
+/********************* PC *********************/
+@media all and (min-width:1025px) {
+    /* .xans-myshop-orderoldhistorylist .order__number { margin:60px 0 0; } */
+
+}
+

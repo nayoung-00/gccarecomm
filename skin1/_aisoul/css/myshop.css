@@ -86,3 +86,8 @@
 .xans-myshop-orderhistoryapplyexchange .ec-base-table.typeWrite tbody td select {width: 100% !important;}
 
 .exchange-help-info .inner {border-top: none !important;}
+
+
+/* past */
+.stateSelect {margin-bottom: 8px;} 
+.myshopArea .ec-base-prdEmpty {border: none !important;}

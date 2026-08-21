@@ -1,18 +1,16 @@
 <!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/myshop.css)-->
+
 <div class="section path">
-    <span>현재 위치</span>
-    <ol>
-        <li><a href="/">홈</a></li>
-        <li><a href="/myshop/index.html">마이쇼핑</a></li>
-        <li title="현재 위치"><strong>주문조회</strong></li>
-    </ol>
+    <!-- 동적 타이틀 (게시판) -->
+    <span class="page-title-source" hidden>건강상품</span>
 </div>
 
 <div class="myshopArea">
-    <div class="titleArea titleArea--myshop">
+    <!-- <div class="titleArea titleArea--myshop">
         <h2>주문조회</h2>
-    </div>
-    <div module="Myshop_OrderHistoryTab" class="ec-base-tab typeNav">
+    </div> -->
+    <div module="Myshop_OrderHistoryTab" class="ec-base-tab">
         <ul class="menu">
             <li class="{$tab_class}"><a href="/myshop/order/list.html{$param}">주문내역조회 ({$total_orders})</a></li>
             <li class="{$tab_class_cs}"><a href="/myshop/order/list.html{$param_cs}">취소/반품/교환 내역 ({$total_orders_cs})</a></li>
@@ -26,7 +24,7 @@
         <!--
             $login_url = /member/login.html
         -->
-        <div class="orderList {$list_display|display}">
+        <div class="orderList {$list_display|display} inner-m">
             <div class="order">
                 <h3>
                     <span class="date" title="주문일자">{$order_date}</span>
@@ -36,12 +34,8 @@
                     <div class="prdBox">
                         <div class="description">
                             <strong class="prdName" title="상품명">{$product_name}</strong>
-                            <div class="price">
-                                <span title="판매가">{$product_price}</span>
-                            </div>
-                            <ul class="info">
-                                <li title="수량">총 {$product_count}개 품목</li>
-                            </ul>
+                            <div class="price"><span title="판매가">{$product_price}</span></div>
+                            <ul class="info"><li title="수량">총 {$product_count}개 품목</li></ul>
                         </div>
                     </div>
                     <div class="prdFoot" title="주문처리상태">
@@ -78,7 +72,7 @@
                 <a href="detail_old.html{$param_detail}" class="btnDetail">상세보기 <i aria-hidden="true" class="icon icoArrowRight"></i></a>
             </div>
         </div>
-        <p class="ec-base-prdEmpty {$empty_display|display}"><!--@import(/svg/icon-empty.html)-->주문 내역이 없습니다.</p>
+        <p class="ec-base-prdEmpty {$empty_display|display}"><!--@import(/svg/icon-empty.html)-->주문 내역이 없어요</p>
     </div>
 
     <div module="Myshop_OrderHistoryPaging" class="ec-base-paginate typeList">

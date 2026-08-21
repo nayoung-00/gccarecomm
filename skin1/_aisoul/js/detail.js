@@ -20,7 +20,6 @@
      * - NOTICE_FIELD_ALIASES : 외부 데이터 필드명 매핑
      *
      * [임시 건기식 분기]
-     * - DEMO_HEALTH_PRODUCT_NAME : 시안 확인용 상품
      * - isDemoHealthProduct() : 임시 상품 판별
      * - 고시 fallback / 네이버페이 혜택 : 현재 데모 상품만 노출
      * - 실제 데이터 연동 시 임시 상품명 분기 제거 필요
@@ -46,13 +45,30 @@
 
     var JQUERY_WAIT_INTERVAL = 50;
     var JQUERY_WAIT_MAX_TRY = 100;
-    var SUMMARY_CHIP_COLOR_COUNT = 5;
+    // var SUMMARY_CHIP_COLOR_COUNT = 5;
     var DETAIL_TAB_SCROLL_OFFSET = 60;
     var SCROLL_SPY_ANIMATION_GUARD_MS = 500;
     var REQUIRED_OPTION_ALERT_MESSAGE = '옵션을 선택해 주세요.';
     // 임시 건기식 시안 확인용: 실제 Cafe24 고시 데이터/건기식 분기 연동 후 삭제
-    var DEMO_HEALTH_PRODUCT_NAME =
-        'gc녹십자웰빙pnt액상-마그네슘-플러스-20ml-x-30포-x-1박스1개월분-망고맛-저당설계';
+    // var DEMO_HEALTH_PRODUCT_NAME =
+    //     'gc녹십자웰빙pnt액상-마그네슘-플러스-20ml-x-30포-x-1박스1개월분-망고맛-저당설계';
+
+    var PRODUCT_NOTICE_CONFIG = {
+        development: {
+            baseUrl: 'https://nervy-founder-schematic.ngrok-free.dev/api/products',
+            fetchOptions: {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            }
+        },
+        production: {
+            baseUrl: 'https://gc.aisoul.co.kr/api/products',
+            fetchOptions: {}
+        }
+    };
+
+    var productNoticeApiRequested = false;
 
     var PRODUCT_INFO_LABEL_CLASS_MAP = {
         '상품명': 'prd-name',
@@ -64,71 +80,135 @@
         '배송비': 'prd-delivery-fee'
     };
 
+    // 상품정보고시 설정
+    var NOTICE_COMMON_FIELDS = {
+        productName: { key: 'productName', label: '제품명' },
+        origin: { key: 'origin', label: '소재지' },
+        content: { key: 'content', label: '내용량·수량' },
+        packageUnit: { key: 'packageUnit', label: '포장 단위별 수량' },
+        importReport: { key: 'importReport', label: '수입신고 여부' },
+        customerService: { key: 'customerService', label: '소비자상담 전화번호' },
+        safetyWarning: { key: 'safetyWarning', label: '소비자안전 주의사항' }
+    }
+
     var NOTICE_FIELDS = {
         health: [
-            { key: 'productName', label: '제품명' },
+            NOTICE_COMMON_FIELDS.productName,
             { key: 'manufacturer', label: '제조업소' },
-            { key: 'origin', label: '소재지' },
+            NOTICE_COMMON_FIELDS.origin,
             { key: 'expiration', label: '소비기한' },
             { key: 'storage', label: '보관방법' },
-            { key: 'content', label: '내용량·수량' },
-            { key: 'packageUnit', label: '포장 단위별 수량' },
+            NOTICE_COMMON_FIELDS.content,
+            NOTICE_COMMON_FIELDS.packageUnit,
             { key: 'ingredients', label: '원료명 및 함량' },
             { key: 'nutrition', label: '영양정보' },
             { key: 'functionInfo', label: '기능정보' },
             { key: 'intake', label: '섭취량·방법·주의사항' },
             { key: 'medicine', label: '의약품 여부' },
             { key: 'gmoHealth', label: '유전자변형건강기능식품 여부' },
-            { key: 'importReport', label: '수입신고 여부' },
-            { key: 'safetyWarning', label: '소비자안전 주의사항' },
-            { key: 'customerService', label: '소비자상담 전화번호' }
+            NOTICE_COMMON_FIELDS.importReport,
+            NOTICE_COMMON_FIELDS.safetyWarning,
+            NOTICE_COMMON_FIELDS.customerService,
         ],
         food: [
-            { key: 'productName', label: '제품명' },
+             NOTICE_COMMON_FIELDS.productName,
             { key: 'foodType', label: '식품의 유형' },
             { key: 'manufacturer', label: '생산자' },
-            { key: 'origin', label: '소재지' },
+            NOTICE_COMMON_FIELDS.origin,
             { key: 'manufactureDate', label: '제조연월일' },
             { key: 'expiration', label: '소비기한 또는 품질유지기한' },
-            { key: 'content', label: '내용량·수량' },
-            { key: 'packageUnit', label: '포장 단위별 수량' },
+            NOTICE_COMMON_FIELDS.content,
+            NOTICE_COMMON_FIELDS.packageUnit,
             { key: 'ingredients', label: '원재료명 및 함량' },
             { key: 'nutrition', label: '영양성분' },
             { key: 'gmo', label: '유전자변형식품 여부' },
-            { key: 'safetyWarning', label: '소비자안전 주의사항' },
-            { key: 'importReport', label: '수입신고 여부' },
-            { key: 'customerService', label: '소비자상담 전화번호' }
+            NOTICE_COMMON_FIELDS.safetyWarning,
+            NOTICE_COMMON_FIELDS.importReport,
+            NOTICE_COMMON_FIELDS.customerService,
         ]
     };
 
-    var NOTICE_TYPE_MAP = {
-        health: 'health',
-        '건강기능식품': 'health',
-        food: 'food',
-        '일반식품': 'food'
+    /* 상품정보고시 API → 프론트 필드 매핑 */
+    // 공통 6개 반환
+    var NOTICE_COMMON_API_MAP = {
+        productName: 'productName', // 제품명
+        origin: 'location', // 소재지
+        content: 'contentAndQuantity', // 내용량·수량
+        packageUnit: 'quantityPerPackageUnit', // 포장 단위별 수량
+        importReport: 'importDeclarationStatus', // 수입신고 여부
+        customerService: 'consumerConsultationPhoneNumber', // 소비자상담 전화번호
+        safetyWarning: 'consumerSafetyPrecautions' // 소비자안전 주의사항
     };
 
-    var NOTICE_FIELD_ALIASES = {
-        productName: ['productName', 'name', 'product_name'],
-        foodType: ['foodType', 'food_type'],
-        manufacturer: ['manufacturer', 'manufacturerName', 'maker', 'producer'],
-        origin: ['origin', 'originPlace', 'address'],
-        manufactureDate: ['manufactureDate', 'manufacturedAt', 'productionDate'],
-        expiration: ['expiration', 'expiryDate', 'bestBefore'],
-        storage: ['storage', 'storageMethod'],
-        content: ['content', 'quantity', 'volume'],
-        packageUnit: ['packageUnit', 'packageQuantity'],
-        ingredients: ['ingredients', 'ingredient'],
-        nutrition: ['nutrition', 'nutritionInfo'],
-        functionInfo: ['functionInfo', 'functionalInfo'],
-        intake: ['intake', 'intakeMethod'],
-        medicine: ['medicine', 'isMedicine'],
-        gmoHealth: ['gmoHealth', 'isGmoHealth'],
-        gmo: ['gmo', 'isGmo'],
-        importReport: ['importReport', 'isImported'],
-        safetyWarning: ['safetyWarning', 'warning'],
-        customerService: ['customerService', 'customerServicePhone', 'servicePhone']
-    };
+    // 건기식 9개 반환
+    var NOTICE_HEALTH_API_MAP = {
+        manufacturer: 'manufacturer', // 제조업소
+        expiration: 'expirationDate', // 소비기한
+        storage: 'storageMethod', // 보관방법
+        ingredients: 'ingredientsAndAmounts', // 원료명 및 함량
+        nutrition: 'nutritionInformation', // 영양정보
+        functionInfo: 'functionalInformation', // 기능정보
+        intake: 'intakeMethodAndPrecautions', // 섭취량·방법·주의사항
+        medicine: 'pharmaceuticalStatus', // 의약품 여부
+        gmoHealth: 'geneticallyModifiedHealthFunctionalFoodStatus', // 유전자변형건강기능식품 여부
+    }
+    
+    // 일반식 7개 반환
+    var NOTICE_FOOD_API_MAP = {
+        foodType: 'foodType', // 식품의 유형
+        manufacturer: 'producer', // 생산자
+        manufactureDate: 'manufacturingDate', // 제조연월일
+        expiration: 'expirationOrQualityRetentionPeriod', // 소비기한 또는 품질유지기한
+        ingredients: 'ingredientsAndAmounts', // 원재료명 및 함량
+        nutrition: 'nutritionFacts', // 영양성분
+        gmo: 'geneticallyModifiedFoodStatus', // 유전자변형식품 여부
+    }
+
+    function getProductNoticeApiConfig() {
+        var host = window.location.hostname;
+        var isProduction = host === 'gc.aisoul.co.kr' || host.indexOf('cafe24.com') !== -1;
+        return isProduction
+            ? PRODUCT_NOTICE_CONFIG.production
+            : PRODUCT_NOTICE_CONFIG.development;
+    }
+
+    // ===== 상품정보고시 =====
+    function mapProductNoticeApiData(apiData) {
+        if (!apiData || !apiData.information) return null;
+
+        var type;
+
+        if (apiData.productType === 'HEALTH_FUNCTIONAL_FOOD') {
+            type = 'health';
+        } else if (apiData.productType === 'GENERAL_FOOD') {
+            type = 'food';
+        } else {
+            return null;
+        }
+
+        var information = apiData.information;
+
+        var apiMap = Object.assign(
+            {},
+            NOTICE_COMMON_API_MAP,
+            type === 'health'
+                ? NOTICE_HEALTH_API_MAP
+                : NOTICE_FOOD_API_MAP
+        );
+
+        var result = {
+            type: type
+        };
+
+        Object.keys(apiMap).forEach(function (fieldKey) {
+            var apiKey = apiMap[fieldKey];
+
+            result[fieldKey] = information[apiKey];
+        });
+
+        return result;
+    }
+
 
     waitForJQuery(init);
 
@@ -156,33 +236,20 @@
         });
     }
 
-    /*
-    * 임시 시안 확인용입니다.
-    * PNT 액상 마그네슘 플러스에서만 고시/네이버페이 영역을 노출합니다.
-    * 실제 건기식 분기/API 연동 시 이 함수를 교체하거나 삭제해 주세요.
-    */
-    function isDemoHealthProduct() {
-        var pathParts = window.location.pathname.split('/');
-        var productPathIndex = pathParts.indexOf('product');
-        var productName = productPathIndex === -1 ? '' : (pathParts[productPathIndex + 1] || '');
-
-        try {
-            productName = decodeURIComponent(productName);
-        } catch (error) {
-            // 인코딩이 깨진 URL은 원본 문자열로 비교
-        }
-        return productName === DEMO_HEALTH_PRODUCT_NAME;
-    }
 
     function init($) {
         $(function () {
             initProductInfoTable($);
-            initProductNotice();
+            loadProductNotice($);
+            // initProductNotice();
             //   initSummaryChips($);
             initDetailLayout($);
             initDetailPopup();
             initProductImageDrag($);
-            initDemoHealthBenefit($);
+            initNaverPayBenefit($);
+            runAtDelays(function () {
+                initPriceUnitWrap($);
+            }, [0, 250, 700, 1500]);
             initFixedPurchase($);
             initProductDetailMore($);
             initQnaList($);
@@ -229,50 +296,87 @@
             .on('load.detailSkeleton error.detailSkeleton', hideSkeleton);
     }
 
-    /* 상품정보고시 */
-    function initProductNotice() {
-        var notice = document.getElementById('productNotice');
-        if (!notice) return;
-
-        var rawData = getProductNoticeData();
-        var data = normalizeNoticeData(rawData);
-        if (!data || !NOTICE_FIELDS[data.type]) return;
-
-        renderProductNotice(notice, data);
-        initProductNoticeToggle(notice);
-        notice.hidden = false;
+    function getProductCode() {
+        var productCode =
+            window.product_code == null
+                ? ''
+                : String(window.product_code).trim();
+    
+        if (productCode) return productCode;
+    
+        var productCodeElement = document.querySelector(
+            '.xans-product-detail .imgArea .prdImg .thumbnail > a[alt]'
+        );
+    
+        return productCodeElement
+            ? String(productCodeElement.getAttribute('alt') || '').trim()
+            : '';
     }
 
-    function getProductNoticeData() {
-        var noticeData = window.PRODUCT_NOTICE_DATA || window.productNoticeData || window.__PRODUCT_NOTICE_DATA__;
-        if (noticeData) return noticeData;
-
-        // 임시 건기식 고시 fallback: 실제 데이터 연동 후 삭제
-        return isDemoHealthProduct() ? {
-            type: 'health',
-            productName: 'GC녹십자웰빙 PNT 액상 마그네슘 플러스'
-        } : null;
-    }
-
-    function normalizeNoticeData(rawData) {
-        if (!rawData || typeof rawData !== 'object') return null;
-
-        var source = rawData.productNotice || rawData.notice || rawData;
-        if (!source || typeof source !== 'object') return null;
-
-        var rawType = source.type || source.productType || source.noticeType;
-        var type = NOTICE_TYPE_MAP[typeof rawType === 'string' ? rawType.trim() : rawType];
-        if (!type) return null;
-
-        var normalized = { type: type };
-
-        Object.keys(NOTICE_FIELD_ALIASES).forEach(function (key) {
-            var sourceKey = NOTICE_FIELD_ALIASES[key].find(function (candidate) {
-                return Object.prototype.hasOwnProperty.call(source, candidate);
+    function loadProductNotice($) {
+        if (productNoticeApiRequested) return;
+        productNoticeApiRequested = true;
+  
+        var productCode = getProductCode();
+        if (!productCode) {
+            console.warn('[DETAIL][PRODUCT_NOTICE] productCode is empty');
+            return;
+        }
+  
+        var apiConfig = getProductNoticeApiConfig();
+        var requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productCode) + '/information-notice';
+  
+  
+        fetch(requestUrl, apiConfig.fetchOptions)
+            .then(function (res) {
+                return res.text().then(function (text) {
+                    var body = text;
+                    try {
+                        body = text ? JSON.parse(text) : null;
+                    } catch (parseError) {
+                        // JSON이 아니면 원문 문자열을 그대로 출력
+                    }
+  
+                    if (res.ok) {
+                        
+                        var data = mapProductNoticeApiData(body);
+  
+                        // 1. 상품 정보 고시
+                        if (data && NOTICE_FIELDS[data.type]){
+                          var notice = document.getElementById('productNotice');
+  
+                          if (notice) {
+                              renderProductNotice(notice, data);
+                              initProductNoticeToggle(notice);
+                              notice.hidden = false;
+                          }
+                        }
+                        
+                        // 2. 의학 고지
+                        if(body && body.information){
+                          renderMedicalNotice(body.information.medicalNotice);
+                        }
+  
+                        // 3. 네이버페이  
+                        initNaverPayBenefit($, body.naverPayPaybackAmount);
+  
+                        return;
+                    }
+  
+                    // 상품정보고시 미등록 → 정상 케이스
+                    if(res.status === 422 && body && body.code === 'PRODUCT_INFORMATION_TYPE_MISSING'){
+                      console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 미등록:', productCode);
+                      return;
+                    };
+  
+                    // 예상치 못한 API 오류
+                    console.error('[DETAIL][PRODUCT_NOTICE] error response:', body);
+                    
+                });
+            })
+            .catch(function (error) {
+                console.error('[DETAIL][PRODUCT_NOTICE] fetch error:', error);
             });
-            normalized[key] = sourceKey ? source[sourceKey] : null;
-        });
-        return normalized;
     }
 
     function formatNoticeValue(value) {
@@ -297,6 +401,35 @@
             list.appendChild(item);
         });
     }
+
+    // 의학 고지
+    function renderMedicalNotice(medicalNotice) {
+        var medicalNoticeSection =
+            document.querySelector('.medical-notice');
+
+        if (!medicalNoticeSection) return;
+
+        var info = medicalNoticeSection.querySelector(
+            '.info[data-contents="medical"]'
+        );
+
+        if (!info) return;
+
+        var value =
+            medicalNotice == null
+                ? ''
+                : String(medicalNotice).trim();
+
+        if (!value) {
+            medicalNoticeSection.hidden = true;
+            return;
+        }
+
+        info.textContent = value;
+        medicalNoticeSection.hidden = false;
+    }
+
+
 
     function initProductNoticeToggle(notice) {
         var button = notice.querySelector('.product-notice__toggle');
@@ -468,37 +601,46 @@
         validateQnaRead();
     }
 
-    /* 네이버페이 리워드 / 실구매가 (임시 데모 상품 전용) */
-    function initDemoHealthBenefit($) {
-        var NAVER_PAY_BENEFIT = 4000;
+    /* 네이버페이 리워드 / 실구매가 */
+    function initNaverPayBenefit($, naverPayPaybackAmount) {
+        var NAVER_PAY_BENEFIT =   Number(String(naverPayPaybackAmount || '').replace(/[^0-9]/g, '')) || 0;
         var $benefit = $('#npayBenefitBanner');
         var $footerNpay = $('#npayFooterSlot');
-
-        if (!isDemoHealthProduct()) {
+  
+        if (!NAVER_PAY_BENEFIT) {
             $benefit.empty();
             $footerNpay.empty();
             $('.prd-actual-price').remove();
             return;
         }
-
+  
         function getPrice($target) {
             var value = String($target.text() || '').replace(/[^0-9]/g, '');
             return Number(value) || 0;
         }
 
+        function getSalePrice($target) {
+            var text = String($target.text() || '');
+            var match = text.match(/[\d,]+원/);
+        
+            if (!match) return 0;
+        
+            return Number(match[0].replace(/[^0-9]/g, '')) || 0;
+        }
+  
         function formatPrice(value) {
             return Math.max(0, value).toLocaleString('ko-KR') + '원';
         }
-
+  
         var $detailDesign = $('.xans-product-detaildesign:visible').first();
         var $saleRow = $detailDesign
             .find('tr.prd-sale-price')
             .filter(':visible')
             .first();
-
-        var salePrice = getPrice($saleRow.find('td').first());
+  
+        var salePrice = getSalePrice($saleRow.find('#span_product_price_text').first());
         var actualPrice = salePrice - NAVER_PAY_BENEFIT;
-
+  
         $benefit.html(
             '<div class="npay-benefit-inner">' +
             '<strong>네이버페이</strong>' +
@@ -512,10 +654,10 @@
             '</span>' +
             '</div>'
         );
-
+  
         if ($saleRow.length) {
             $detailDesign.find('.prd-actual-price').remove();
-
+  
             var $actualRow = $(
                 '<tr class="prd-actual-price">' +
                 '<th scope="row">' +
@@ -533,10 +675,10 @@
                 '</td>' +
                 '</tr>'
             );
-
+  
             $actualRow.insertAfter($saleRow);
         }
-
+  
         $footerNpay.html(
             '<button type="button" class="npay-fixed-button" ' +
             'aria-label="네이버페이 결제">' +
@@ -608,7 +750,6 @@
 
         $imageArea.toggleClass('has-mobile-slider', hasMobileSliderImage);
 
-        // Cafe24 모바일 슬라이더는 resize 시점에 레이아웃을 다시 계산합니다.
         if (hasMobileSliderImage) {
             var triggerNativeResize = function () {
                 try {
@@ -648,6 +789,74 @@
         });
     }
 
+    // 상품 금액 '원' 단위 강조
+    function wrapPriceUnitNode(node) {
+        if (!node) return;
+
+        if (node.nodeType === 3) {
+            var text = node.nodeValue;
+            if (!/\d[\d,]*원/.test(text)) return;
+
+            var re = /(\d[\d,]*)(원)/g;
+            var frag = document.createDocumentFragment();
+            var lastIndex = 0;
+            var match;
+
+            while ((match = re.exec(text))) {
+                if (match.index > lastIndex) {
+                    frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                }
+                frag.appendChild(document.createTextNode(match[1]));
+
+                var unit = document.createElement('b');
+                unit.className = 'price-unit';
+                unit.textContent = match[2];
+                frag.appendChild(unit);
+
+                lastIndex = re.lastIndex;
+            }
+
+            if (lastIndex < text.length) {
+                frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+            }
+
+            node.parentNode.replaceChild(frag, node);
+            return;
+        }
+
+        if (node.nodeType !== 1) return;
+        if (node.classList && node.classList.contains('price-unit')) return;
+
+        var tag = node.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'INPUT' || tag === 'SELECT') return;
+
+        Array.prototype.slice.call(node.childNodes).forEach(wrapPriceUnitNode);
+    }
+
+    function initPriceUnitWrap($) {
+        // 옵션 선택 / 수량 변경 시 카페24 코어스크립트가 아래 영역의 마크업을
+        // 통째로 다시 그리므로, 컨테이너 단위로 감시해서 매번 재적용한다.
+        var TARGET_SELECTOR =
+            '.prd-sale-price, .prd-consumer-price, .prd-actual-price, #totalProducts, #totalPrice';
+
+        $(TARGET_SELECTOR).each(function () {
+            var target = this;
+
+            wrapPriceUnitNode(target);
+
+            if (!window.MutationObserver || target.__priceUnitObserver) return;
+
+            var observer = new MutationObserver(function () {
+                observer.disconnect();
+                wrapPriceUnitNode(target);
+                observer.observe(target, { childList: true, subtree: true, characterData: true });
+            });
+
+            observer.observe(target, { childList: true, subtree: true, characterData: true });
+            target.__priceUnitObserver = observer;
+        });
+    }
+
     // 상세 이미지 팝업
     function initDetailPopup() {
         var layer = document.createElement('div');
@@ -669,10 +878,10 @@
         document.body.appendChild(layer);
 
         function openPopup(trigger) {
-            var detailContent = trigger.closest('.prd-detail-content');
-            if (!detailContent) return;
+            var popupItem = trigger.closest('.detail-popup-item');
+            if (!popupItem) return;
 
-            var popupContent = detailContent.querySelector('.detail-popup__box');
+            var popupContent = popupItem.querySelector('.detail-popup__box');
             if (!popupContent) return;
 
             var popupClone = popupContent.cloneNode(true);
@@ -697,6 +906,7 @@
             layer.classList.remove('is-open');
             document.documentElement.classList.remove('detail-popup-open');
             document.body.classList.remove('detail-popup-open');
+            scrollArea.replaceChildren();
         }
 
         document.addEventListener('click', function (event) {
@@ -708,6 +918,7 @@
 
             openPopup(trigger);
         });
+
         closeButton.addEventListener('click', closePopup);
 
         layer.addEventListener('click', function (event) {
@@ -802,6 +1013,7 @@
                 if ($layer.hasClass('is-open')) buildSheet();
             }, [60, 220, 500]);
         }
+
 
         // 원본 select / 시트 select
         function appendOptionFields() {
