@@ -5,6 +5,11 @@
     var JQUERY_WAIT_MAX_TRY = 100;
     var PRICE_LI_DEBOUNCE = 100;
 
+    
+    var ALPHA_REVIEW_API_URL ='https://review-widget.alphwidget.com/v2/api-widget';
+    var ALPHA_REVIEW_WIDGET_CODE = '5f91819b';  
+
+
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
@@ -28,6 +33,7 @@
     function init($) {
         $(function () {
             initProductItemLayout();
+            initProductReviews();
             initSoldoutOverlay();
             initPriceLiTagging($);
             initSortSelectLabel($);
@@ -112,8 +118,15 @@
             var nameEl = description ? description.querySelector('.name') : null;
             if (nameEl && description && !description.querySelector('.starRating')) {
                 var starWrap = document.createElement('div');
+
                 starWrap.className = 'starRating';
-                starWrap.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.9882 0.313064L8.5782 3.52306C8.61436 3.60454 8.67125 3.67511 8.74319 3.72775C8.81513 3.78039 8.8996 3.81325 8.9882 3.82306L12.4982 4.34306C12.5998 4.35613 12.6956 4.39784 12.7745 4.46332C12.8533 4.5288 12.9118 4.61536 12.9433 4.71288C12.9747 4.81039 12.9778 4.91485 12.9521 5.01404C12.9264 5.11324 12.873 5.20308 12.7982 5.27306L10.2682 7.78306C10.2036 7.84339 10.1552 7.91891 10.1272 8.00274C10.0993 8.08657 10.0927 8.17606 10.1082 8.26306L10.7182 11.7931C10.7359 11.8945 10.7247 11.9988 10.686 12.0942C10.6473 12.1896 10.5825 12.2723 10.4992 12.3327C10.4158 12.3931 10.3172 12.429 10.2145 12.4361C10.1118 12.4432 10.0091 12.4214 9.9182 12.3731L6.7582 10.7031C6.67729 10.6633 6.58834 10.6427 6.4982 10.6427C6.40806 10.6427 6.31912 10.6633 6.2382 10.7031L3.0782 12.3731C2.98729 12.4214 2.88464 12.4432 2.78193 12.4361C2.67922 12.429 2.58057 12.3931 2.49722 12.3327C2.41386 12.2723 2.34914 12.1896 2.31042 12.0942C2.2717 11.9988 2.26054 11.8945 2.2782 11.7931L2.8882 8.22306C2.90366 8.13606 2.89712 8.04657 2.86918 7.96274C2.84123 7.87891 2.79277 7.80339 2.7282 7.74306L0.168202 5.27306C0.0924646 5.20116 0.0392019 5.10884 0.0148661 5.00728C-0.00946972 4.90572 -0.00383448 4.79928 0.0310891 4.70086C0.0660127 4.60244 0.128726 4.51626 0.211633 4.45275C0.294539 4.38925 0.394082 4.35115 0.498202 4.34306L4.0082 3.82306C4.0968 3.81325 4.18128 3.78039 4.25322 3.72775C4.32515 3.67511 4.38204 3.60454 4.4182 3.52306L6.0082 0.313064C6.0515 0.219573 6.12064 0.14042 6.20747 0.0849475C6.29429 0.0294755 6.39517 0 6.4982 0C6.60123 0 6.70211 0.0294755 6.78894 0.0849475C6.87576 0.14042 6.9449 0.219573 6.9882 0.313064Z" fill="#0AC262"/></svg>';
+                starWrap.hidden = true;
+                starWrap.innerHTML = '<span class="starRating__scoreWrap">' +
+                                        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7.48991 1.09041L9.07991 4.30041C9.11607 4.38188 9.17296 4.45246 9.2449 4.50509C9.31684 4.55773 9.40131 4.59059 9.48991 4.60041L12.9999 5.12041C13.1015 5.13347 13.1974 5.17518 13.2762 5.24066C13.355 5.30615 13.4135 5.3927 13.445 5.49022C13.4764 5.58774 13.4795 5.69219 13.4538 5.79139C13.4281 5.89058 13.3748 5.98042 13.2999 6.05041L10.7699 8.56041C10.7053 8.62074 10.6569 8.69625 10.6289 8.78008C10.601 8.86391 10.5944 8.9534 10.6099 9.04041L11.2199 12.5704C11.2376 12.6718 11.2264 12.7762 11.1877 12.8716C11.149 12.967 11.0843 13.0496 11.0009 13.11C10.9175 13.1705 10.8189 13.2063 10.7162 13.2134C10.6135 13.2206 10.5108 13.1987 10.4199 13.1504L7.25991 11.4804C7.17899 11.4407 7.09005 11.42 6.99991 11.42C6.90977 11.42 6.82083 11.4407 6.73991 11.4804L3.57991 13.1504C3.489 13.1987 3.38635 13.2206 3.28364 13.2134C3.18093 13.2063 3.08228 13.1705 2.99893 13.11C2.91557 13.0496 2.85085 12.967 2.81213 12.8716C2.77341 12.7762 2.76225 12.6718 2.77991 12.5704L3.38991 9.00041C3.40537 8.9134 3.39883 8.82391 3.37089 8.74008C3.34294 8.65625 3.29448 8.58074 3.22991 8.52041L0.669911 6.05041C0.594174 5.9785 0.540911 5.88618 0.516575 5.78462C0.492239 5.68306 0.497875 5.57663 0.532798 5.47821C0.567722 5.37979 0.630435 5.2936 0.713342 5.2301C0.796248 5.16659 0.895791 5.12849 0.999911 5.12041L4.50991 4.60041C4.59851 4.59059 4.68299 4.55773 4.75492 4.50509C4.82686 4.45246 4.88375 4.38188 4.91991 4.30041L6.50991 1.09041C6.55321 0.996916 6.62235 0.917763 6.70918 0.862291C6.796 0.806819 6.89688 0.777344 6.99991 0.777344C7.10294 0.777344 7.20382 0.806819 7.29065 0.862291C7.37747 0.917763 7.44661 0.996916 7.48991 1.09041Z" fill="#0AC262"/></svg>' +
+                                        '</svg>' +
+                                        '<strong class="starRating__score"></strong>' +
+                                    '</span>' +
+                                    '<span class="starRating__count"></span>';
                 nameEl.before(starWrap);
             }
         });
@@ -153,4 +166,94 @@
     function initSortSelectLabel($) {
         $('#selArray option:first').text('추천순');
     }
+
+
+
+    // 메인 상품 조회
+    function initProductReviews() {
+        var items = document.querySelectorAll(
+            '.prdList__item'
+        );
+    
+        items.forEach(function (item) {
+            var productNo = getProductNo(item);
+    
+            if (!productNo) return;
+    
+            fetchAlphaReview(productNo)
+                .then(function (data) {
+                    renderProductReview(item, data);
+                })
+                .catch(function (error) {
+                    console.error(
+                        '[ALPHA REVIEW]',
+                        productNo,
+                        error
+                    );
+                });
+        });
+    }
+
+    // 상품번호
+    function getProductNo(item) {
+        var productLi = item.closest('li[id^="anchorBoxId_"]');
+    
+        if (!productLi) return null;
+    
+        return productLi.id.replace('anchorBoxId_', '');
+    }
+
+    function fetchAlphaReview(productNo) {
+        var url =
+            ALPHA_REVIEW_API_URL +
+            '?page=1' +
+            '&page_size=10' +
+            '&widget_code=' + ALPHA_REVIEW_WIDGET_CODE +
+            '&product_no=' + encodeURIComponent(productNo) +
+            '&device=w';
+    
+        return fetch(url).then(function (response) {
+            if (!response.ok) {
+                throw new Error(
+                    'HTTP ' + response.status
+                );
+            }
+    
+            return response.json();
+        });
+    }
+
+    function renderProductReview(item, data) {
+        if (!data || data.code === 'RESULT_EMPTY_HIDE') {
+            return;
+        }
+    
+        if (
+            typeof data.review_rating !== 'number' ||
+            typeof data.review_count !== 'number'
+        ) {
+            return;
+        }
+    
+        var starRating = item.querySelector('.starRating');
+    
+        if (!starRating) return;
+    
+        var scoreEl =
+            starRating.querySelector('.starRating__score');
+    
+        var countEl =
+            starRating.querySelector('.starRating__count');
+    
+        if (!scoreEl || !countEl) return;
+    
+        scoreEl.textContent =
+            data.review_rating.toFixed(1);
+    
+        countEl.textContent =
+            '리뷰 ' + data.review_count + '건';
+    
+        starRating.hidden = false;
+    }
+
 })();

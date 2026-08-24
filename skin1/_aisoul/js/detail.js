@@ -239,6 +239,7 @@
 
     function init($) {
         $(function () {
+            initBestReview();
             initProductInfoTable($);
             loadProductNotice($);
             // initProductNotice();
@@ -295,6 +296,87 @@
         $mainImage.off('load.detailSkeleton error.detailSkeleton')
             .on('load.detailSkeleton error.detailSkeleton', hideSkeleton);
     }
+
+    /* 알파리뷰 베스트리뷰 - 모바일에서도 태블릿 데이터 개수 유지 */
+function initBestReview() {
+    var lastProvider = null;
+
+    function applyBestReviewOverride() {
+        var widget = document.querySelector('review-best-widget');
+
+        if (!widget || !widget.provider) return;
+
+        var provider = widget.provider;
+
+        // provider가 새로 생성된 경우에만 다시 패치
+        if (provider === lastProvider && provider.__tabletMobileApplied) {
+            return;
+        }
+
+        lastProvider = provider;
+        provider.__tabletMobileApplied = true;
+
+        /*
+         * 알파리뷰 원본:
+         *
+         * mobile → pageUnit 1
+         * tablet/pc → num_col
+         *
+         * 모바일도 관리자 num_col 값을 사용하도록 변경
+         */
+        provider.options.getPageUnitOverride = function (deviceKind, designOption) {
+            return designOption.num_col;
+        };
+
+        /*
+         * 모바일에서도 2개 데이터를 담을 수 있도록 grid 유지
+         */
+        provider.options.setGridSizeOverride = function (deviceKind, designOption) {
+            return {
+                row: 1,
+                col: designOption.num_col,
+                gap: deviceKind === 'mobile' ? 16 : 20
+            };
+        };
+
+        /*
+         * ResizeManager가 initializeWidget()을 다시 호출해도
+         * mobile용 device=m / page_size=1로 돌아가지 않도록 처리
+         */
+        var originalInitializeWidget = provider.initializeWidget.bind(provider);
+
+        provider.initializeWidget = function () {
+            originalInitializeWidget();
+
+            if (this.deviceKind === 'mobile') {
+                this.filterOption.device = 'w';
+                this.filterOption.page_size = this.designOption.num_col;
+            }
+        };
+
+        // 현재 상태도 새 설정으로 다시 계산
+        provider.setGridSize();
+        provider.initializeWidget();
+
+        provider.getReviewMeta()
+            .then(function () {
+                provider.getReviewList();
+                return provider.requestQueue;
+            })
+            .then(function () {
+                widget.requestUpdate();
+            })
+            .catch(function (error) {
+                console.error(
+                    '[AlphaReview] mobile data override error:',
+                    error
+                );
+            });
+    }
+
+    // 알파리뷰는 늦게 생성되므로 provider 생성 대기
+    window.setInterval(applyBestReviewOverride, 500);
+}
 
     function getProductCode() {
         var productCode =

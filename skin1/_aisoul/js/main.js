@@ -4,7 +4,6 @@
     var JQUERY_WAIT_INTERVAL = 50;
     var JQUERY_WAIT_MAX_TRY = 100;
     // var ALL_VISIBLE_LIMIT = 8;
-
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
@@ -57,6 +56,9 @@
 
         $('.visual-link').append(visualArrowSvg);
     }
+
+
+
 
     /* =====================================================
        메인 상품 탭
