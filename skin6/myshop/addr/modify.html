@@ -1,0 +1,124 @@
+<!--@layout(/layout/basic/layout.html)-->
+
+<style>
+  .h-right {display: none;}
+
+    /* 배송지 수정 */
+  .xans-myshop-addrmodify {padding: 20px 16px 80px; box-sizing: border-box;}
+  .xans-myshop-addrmodify .ec-base-table {border: 0;}
+  .xans-myshop-addrmodify .ec-base-table table {display: block; width: 100%; border: 0;}
+  .xans-myshop-addrmodify .ec-base-table colgroup {display: none;}
+  .xans-myshop-addrmodify .ec-base-table tbody {display: block; width: 100%;}
+  .xans-myshop-addrmodify .ec-base-table tbody tr {display: block; width: 100%; padding: 0; border: 0;}
+    .xans-myshop-addrmodify .ec-base-table tbody th {
+        display: block;
+        width: 100% !important;
+        padding: 0 !important;
+        margin-bottom: 8px;
+        border: 0;
+        background: transparent !important;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+        letter-spacing: -2%;
+        color: var(--common-black);
+    }
+  .xans-myshop-addrmodify .ec-base-table tbody td {display: block; width: 100% !important; padding: 0; border: 0; background: none; text-align: left;}
+  .xans-myshop-addrmodify .ec-base-table tbody tr:not(.addr-modify__save) {margin-bottom: 16px;}
+
+  .xans-myshop-addrmodify .icoRequired {width: auto; height: auto; margin-right: 5px; vertical-align: middle;}
+
+  .xans-myshop-addrmodify input[type="text"], .xans-myshop-addrmodify input[type="tel"], .xans-myshop-addrmodify select {height: 56px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 10px; background: #fff; font-size: 16px; color: #222;}
+  .xans-myshop-addrmodify input[type="text"], .xans-myshop-addrmodify input[type="tel"] {padding: 0 18px;}
+  .xans-myshop-addrmodify select {padding: 0 42px 0 18px;}
+
+  /* 배송지명 / 성명 */
+  .addr-modify__label td input, .addr-modify__name td input {width: 100% !important;}
+
+  /* 주소 */
+  .addr-modify__addr td {display: flex !important; flex-wrap: wrap; gap: 12px;}
+  .addr-modify__addr #shippingUpdate_zipcode_wrap {display: flex;align-items: center;}
+  .addr-modify__addr td input {margin: 0 !important;}
+  .addr-modify__addr td input[id*="postcode"], .addr-modify__addr td input[id*="zip"] {flex: 1; width: auto !important; min-width: 0;}
+  .addr-modify__addr td input[type="button"], .addr-modify__addr td a {flex: 0 0 116px; display: flex; align-items: center; justify-content: center; height: 56px; padding: 0; box-sizing: border-box; border: 1px solid #ddd; border-radius: 10px; background: #fff; font-size: 15px; color: #222;}
+  .addr-modify__addr td input:not([id*="postcode"]):not([id*="zip"]):not([type="button"]) {flex: 0 0 100%; width: 100% !important;}
+
+  /* 일반전화 / 휴대전화 */
+  .addr-modify__phone1 .formGroup, .addr-modify__phone2 .formGroup {display: flex !important; align-items: center; width: 100%; gap: 10px;}
+  .addr-modify__phone1 .formGroup select, .addr-modify__phone2 .formGroup select {flex: 1; width: 0 !important; min-width: 0;}
+  .addr-modify__phone1 .formGroup input, .addr-modify__phone2 .formGroup input {flex: 1; width: 0 !important; min-width: 0;}
+  .addr-modify__phone1 .formGroup > span, .addr-modify__phone2 .formGroup > span {flex: 0 0 auto; color: #555;}
+
+  /* 기본 배송지 저장 */
+  .addr-modify__save {margin-bottom: 0 !important;}
+  .addr-modify__save td {display: flex !important; align-items: center; min-height: 32px; font-size: 14px; color: #222;}
+  .addr-modify__save label {display: inline-flex; align-items: center; gap: 8px;}
+
+
+  .ec-base-help ul {display: flex;flex-direction: column;gap: 6px; padding: 16px;border-radius: 12px;background: var(--neutral-50);}
+.ec-base-help ul li {font-size: 14px;font-weight: 500;line-height: 1.5;color: var(--neutral-500);}
+#wrap .ec-base-help ul li::before {margin: 8px 9px 0 -12px !important;}
+</style>
+
+<div class="myshopArea">
+    <!-- 동적 타이틀 (게시판) -->
+    <span class="page-title-source" hidden>배송 주소록 관리</span>
+
+	<div module="myshop_AddrModify">
+		<!--@css(/css/module/myshop/addrModify.css)-->
+		<!--
+			$return_url = /myshop/addr/list.html
+			$isRuleBasedAddrForm = T
+		-->
+		<div class="ec-base-table typeWrite">
+			<table border="1" >
+				<caption>배송 주소록 입력</caption>
+				<!-- <colgroup>
+					<col style="width:170px" />
+					<col style="width:auto" />
+				</colgroup> -->
+				<tbody>
+					<tr class="addr-modify__label">
+						<th scope="row">배송지명</th>
+						<td>{$form.ma_rcv_title}</td>
+					</tr>
+					<tr class="addr-modify__name">
+						<th scope="row">성명</th>
+						<td>{$form.ma_rcv_name}</td>
+					</tr>
+					<tr class="addr-modify__addr">
+						<th scope="row">주소</th>
+						<td>{$form.address}</td>
+					</tr>
+					<tr class="addr-modify__phone1">
+						<th scope="row"><span class="{$phone1_display|display}"></span>일반전화</th>
+						<td class="formGroup code">{$form.ma_rcv_phone}</td>
+					</tr>
+					<tr class="addr-modify__phone2">
+						<th scope="row"><span class="{$phone2_display|display}"></span>휴대전화</th>
+						<td class="formGroup code">{$form.ma_rcv_mobile_no}</td>
+					</tr>
+					<tr class="addr-modify__save">
+						<td colspan="2">{$form.ma_main_flag}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="ec-base-button fixed-btn-comm">
+				<a href="list.html" class="btnNormalFix fixed-btn-outline sizeM">취소</a>
+				<a href="#none" class="btnSubmitFix sizeM fixed-btn-fill" onclick="{$action_check}">수정</a>
+		</div>
+	</div>
+
+	<div class="ec-base-help inner-m">
+        <ul>
+            <li>배송 주소록은 최대 50개까지 등록할 수 있으며, 별도로 등록하지 않을 경우 최근 배송 주소록 기준으로 자동 업데이트 됩니다.</li>
+            <li>자동 업데이트를 원하지 않을 경우 주소록 고정 선택을 선택하시면 선택된 주소록은 업데이트 대상에서 제외됩니다.</li>
+            <li>기본 배송지는 1개만 저장됩니다. 다른 배송지를 기본 배송지로 설정하시면 기본 배송지가 변경됩니다.</li>
+        </ul>
+	</div>
+    <!--@import(/myshop/myshop_main.html)-->
+
+</div>

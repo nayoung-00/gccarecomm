@@ -1,0 +1,29 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /order/
+Disallow: /basket/
+Disallow: /checkout/
+Disallow: /myshop/
+Disallow: /login/
+Disallow: /member/
+Disallow: /search.html?*
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /board/*/write.html
+Allow: /
+ 
+ 
+User-agent: Googlebot
+Crawl-delay: 1
+ 
+ 
+User-agent: Yeti
+Crawl-delay: 2
+ 
+ 
+User-agent: bingbot
+Crawl-delay: 5
+ 
+ 
+Sitemap: https://gccarecomm.cafe24.com/sitemap.xml

@@ -1,0 +1,63 @@
+@charset "utf-8";
+:root { 
+    --max-container: 768px; 
+    --min-container: 360px; 
+    
+    
+    /* color */
+    --brand-color: #0AC262;
+    --error-color: #F5222D;
+    --common-black: #000;
+    --gray-black: #212121;
+    --neutral-0: #fff;
+    --neutral-50: #f7f7f7; /* background-alternative */
+    --neutral-200: #D5D5D5; /* line */
+    --neutral-300: #B0B0B0;
+    --neutral-400: #9B9B9B;
+    --neutral-500: #8A8A8A;
+    --neutral-600: #6C6C6C;
+    --neutral-700: #474747;
+    --neutral-800: #2A2A2A;
+    --neutral-900: #111;
+    --careBlue-900: #031552;
+    --coolNeutral-50: #F7F7FB;
+    --coolNeutral-100: #E8EAEF;
+
+    /* line */
+    --line-normal: #E6E6E6;
+    --line-accent: #D5D5D5;
+
+}
+
+
+* { box-sizing: border-box; word-break: keep-all; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; line-height: 1.5; } 
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {margin: 0;padding: 0;border: 0;font: inherit;vertical-align: baseline; font-family: "Pretendard Variable", "Apple SD Gothic Neo", sans-serif !important; } 
+
+/* 구형 브라우저용 요소 표시 리셋 */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {display: block; } 
+html { overflow-x: hidden; text-rendering: geometricPrecision; } 
+body { font-family: "Pretendard Variable", "Apple SD Gothic Neo", sans-serif; color: var(--common-black); background: #f5f5f5;line-height: 1; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } 
+ol, ul {list-style: none; } 
+blockquote, q {quotes: none; } 
+blockquote:before, blockquote:after,
+q:before, q:after {content: '';content: none; } 
+table {border-collapse: collapse;border-spacing: 0; } 
+button { border: none; background: transparent; cursor: pointer; } 
+a { display: block; text-decoration: none; color: inherit; } 
+
+input { border: none; padding: 0;margin: 0; font-family: "Pretendard Variable", "Apple SD Gothic Neo", sans-serif; } 
+input:focus {outline: none; font-family: "Pretendard Variable", "Apple SD Gothic Neo", sans-serif; } 
+i { display: flex; font-family: "Pretendard Variable", "Apple SD Gothic Neo", sans-serif; } 

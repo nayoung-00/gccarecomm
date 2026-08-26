@@ -1,0 +1,47 @@
+<aside id="aside" module="layout_slidePackage" data-ez="contents-1dv6c82-1">
+    <!--@css(/layout/basic/css/slideMenu.css)-->
+	<!--@js(/layout/basic/js/slide_menu.js)-->
+	<div class="navigation_member">
+		<div class="side_logo" module="Layout_LogoTop"><a href="/">{$mall_name}</a></div>
+
+		<div class="navigation_state" data-ez-group="top-util-menu" data-ez-role="list">
+			<a data-ez-item="join" module="Layout_statelogoff" href="/member/agreement.html">회원가입</a>
+			<a data-ez-item="login" module="Layout_statelogoff" href="/member/login.html">로그인</a>
+			<a data-ez-item="modify" module="Layout_stateLogon" href="/member/modify.html">내정보수정</a>
+			<a data-ez-item="logout" module="Layout_stateLogon" href="{$action_logout}">로그아웃</a>
+			<a data-ez-item="order" href="/myshop/order/list.html">주문조회</a>
+			<a data-ez-item="mypage" module="Layout_stateLogon" href="/myshop/index.html">마이페이지</a>
+			<a data-ez-item="recent" href="/product/recent_view_product.html">최근본상품</a>
+		</div><!-- //navigation_state -->
+	</div><!-- //navigation_member -->
+
+    <nav class="navigation-menu" role="navigation">
+		<div data-ez-module="menu-side/1"><div id="slideCateList" class="navigation-menu__category">
+  <ul id="slide_add_category"><li><a href="/category/(%EB%8C%80%EB%B6%84%EB%A5%98)-Outerwear/24/" class="view">(대분류) Outerwear</a><ul class="sub_cate01"><li><a href="/category/(%EC%A4%91%EB%B6%84%EB%A5%98)-Jackets/29/" class="view">(중분류) Jackets</a></li><li><a href="/category/(%EC%A4%91%EB%B6%84%EB%A5%98)-Coats/30/" class="view">(중분류) Coats</a></li><li><a href="/category/(%EC%A4%91%EB%B6%84%EB%A5%98)-Blazers/31/" class="view">(중분류) Blazers</a></li></ul></li><li><a href="/category/(%EB%8C%80%EB%B6%84%EB%A5%98)-Tops/25/" class="view">(대분류) Tops</a><ul class="sub_cate01"><li><a href="/category/(%EC%A4%91%EB%B6%84%EB%A5%98)-Tees/32/" class="view">(중분류) Tees</a><ul class="sub_cate02"><li><a href="/category/(%EC%86%8C%EB%B6%84%EB%A5%98)-Short-Sleeve/36/" class="view">(소분류) Short Sleeve</a><ul class="sub_cate03"><li><a href="/category/(%EC%83%81%EC%84%B8%EB%B6%84%EB%A5%98)-Cropped/38/" class="view">(상세분류) Cropped</a></li><li><a href="/category/(%EC%83%81%EC%84%B8%EB%B6%84%EB%A5%98)-Graphic-Tees/39/" class="view">(상세분류) Graphic Tees</a></li></ul></li><li><a href="/category/(%EC%86%8C%EB%B6%84%EB%A5%98)-Long-Sleeve/37/" class="view">(소분류) Long Sleeve</a><ul class="sub_cate03"><li><a href="/category/(%EC%83%81%EC%84%B8%EB%B6%84%EB%A5%98)-Cropped/40/" class="view">(상세분류) Cropped</a></li><li><a href="/category/(%EC%83%81%EC%84%B8%EB%B6%84%EB%A5%98)-Graphic-Tees/41/" class="view">(상세분류) Graphic Tees</a></li></ul></li></ul></li><li><a href="/category/(%EC%A4%91%EB%B6%84%EB%A5%98)-Shirts/33/" class="view">(중분류) Shirts</a></li></ul></li><li><a href="/category/(%EB%8C%80%EB%B6%84%EB%A5%98)-Dresses/26/" class="view">(대분류) Dresses</a></li></ul>
+  </div></div><!-- //menu-side/1 -->
+
+		<div class="cboth slide_line"></div>
+
+        <div module="Layout_BoardInfo" class="navigation-menu__board">
+			<div class="title">고객센터<button type="button" class="icoCategory">펼침</button></div>
+            <ul class="categoryList">
+                <li><a href="{$link_board_list}">{$board_name}</a> {$board_adult_icon}</li>
+                <li><a href="{$link_board_list}">{$board_name}</a> {$board_adult_icon}</li>
+            </ul>
+        </div><!-- //navigation-menu__board -->
+
+		<div module="Layout_multishopList">
+			<button type="button" class="toggle">{$current_language} <i aria-hidden="true" class="icon icoArrowBottom"></i></button>
+			<ul module="Layout_multishopListitem">
+				<li class="{$selected_class}">
+					<a href="//{$shop_domain}/">{$locale_language}</a>
+				</li>
+				<li class="{$selected_class}">
+					<a href="//{$shop_domain}/">{$locale_language}</a>
+				</li>
+			</ul>
+		</div>
+    </nav>
+    <button type="button" class="btnClose"><i aria-hidden="true" class="icon icoClose"></i>닫기</button>
+</aside>
+<!--#ez="1/2"-->
