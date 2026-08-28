@@ -130,6 +130,38 @@
         });
     }());
 </script>
+<script>
+(function () {
+  function init() {
+    var el = document.getElementById('xans_myshop_basket_cnt');
+    if (!el) return;
+
+    var fallback = window.setTimeout(reveal, 1500);
+
+    function reveal() {
+      window.clearTimeout(fallback);
+      var count = parseInt(el.textContent.trim(), 10) || 0;
+      if (count > 0) {
+        el.classList.add('is-ready');
+      }
+    }
+
+    new MutationObserver(reveal).observe(el, {
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
+
+    reveal();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
+</script>
 
 </head>
 <body class="theme01" data-ez-theme="theme01">

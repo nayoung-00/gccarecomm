@@ -4,7 +4,7 @@
 
 <div class="section path">
     <!-- 동적 타이틀 (게시판) -->
-    <span class="page-title-source" hidden>건강상품</span>
+<span class="page-title-source" data-href="/" hidden>어떠케어몰</span>
 </div>
 
 <div class="myshopArea">
@@ -27,7 +27,7 @@
                 type="button"
                 class="form-title period-toggle"
                 aria-expanded="false">
-                <span>조회기간</span>
+                <span>기간별 조회</span>
                 <span class="period-toggle-icon" aria-hidden="true"><!--@import(/_aisoul/svg/arrow_bt.html)--></span>
             </button>
 
@@ -48,18 +48,25 @@
             </div>
         </fieldset>
     </div>
-
+    
     <!--@import(/myshop/order/history_list_item.html)-->
-
     
     
-    <ul class="txtList orderHistory-info">
+    <ul class="txtList orderHistory-info" module="Myshop_OrderHistoryHead">
         <li class="{$is_past_list_none_display|display}">- 기본적으로 최근 3개월간의 자료가 조회되며, 기간 검색시 지난 주문내역을 조회하실 수 있습니다.</li>
         <li class="{$is_past_list_display|display}">- 기본적으로 최근 3개월간의 자료가 조회되며, 기간 검색시 주문처리완료 후 36개월 이내의 주문내역을 조회하실 수 있습니다.</li>
         <li class="{$is_past_list_display|display}">- 완료 후 36개월 이상 경과한 주문은 <a href="javascript:OrderHistory.searchPast(false)">[과거주문내역]</a>에서 확인할 수 있습니다.</li>
-        <li>- 리뉴얼 전에 주문한 내역은 <a href="/myshop/order/list_old.html">[이전 주문내역]</a>에서 확인할 수 있습니다.</li>
+        <!-- <li>- 리뉴얼 전에 주문한 내역은 <a href="/myshop/order/list_old.html">[이전 주문내역]</a>에서 확인할 수 있습니다.</li> -->
         <li class="{$cs_request_guide_display|display}">- 취소/교환/반품 신청은 {$cs_request_period_day_condition} {$cs_request_period_day}일까지 가능합니다.</li>
     </ul>
+    
+    <!-- <div class="orderHistory-box-btm inner-m" module="Myshop_OrderHistoryHead">
+        <a href="javascript:OrderHistory.searchPast(false)" class="sizeM btnNormal">과거주문내역</a>
+    </div>
+     -->
+
+
+
     <!--@import(/myshop/myshop_main.html)-->
 
 </div>

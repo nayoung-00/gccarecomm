@@ -19,13 +19,13 @@
 .xans-product-detail .infoArea .sizeGuide a:hover { text-decoration:none; } 
 .xans-product-detaildesign > table > tbody > tr:first-child { display:none; } 
 .xans-product-detail .infoArea table { border:0; font-size:13px; line-height:18px; } 
-.xans-product-detail .infoArea th { font-weight:normal; width:100px; text-align:left; vertical-align:top; } 
+.xans-product-detail .infoArea th { font-weight:normal; width:140px; text-align:left; vertical-align:top; } 
 .xans-product-detail .infoArea td {vertical-align:middle; } 
 .xans-product-detail .infoArea img { vertical-align:middle; } 
 .xans-product-detail .infoArea select { width:100%; } 
 .xans-product-detail .infoArea td #delivery_cost_prepaid { margin:0 0 10px; } 
 .xans-product-detail .infoArea td .sale { text-decoration:line-through; } 
-.xans-product-detail .infoArea td .period { display:block; margin:7px 0 0; font-size:11px; color:#353535; } 
+/* .xans-product-detail .infoArea td .period { display:block; margin:7px 0 0; font-size:11px; color:#353535; }  */
 .xans-product-detail .infoArea td .mileage li { line-height:1.7em; } 
 .xans-product-detail .infoArea td img.qrcode { border:1px solid #e1e1e1; } 
 .xans-product-detail .infoArea td #span_product_coupon_dc_price { color:#070705; } 
@@ -92,7 +92,7 @@
 .xans-product-detail .productSet .thumbnail { width:80px; aspect-ratio: 1/1; border-radius: 8px; border: 1px solid var(--line-normal); overflow: hidden; flex-shrink: 0; } 
 .xans-product-detail .productSet .thumbnail img { max-width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; } 
 .xans-product-detail .productSet .information { position:relative; display: flex; align-items: center; gap: 16px; } 
-.xans-product-detail .productSet .information .name { margin-bottom: 6px; font-size: 14px; font-weight: 500; letter-spacing: -2%; } 
+.xans-product-detail .productSet .information .name { margin-bottom: 6px; font-size: 14px; font-weight: 500; letter-spacing: -2%; line-height: 1.5; } 
 .xans-product-detail .productSet .information .price { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 500; letter-spacing: -2%; color: var(--neutral-700); }
 .xans-product-detail .productSet .information .price .del { font-weight:normal; } 
 .xans-product-detail .productSet .information .salePrice { color:#939393; } 
@@ -221,7 +221,7 @@
 .xans-product-detail .discount_layer .ec-base-button { text-align:center; } 
 
 /* 세트상품 추가정보 레이어 */
-.xans-product-detail .productSet .product { position:relative; margin-bottom: 20px; } 
+.xans-product-detail .productSet .product { position:relative; display: flex;flex-direction: column;gap: 8px; margin-bottom: 20px; } 
 .xans-product-detail .productSet .description { z-index:10; position:absolute; top:25px; right:0; padding:7px 0 0; } 
 .xans-product-detail .productSet .description .xans-product-detail { position:relative; padding:15px; background:#fff; } 
 .xans-product-detail .productSet .description > h3 { margin:0 0 8px; padding:0 10px; font-size:12px; border-bottom:0; } 
@@ -405,13 +405,13 @@
 .swiper-container.relation_slide ul { display:flex; padding:0; margin:0; height:auto; } 
 .swiper-container.relation_slide ul .thumbnail { margin:0; } 
 .swiper-container.relation_slide ul > li .prdList__item { margin:0; } 
-.swiper-container.relation_slide ul > li .description .name a { font-size:12px;font-weight: 500; color:var(--common-black);letter-spacing: -2%; line-height:1.5; } 
+.swiper-container.relation_slide ul > li .description .name a { font-size:14px;font-weight: 500; color:#8a8a8a;letter-spacing: -2%; line-height:1.5; } 
 .swiper-container.relation_slide ul > li .description .price { font-size:14px; color:var(--common-black); font-weight:700;letter-spacing: -2%; } 
 
 /* 게시판 */
 #prdQnA { width:100%; max-width:var(--max-container); box-sizing:border-box; margin-right:auto; margin-left:auto; padding:70px 15px 0; } 
 #prdQnA .board_title, #prdReview .board_title { display:block; margin:0 0 36px; text-align:center; } 
-#prdQnA .qna-heading h2, #prdReview .board_title h2 { color: var(--common-black); font-size:24px; font-weight:700; line-height:1.3; } 
+#prdQnA .qna-heading h2, #prdReview .board_title h2 { color: var(--common-black); font-size:18px; font-weight:700; line-height:1.3; } 
 #prdQnA .qna-heading p, #prdReview .board_title p { margin-top:12px; color:var(--neutral-400); font-size:16px; line-height:1.5; } 
 .board_title .ec-base-button { margin:0; } 
 .board_title .ec-base-button a { width:110px; } 
@@ -632,19 +632,17 @@
 
 
 
-/* 네이버 */
-.npay-benefit-banner { min-height: 40px; } 
-.npay-benefit-banner:empty { display: none; } 
-.npay-benefit-banner .npay-benefit-inner { display: flex; align-items: center; gap: 4px; padding: 12px 16px; border: 1px solid var(--line-normal); border-radius: 8px; font-size: 13px; font-weight: 600; color: #00e170;} 
-
 /* 임시 건기식 시안 노출용 UI: 실제 API 연동 시 클래스는 그대로 재사용할 수 있습니다. */
 .xans-product-detail .infoArea .xans-product-detaildesign tr span.actual-price-label { color:var(--neutral-800) !important; font-size:14px; font-weight:600; } 
 .actual-price-value, .xans-product-detail .infoArea td #span_product_price_text { color:var(--common-black); font-size:20px; font-weight:700; letter-spacing: -2%; } 
 .prd-actual-price th { display:flex; align-items:center; gap:4px; } 
+
 .prd-actual-price td { text-align:right; } 
 .prd-actual-price .actual-price-slot { margin:0 !important; } 
-.price-tooltip { display:inline-flex; position:relative; align-items:center; vertical-align:middle; } 
-.price-tooltip-trigger { display:inline-flex; width:12px; height:12px; align-items:center; justify-content:center; padding:0; border:1px solid var(--gray-black); border-radius:50%; background:#fff; color:var(--gray-black); font-size:8px; font-weight:700; line-height:1; cursor:pointer; } 
+.prd-actual-price th .price-tooltip { display:inline-flex; position:relative; align-items:center;gap: 4px; vertical-align:middle; } 
+.price-tooltip { position:relative;vertical-align:middle; }
+.price-tooltip-trigger { display:inline-flex; width:12px; height:12px; align-items:center; justify-content:center; padding:0; border:1px solid var(--neutral-800); border-radius:50%; background:#fff; color:var(--neutral-800); font-size:8px; font-weight:700; line-height:1; cursor:pointer; } 
+.npay-benefit-inner .price-tooltip-trigger { border-color: #0AC262; color: #0AC262;}
 .xans-product-detail .infoArea .price-tooltip-panel {    
     display: none;
     position: absolute;
@@ -660,15 +658,22 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
-    word-break: break-all;
+    word-break: keep-all;
     color: var(--neutral-0) !important;}
 .xans-product-detail .infoArea .price-tooltip-panel::before {content: "";display: block; position: absolute; top: -7px; left: 25px; width: 20px; height: 8px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='8' viewBox='0 0 20 8'%3E%3Cpath d='M0 8h1.64c1.47 0 2.25-.04 3.19-.63.41-.27.77-.64 1.47-1.38l2.37-2.52C9.48 2.61 9.89 2.18 10.36 2.02a2 2 0 0 1 1.28 0c.47.16.88.59 1.69 1.45l2.37 2.52c.7.74 1.05 1.11 1.47 1.38.94.59 1.72.63 2.83.63H0Z' fill='%232F74EB'/%3E%3C/svg%3E") no-repeat center / 100% 100%; transform: translateX(-50%); pointer-events: none;}
 .price-tooltip:hover .price-tooltip-panel,
 .price-tooltip:focus-within .price-tooltip-panel { display:block; } 
-.npay-benefit-inner > strong { color:#111; } 
+.prd-actual-price th .price-tooltip .reward-unit {margin: 0 !important;font-size: 12px;color: var(--neutral-300);}
+
+
+/* 네이버 */
+.npay-benefit-banner:empty { display: none; } 
+
 .npay-benefit-inner .price-tooltip { margin-left:1px; } 
-.npay-fixed-button { display:flex; width:100%; height:100%; align-items:center; justify-content:center; gap:2px; padding:0; border:0; border-radius:8px; background:#00e170;; color:#050505; font-size:14px; font-weight:700; cursor:pointer; } 
-.npay-mark { display:inline-flex; width:17px; height:17px; align-items:center; justify-content:center; border-radius:50%; background:#050505; color:#05c665; font-size:11px; font-weight:800; } 
+.npay-benefit-banner .npay-benefit-inner { display: flex; align-items: center; gap: 4px; padding: 10px 2px; border-bottom: 1px solid var(--line-normal); font-size: 12px; font-weight: 700; color: #0AC262;line-height: 1.5;} 
+
+.npay-fixed-button { display:flex; width:100%; height:100%; align-items:center; justify-content:center; gap:2px; padding:0; border:0; border-radius:8px; background:#0AC262;; color:#050505; font-size:14px; font-weight:700; cursor:pointer; } 
+.npay-mark { display:inline-flex; width:17px; height:17px; align-items:center; justify-content:center; border-radius:50%; background:#050505; color:#0AC262; font-size:11px; font-weight:800; } 
 
 .prd-sale-price td { display: flex; align-items: baseline; gap: 6px; } 
 .prd-sale-price .discount-rate { color: #FF3B30; font-weight: 700; font-size: 18px; } 
@@ -712,25 +717,26 @@
  .xans-product-detail .headingArea { border:0; } 
  /* .xans-product-detail .headingArea .icon { display:none; }  */
  .xans-product-detail .headingArea h1 { display:block; font-size:16px; font-weight:500; line-height: 1.5; letter-spacing:-.36px; color: var(--common-black);; } 
- .detail-summary { margin-bottom: 12px; } 
+ .detail-summary { margin-bottom: 8px; } 
  .detail-summary .summary-chip-list { gap:6px; } 
  .summary-chip { padding:4px 7px; font-size:12px; line-height:1.2; } 
 
 
  /* '원' 단위 price unit */
 .price-unit {padding-left: 2px;font-size: 14px;}
-.totalPrice .price-unit, #totalProducts .price-unit {padding-left: 0;font-size: 12px;}
- .npay-benefit-banner .npay-benefit-inner { min-height:44px; box-sizing:border-box; padding:11px 10px; border-color:#03c75a; } 
+.totalPrice .price-unit, #totalProducts .price-unit {padding-left: 0;font-size: 12px;} 
  .actual-price-slot:not(:empty) { margin:0 0 12px; } 
 
 .xans-product-detail .infoArea .xans-product-detaildesign {
-    padding: 20px 0;
+    padding: 12px 0 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--line-normal);
 }
  .xans-product-detail .infoArea .xans-product-detaildesign table { margin:0; } 
  .xans-product-detail .infoArea .xans-product-detaildesign tr { min-height:38px; } 
  .xans-product-detaildesign tr span {display: block;margin-bottom: 10px;  color: var(--neutral-600) !important; } 
+ .xans-product-detaildesign tr.prd-discount-period td span {margin: 0;}
+ .xans-product-detaildesign tr.prd-discount-period td > span {margin-bottom: 10px;}
  .xans-product-detail .infoArea .xans-product-detaildesign th { padding: 0 2px; font-size:12px; font-weight: 500; letter-spacing: -.24px; color: var(--neutral-600); } 
  .xans-product-detail .infoArea .xans-product-detaildesign td { text-align:right; } 
  .xans-product-detail .prd-consumer-price td span { font-size:16px; letter-spacing: -2%; } 
@@ -931,12 +937,12 @@ html.detail-popup-open, body.detail-popup-open { overflow: hidden; }
 .product-detail-skeleton.is-hidden {opacity: 0;visibility: hidden;}
 .product-detail-skeleton__image {width: 100%;aspect-ratio: 1 / 1;background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 37%, #f0f0f0 63%);background-size: 400% 100%;animation: product-detail-skeleton-shimmer 1.4s ease infinite;}
 .product-detail-skeleton__info {display: flex;flex-direction: column;gap: 10px;box-sizing: border-box;padding: 16px 16px 60px;}
-.product-detail-skeleton__line {height: 14px;border-radius: 4px;background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 37%, #f0f0f0 63%);background-size: 400% 100%;animation: product-detail-skeleton-shimmer 1.4s ease infinite;}
+.product-detail-skeleton__line {height: 14px;border-radius: 16px;background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 37%, #f0f0f0 63%);background-size: 400% 100%;animation: product-detail-skeleton-shimmer 1.4s ease infinite;}
 .product-detail-skeleton__line--tag { width: 30%; height: 12px; }
 .product-detail-skeleton__line--name { width: 70%; height: 18px; }
 .product-detail-skeleton__line--name-short { width: 45%; }
 .product-detail-skeleton__line--price { width: 40%; height: 22px; margin-top: 4px; }
-.product-detail-skeleton__line--benefit { width: 90%; height: 40px; border-radius: 8px; }
+.product-detail-skeleton__line--benefit { width: 90%; height: 40px; border-radius: 16px; }
 @keyframes product-detail-skeleton-shimmer {
     0% { background-position: 100% 0; }
     100% { background-position: 0 0; }
@@ -954,4 +960,19 @@ html.detail-popup-open, body.detail-popup-open { overflow: hidden; }
 /* layout.html 전역 #wrap 로딩(opacity) 페이드와 중복 적용 방지 */
 html.has-detail-skeleton.is-page-loading #wrap {
     opacity: 1 !important;
+}
+/* 스켈레톤이 떠 있는 동안 다른 콘텐츠 전부 숨김 */
+.product-detail-skeleton:not(.is-hidden) ~ * {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+.product-detail-skeleton.is-hidden ~ * {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-detail-skeleton.is-hidden ~ * {
+        transition: none;
+    }
 }

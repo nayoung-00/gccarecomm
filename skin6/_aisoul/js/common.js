@@ -34,6 +34,27 @@
       initFixedButton($);
       initBasketOptionModal($);
       initBasketCountLabel($);
+      initCommerceClose($);
+    });
+  }
+
+  
+  /* =====================================================
+     커머스 헤더 X 버튼 → Android Native Bridge
+  ===================================================== */
+  function initCommerceClose($) {
+    $(document).off('click.commerceClose', '.main-close').on('click.commerceClose', '.main-close', function (event) {
+      event.preventDefault();
+
+      try {
+        if (window.android && typeof window.android.webToAppCommerceClose === 'function') {
+          window.android.webToAppCommerceClose(JSON.stringify({}));
+          return;
+        }
+        // AOS/iOS 동일 명칭: webToAppCommerceClose
+      } catch (error) {
+        console.error('[COMMON][COMMERCE_CLOSE]', error);
+      }
     });
   }
 

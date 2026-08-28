@@ -34,6 +34,7 @@
         $(function () {
             initProductItemLayout();
             initProductReviews();
+            initDynamicProductItems();
             initSoldoutOverlay();
             initPriceLiTagging($);
             initSortSelectLabel($);
@@ -81,6 +82,12 @@
     ===================================================== */
     function initProductItemLayout() {
         document.querySelectorAll('.prdList__item').forEach(function (item) {
+
+             // 이미 처리한 기존 상품은 다시 건드리지 않음
+            if (item.dataset.productLayoutApplied === 'true') {
+                return;
+            }
+            
             var thumbnail = item.querySelector('.thumbnail');
             var description = item.querySelector('.description');
             var iconBox = description ? description.querySelector('.icon') : null;
@@ -129,8 +136,55 @@
                                     '<span class="starRating__count"></span>';
                 nameEl.before(starWrap);
             }
+
+            item.dataset.productLayoutApplied = 'true';
         });
     }
+
+    /* =====================================================
+    더보기 상품 동적 처리
+    ===================================================== */
+    function initDynamicProductItems() {
+
+        var timer = null;
+    
+        var productList = document.querySelector('.prdList');
+    
+        if (!productList) return;
+    
+        var previousCount =
+            document.querySelectorAll('.prdList__item').length;
+    
+        var observer = new MutationObserver(function () {
+    
+            window.clearTimeout(timer);
+    
+            timer = window.setTimeout(function () {
+    
+                var currentCount =
+                    document.querySelectorAll('.prdList__item').length;
+    
+                if (currentCount <= previousCount) {
+                    return;
+                }
+    
+                previousCount = currentCount;
+    
+                initProductItemLayout();
+                initProductReviews();
+    
+            }, 100);
+    
+        });
+    
+        observer.observe(productList, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+
+
 
     /* =====================================================
        판매가 li 클래스명 추가 (동적 DOM 대응)
@@ -167,8 +221,6 @@
         $('#selArray option:first').text('추천순');
     }
 
-
-
     // 메인 상품 조회
     function initProductReviews() {
         var items = document.querySelectorAll(
@@ -176,9 +228,15 @@
         );
     
         items.forEach(function (item) {
+
+            if (item.dataset.alphaReviewRequested === 'true') {
+                return;
+            }
+            
             var productNo = getProductNo(item);
     
             if (!productNo) return;
+            item.dataset.alphaReviewRequested = 'true';
     
             fetchAlphaReview(productNo)
                 .then(function (data) {

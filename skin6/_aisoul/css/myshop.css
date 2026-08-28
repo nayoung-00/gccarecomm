@@ -13,7 +13,7 @@
 .myshopArea .ec-base-tab .menu li a {height: 40px;padding: 12px 0;font-size: 14px;font-weight: 600;line-height: 2;letter-spacing: -.4%; text-align: center;color: var(--neutral-300);line-height: 1;}
 .myshopArea .ec-base-tab .menu li.selected a {width: 100%;border-bottom: 2px solid var(--brand-color); font-weight: 700;color: var(--neutral-900);}
 
-.orderHistory-info {margin-top: 40px !important;padding: 12px 20px;background: var(--coolNeutral-50);}
+.orderHistory-info {margin-top: 40px !important;padding: 12px 20px !important;background: var(--coolNeutral-50);}
 .orderHistory-info li a{display: inline; font-weight: 600;}
 
 /* 리스트 */
@@ -94,9 +94,12 @@
 
 
 
-.period-toggle { display: flex; align-items: start; justify-content: start; gap: 4px; width: 100%; padding: 4px 0 12px; color: var(--common-black); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; } 
+.period-toggle { display: flex; align-items: start; justify-content: space-between; width: 100%; padding: 20px 8px; color: var(--common-black); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; } 
 .period-toggle-icon { display: flex; align-items: center; justify-content: center; transition: transform 0.2s; } 
+.period-toggle-icon svg path {stroke: #717171;}
 .period-search .period-content { display: none;  } 
 .period-search.is-open .period-content { display: block; } 
 .period-search .period-toggle-icon { transition: transform 0.2s ease; }
 .period-search.is-open .period-toggle-icon { transform: rotate(180deg); } 
+#wrap .xans-myshop .period [class^='btnNormal']:not(.disabled).selected {border-color: var(--brand-color) !important;}
+.period-content  {margin-bottom: 20px;}

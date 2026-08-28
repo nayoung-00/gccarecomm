@@ -47,6 +47,6 @@
 }
 
 
-.xans-myshop-orderhistoryhead {margin: 16px 0 30px;}
+/* .xans-myshop-orderhistoryhead {margin: 16px 0 30px;} */
 .xans-myshop-orderhistoryhead .period { display:flex; gap: 6px;margin:10px 0; }
 .xans-myshop-orderhistoryhead .btnSubmit { color: var(--neutral-0) !important;background: var(--brand-color) !important;border-color: var(--brand-color) !important;}

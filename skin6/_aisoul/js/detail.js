@@ -77,7 +77,9 @@
         '정가': 'prd-consumer-price',
         '판매가': 'prd-sale-price',
         '구매가': 'prd-sale-price',
-        '배송비': 'prd-delivery-fee'
+        '배송비': 'prd-delivery-fee',    
+        '최적할인가': 'prd-best-discount-price',
+        '할인 기간': 'prd-discount-period'   
     };
 
     // 상품정보고시 설정
@@ -704,8 +706,7 @@ function initBestReview() {
             $footerNpay.empty();
             $('.prd-actual-price').remove();
             return;
-        }
-  
+        } 
         function getPrice($target) {
             var value = String($target.text() || '').replace(/[^0-9]/g, '');
             return Number(value) || 0;
@@ -730,13 +731,13 @@ function initBestReview() {
         var salePrice = getSalePrice($saleRow.find('#span_product_price_text').first());
         var actualPrice = salePrice - NAVER_PAY_BENEFIT;
   
-        $benefit.html('<div class="npay-benefit-inner">' + '<strong>네이버페이</strong>' + '<span><b>' +
+        $benefit.html('<div class="npay-benefit-inner">' + '<strong>복용체크 참여 시 네이버페이 최대</strong>' + '<span><b>' +
             formatPrice(NAVER_PAY_BENEFIT) +
             '</b> 지급</span>' +
             '<span class="price-tooltip">' +
             '<button type="button" class="price-tooltip-trigger" ' +
             'aria-label="네이버페이 혜택 안내">?</button>' +
-            '<span class="price-tooltip-panel" role="tooltip">복용 체크 완료 시 네이버페이로 지급되는 리워드 금액</span>' +
+            '<span class="price-tooltip-panel" role="tooltip">구매 수량 및 참여 횟수에 따라 지급되는 리워드 금액 상이</span>' +
             '</span>' +
             '</div>'
         );
@@ -746,11 +747,12 @@ function initBestReview() {
             var $actualRow = $(
                 '<tr class="prd-actual-price">' +
                 '<th scope="row">' +
-                '<span class="actual-price-label">실구매가</span>' +
+                '<span class="actual-price-label">리워드 혜택가</span>' +
                 '<span class="price-tooltip">' +
                 '<button type="button" class="price-tooltip-trigger" ' +
                 'aria-label="실구매가 안내">?</button>' +
-                '<span class="price-tooltip-panel" role="tooltip">네이버페이 리워드를 지급받았을 때의 실제 구매 가격</span>' +
+                '<span class="reward-unit">1개 기준</span>' +
+                '<span class="price-tooltip-panel" role="tooltip">결제는 구매가로 진행되며, 최대 리워드 지급 시의 최종 혜택가</span>' +
                 '</span>' +
                 '</th>' +
                 '<td>' +
@@ -919,8 +921,7 @@ function initBestReview() {
     }
 
     function initPriceUnitWrap($) {
-        // 옵션 선택 / 수량 변경 시 카페24 코어스크립트가 아래 영역의 마크업을
-        // 통째로 다시 그리므로, 컨테이너 단위로 감시해서 매번 재적용한다.
+        // 옵션 선택 
         var TARGET_SELECTOR =
             '.prd-sale-price, .prd-consumer-price, .prd-actual-price, #totalProducts, #totalPrice';
 
@@ -1044,14 +1045,13 @@ function initBestReview() {
             return $sourceSelected.find('tr.option_product, tr.add_product').length > 0;
         }
 
-        // 카페24 기본 "구매하기" 버튼(원본)은 모바일에서 옵션 미선택 시 옵션 레이어를 띄우므로,
-        // PC와 동일하게 알럿으로 안내하도록 클릭을 캡처링 단계에서 가로챈다.
-        // 하단 고정바의 구매하기 버튼도 이 원본 버튼을 프로그래밍적으로 클릭하므로 함께 처리된다.
+        // 구매하기/장바구니 레이어 팝업 호출 막기
         if (!$origin.data('requiredOptionGuardBound')) {
             $origin.data('requiredOptionGuardBound', true);
             $origin.get(0).addEventListener('click', function (event) {
-                var buyLink = event.target.closest && event.target.closest('a.btnSubmit.sizeL');
-                if (!buyLink || hasRequiredOptionSelected()) return;
+                var actionTarget = event.target.closest &&
+                    event.target.closest('a.btnSubmit.sizeL, #actionCart');
+                if (!actionTarget || hasRequiredOptionSelected()) return;
 
                 event.preventDefault();
                 event.stopImmediatePropagation();

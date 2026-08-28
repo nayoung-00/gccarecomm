@@ -1,6 +1,6 @@
 (function () {
     // 페이지당 노출 개수: 현재 테스트용 2개 노출
-    var ITEMS_PER_PAGE = 2;
+    var ITEMS_PER_PAGE = 4;
 
     var currentFilter = 'all';
     var currentPage = 1;

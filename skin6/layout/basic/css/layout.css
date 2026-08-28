@@ -11,7 +11,7 @@ body {min-width:100%;padding:0;margin:0;max-width:1760px;}
 audio, canvas, img, svg, video {max-width:100%;height:auto;box-sizing:border-box;}
 button {border:0;outline:none;}
 img { -webkit-perspective: 1; }
-input, select, textarea, body, code, button {font-family:"Montserrat", "Noto Sans KR", Arial, sans-serif !important;}
+input, select, textarea, body, code, button {font-family:"Pretendard", "Noto Sans KR", Arial, sans-serif !important;}
 a:hover {text-decoration:none;}
 .display_mobile_only {display:none;}
 .display_tablet_only {display:none;}

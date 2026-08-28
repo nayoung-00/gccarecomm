@@ -25,6 +25,7 @@
 .ec-base-prdInfo .basket-prod-box .description .prdName a { display: block; margin-bottom: 4px; } 
 #wrap .ec-base-prdInfo .basket-prod-box .description .price { margin-bottom: 16px; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
 #wrap .ec-base-prdInfo .description .price li { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
+#wrap .ec-base-prdInfo .description .price li.basket-sale-price {color: var(--font-color-secondary); } 
 #wrap .ec-base-prdInfo .description .price strong { font-weight: 700; } 
 .ec-base-prdInfo .basket-prod-box .description .info { display: flex; flex-direction: column; gap: 6px; margin: 0 0 12px; } 
 .ec-base-prdInfo .basket-prod-box .description .info .basket-shipping { margin: 0; font-size: 12px; font-weight: 500; line-height: 1.5; color: var(--neutral-300); } 

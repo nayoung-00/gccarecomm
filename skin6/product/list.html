@@ -11,84 +11,22 @@
     <span class="likeButton {$disp_likecate_class}"><button type="button">{$disp_likecate_icon}<strong>{$disp_likecate_count}</strong></button></span>
 </div>
 
-<!-- 건강상품 카테고리 선택 -->
-<div class="health-category-selector inner-m">
-	<button type="button" class="health-category-selector__button" aria-expanded="false" aria-controls="healthCategorySheet">
-		<span class="health-category-selector__current">전체</span>
-		<span class="health-category-selector__btn"><i class="health-category-selector__arrow" aria-hidden="true"></i></span>
-	</button>
-</div>
 
-<div class="health-category-selector__dim" hidden></div>
-<div id="healthCategorySheet" class="section ec-base-tab typeMenu health-category-selector__sheet" data-ez-module="product-list-subcategory/1" role="dialog" aria-modal="true" aria-label="카테고리 선택" hidden>
-	<div class="health-category-selector__handle" aria-hidden="true"></div>
-	<div class="display_tablet_only">
-		<ul class="menuCategory menu">
-			<li module="product_displaysubcategory" style="display:{$display};" class="{$selected}">
-				<a href="{$link_product_list_sub}" class="button">{$category_name}
-					<span class="count {$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-				<ul module="product_children">
-					<li class="{$selected}">
-						<a href="{$link_product_list_sub}">{$category_name}
-							<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-						<div class="button">
-							{$children_icon}
-							<ul module="product_children" class="subCategory">
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="{$selected}">
-						<a href="{$link_product_list_sub}">{$category_name}
-							<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-						<div class="button">
-							{$children_icon}
-							<ul module="product_children" class="subCategory">
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
-	<div class="display_pc_only">
-		<ul class="menuCategory menu">
-			<li module="product_displaycategory" style="display:{$display};" class="{$selected}">
-				<a href="{$link_product_list_sub}" class="button">{$category_name}
-					<span class="count {$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-				<ul module="product_children">
-					<li class="{$selected}">
-						<a href="{$link_product_list_sub}">{$category_name}
-							<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-						<div class="button">
-							{$children_icon}
-							<ul module="product_children" class="subCategory">
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="{$selected}">
-						<a href="{$link_product_list_sub}">{$category_name}
-							<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a>
-						<div class="button">
-							{$children_icon}
-							<ul module="product_children" class="subCategory">
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-								<li class="{$selected}"><a href="{$link_product_list_sub}">{$category_name}<span class="{$product_count_display|display}">({$product_count})</span></a><a href="#none" class="iconWrap"></a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
+<!-- 탭 -->
+<!-- 상품 대분류 탭 -->
+<div class="section category-tabs">
+    <ul class="category-tabs__list"></ul>
 </div>
+<!-- 중분류 탭: 사용 시 주석 해제 -->
+<!-- <div class="section category-sub-tabs">
+    <ul class="category-sub-tabs__list"></ul>
+</div> -->
+
+
+
+<!-- 추천 상품리스트 -->
 <!-- <div module="product_headcategory" data-ez-module="product-list-categoryimage/1" class="section product_top_image">{$top_image1_tag}{$top_image2_tag}{$top_image3_tag}</div> -->
-<div class="section inner-m" data-ez-module="product-listrecommend/1" data-ez-layout="grid4">
+<div class="section inner-m" data-ez-module="product-listrecommend/1" data-ez-layout="grid2">
 	<div data-ez-holder="product_list">
 		<div module="product_listrecommend" class="ec-base-product">
 			<!--@css(/css/module/product/listrecommend_swipe.css)-->
@@ -106,7 +44,9 @@
 		</div>
 	</div><!-- //product_list -->
 </div>
-<div class="section inner-m" data-ez-module="product-listnew/1" data-ez-layout="grid4">
+
+<!-- 추천 상품리스트 2 -->
+<div class="section inner-m" data-ez-module="product-listnew/1" data-ez-layout="grid2">
 	<div data-ez-holder="product_list">
 		<div module="product_listnew" class="ec-base-product">
 			<!--@css(/css/module/product/listnew_swipe.css)-->
@@ -125,7 +65,7 @@
 </div>
 
 
-
+<!-- 상품리스트 -->
 <div class="normalpackage_box section inner-m" data-ez-module="product-normalpackage/1">
 	<!--@import(/product/shoppQ/searchContent.html)-->
 	<div module="product_normalpackage" class="product_scrollx">

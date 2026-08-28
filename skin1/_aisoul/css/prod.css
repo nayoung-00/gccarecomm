@@ -36,7 +36,10 @@
 .main-prod .prod-list .swiper-slide { width:auto !important; flex:0 0 auto; } 
 
 
-#wrap .xans-product .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; } 
+#wrap .xans-product .grid-col .prdList__item {display: flex; align-items: center;gap: 10px;}
+#wrap .xans-product .grid-col .prdList__item .thumbnail {margin: 0;}
+#wrap .xans-product .grid-col .prdList__item .thumbnail a {width: 140px; height: 140px;}
+#wrap .xans-product .prdList.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; } 
 #wrap .ec-base-product .prdList .thumbnail { margin: 0 0 10px; } 
 
 

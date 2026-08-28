@@ -15,16 +15,24 @@
         </div>
     </div>
 </header>
-<div data-ez-module="user-defined/1" data-ez-name="USER DEFINED" data-ez-type="plain" data-ez="module-04gi1pw-1">
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            'use strict';
-            var $titleEl = document.querySelector('.title');
-            var $source = document.querySelector('.page-title-source');
-            if (!$titleEl || !$source) {return;}
-            var titleText = $source.textContent.trim();
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        'use strict';
+        var $titleEl = document.querySelector('.title');
+        var $source = document.querySelector('.page-title-source');
+        if (!$titleEl || !$source) { return; }
+
+        var titleText = $source.textContent.trim();
+        var linkHref = $source.getAttribute('data-href');
+
+        if (linkHref) {
+            var $a = document.createElement('a');
+            $a.href = linkHref;
+            $a.textContent = titleText;
+            $titleEl.innerHTML = '';
+            $titleEl.appendChild($a);
+        } else {
             $titleEl.textContent = titleText;
-        });
-    </script>
-</div>
-<!--#ez="1/2"-->
+        }
+    });
+</script>
