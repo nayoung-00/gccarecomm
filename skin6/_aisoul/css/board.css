@@ -3,7 +3,7 @@
 /*************************************************
  게시판 공통 - notice / faq / consult / gallery / qna
 **************************************************/
-
+.header {border-bottom: 1px solid var(--line-normal);}
 .adminAnswer {display: flex;align-items: center;justify-content: end;gap: 8px;}
 .board-write-btn {margin-top: 12px !important;}
 /* 게시글 목록: 모바일형 블록 레이아웃 */

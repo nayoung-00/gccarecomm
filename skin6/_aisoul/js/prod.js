@@ -303,3 +303,59 @@
     }
 
 })();
+
+// 상품목록 깜빡임 방지
+$(function () {
+    const $productArea =
+        $('.normalpackage_box');
+
+    const $productItems =
+        $productArea.find('.prdList').first().children('li');
+
+    if (!$productArea.length || !$productItems.length) {
+        $productArea.removeClass('is-product-loading');
+        return;
+    }
+
+    $productItems.slice(0, 4).each(function () {
+        if (
+            $(this)
+                .children('.product-card-skeleton')
+                .length
+        ) {
+            return;
+        }
+
+        $(this).append(
+            '<div class="product-card-skeleton" aria-hidden="true">' +
+                '<div class="product-card-skeleton__thumb"></div>' +
+                '<div class="product-card-skeleton__text product-card-skeleton__text--first"></div>' +
+                '<div class="product-card-skeleton__text product-card-skeleton__text--second"></div>' +
+                '<div class="product-card-skeleton__price"></div>' +
+            '</div>'
+        );
+    });
+
+    function finishProductSkeleton() {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                $productArea.removeClass(
+                    'is-product-loading'
+                );
+
+                $productArea
+                    .find('.product-card-skeleton')
+                    .remove();
+            });
+        });
+    }
+
+    if (document.readyState === 'complete') {
+        finishProductSkeleton();
+    } else {
+        $(window).one(
+            'load.productSkeleton',
+            finishProductSkeleton
+        );
+    }
+});

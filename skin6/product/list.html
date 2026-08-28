@@ -15,12 +15,18 @@
 <!-- 탭 -->
 <!-- 상품 대분류 탭 -->
 <div class="section category-tabs">
-    <ul class="category-tabs__list"></ul>
+    <div class="swiper category-tab-swiper">
+        <ul class="category-tabs__list swiper-wrapper"></ul>
+    </div>
 </div>
-<!-- 중분류 탭: 사용 시 주석 해제 -->
-<!-- <div class="section category-sub-tabs">
-    <ul class="category-sub-tabs__list"></ul>
-</div> -->
+
+<!-- 상품 중분류 탭: 사용 시 주석 해제
+<div class="section category-sub-tabs">
+    <div class="swiper category-sub-tab-swiper">
+        <ul class="category-sub-tabs__list swiper-wrapper"></ul>
+    </div>
+</div>
+-->
 
 
 
@@ -66,7 +72,7 @@
 
 
 <!-- 상품리스트 -->
-<div class="normalpackage_box section inner-m" data-ez-module="product-normalpackage/1">
+<div class="normalpackage_box section inner-m is-product-loading" data-ez-module="product-normalpackage/1">
 	<!--@import(/product/shoppQ/searchContent.html)-->
 	<div module="product_normalpackage" class="product_scrollx">
 		<!--@css(/css/module/product/listnormal.css)-->
@@ -110,7 +116,7 @@
 					$count = 8
 					※ 상품진열갯수를 설정하는 변수입니다. 설정하지 않을 경우, 최대 200개의 상품이 진열 됩니다.
 					※ 진열된 상품이 많으면, 쇼핑몰에 부하가 발생할 수 있습니다.
-					$moreview = no
+					$moreview = yes
 					$cache = yes
 					$basket_result = /product/add_basket.html
 					$basket_option = /product/basket_option.html
@@ -121,12 +127,12 @@
 			</div>
 
 			<div module="product_listmore" class="more">
-				<a href="#none" onclick="{$more_action}" class="btnMore">
-					상품 더보기<div>(<span id="more_current_page">{$current_page}</span>/<span id="more_total_page">{$total_page}</span>)</div>
+				<a href="#none" onclick="{$more_action}" class="btnMore more-btn-comm">
+					더보기<span class="prod-page-num"><span id="more_current_page">{$current_page}</span>/<span id="more_total_page">{$total_page}</span></span>
 				</a>
 			</div>
 
-			<div module="product_normalpaging" class="ec-base-paginate typeList">
+			<div module="product_normalpaging" class="ec-base-paginate typeList displaynone">
 				<!-- <a href="{$param_first}" class="first">첫 페이지</a> -->
 				<a href="{$param_prev}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
 				<ol>

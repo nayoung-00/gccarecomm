@@ -42,11 +42,10 @@
 .main-prod .more,
 .main-prod .prod-common-more-box { margin-top:24px; text-align:center; } 
 /* .main-prod .prod-common-more-box { display:none; }  */
-.main-prod .more-btn-comm { display:flex; align-items:center; justify-content:center; gap:4px; width:100%; padding:12px 20px; border:1px solid var(--brand-color); border-radius:8px; background:var(--neutral-0); box-sizing:border-box; font-size:16px !important; font-weight:500; line-height:1.5; letter-spacing:-0.6px; color:var(--common-black);  } 
+
 /* .main-prod .btn-common-more[hidden] { display:none !important; }  */
 /* .main-prod.is-view-all .more { display:none !important; }  */
 .main-prod.is-view-all .prod-common-more-box { display:flex; align-items:center; justify-content:center; width:100%; } 
-.more-btn-comm .prod-page-num {display: inline-block;margin-left: 3px; color: var(--neutral-300) !important;}
 
 
 .main-prod:not(.is-all) .prdList { display:flex; flex-direction:column; gap:16px; margin:0 auto; } 

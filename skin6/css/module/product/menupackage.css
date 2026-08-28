@@ -92,30 +92,30 @@ body.health-category-sheet-open { overflow:hidden; }
 
 
 /* 상품 대분류 탭 */
-/* 260828 스와이퍼 추가 */
-.category-tabs { width:100%; margin-bottom: 20px; overflow:hidden;border-bottom: 8px solid var(--neutral-50); background:var(--neutral-0); }
-.category-tabs__list { display:flex; align-items:stretch;gap: 20px; width:max-content; min-width:100%; margin:0; padding:0 16px; overflow-x:auto; list-style:none; box-sizing:border-box; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
-.category-tabs__list::-webkit-scrollbar { display:none; }
-.category-tabs__list > li { display:flex; flex:0 0 auto;}
-.category-tabs__list > li > a { position:relative; display:flex; align-items:center; padding:14px 0; color:var(--neutral-300); font-size:16px; font-weight:600; line-height:28px; white-space:nowrap; text-decoration:none; }
+.category-tabs { width:100%; margin-bottom: 20px; overflow:hidden; border-bottom:10px solid var(--neutral-50); background:var(--neutral-0); }
+.category-tab-swiper { width:100%; padding:0 16px; box-sizing:border-box; }
+.category-tabs__list { display:flex; align-items:stretch; width:auto; min-width:100%; margin:0; padding:0; list-style:none; box-sizing:border-box; }
+.category-tabs__list > li { display:flex; flex:0 0 auto; width:auto; margin:0; padding:0; }
+.category-tabs__list > li > a { position:relative; display:flex; align-items:center; padding:14px 0; color:var(--neutral-300); font-size:16px; font-weight:600; line-height:1.5; white-space:nowrap; text-decoration:none; }
 .category-tabs__list > li > a:hover { color:var(--common-black); text-decoration:none; }
 .category-tabs__list > li.selected > a { color:var(--common-black); }
 .category-tabs__list > li.selected > a::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    right: 0;
     left: 0;
-    display: block;
+    bottom: 0;
     border-bottom: 2px solid var(--brand-color);
     border-radius: 9px;
+    display: block;
+    width: 100%;
 }
 
 /* 상품 중분류 탭 */
-/* .category-sub-tabs { width:100%; margin:0; overflow:hidden; background:var(--bg-light); }
-.category-sub-tabs__list { display:flex; align-items:stretch; width:max-content; min-width:100%; margin:0; padding:0 16px; overflow-x:auto; list-style:none; box-sizing:border-box; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
-.category-sub-tabs__list::-webkit-scrollbar { display:none; }
-.category-sub-tabs__list > li { display:flex; flex:0 0 auto; margin:0; padding:0; }
+.category-sub-tabs { width:100%; margin:0; overflow:hidden; background:var(--bg-light); }
+.category-sub-tab-swiper { width:100%; padding:0 16px; box-sizing:border-box; }
+.category-sub-tabs__list { display:flex; align-items:stretch; width:auto; min-width:100%; margin:0; padding:0; list-style:none; box-sizing:border-box; }
+.category-sub-tabs__list > li { display:flex; flex:0 0 auto; width:auto; margin:0; padding:0; }
 .category-sub-tabs__list > li > a { display:flex; align-items:center; padding:16px; color:var(--text-disabled); font-size:16px; font-weight:500; line-height:24px; white-space:nowrap; text-decoration:none; }
-.category-sub-tabs__list > li > a:hover { color:var(--text-normal); text-decoration:none; }
-.category-sub-tabs__list > li.selected > a { color:var(--text-normal); font-weight:600; } */
+.category-sub-tabs__list > li > a:hover { color:var(--common-black); text-decoration:none; }
+.category-sub-tabs__list > li.selected > a { color:var(--common-black); font-weight:600; }
+

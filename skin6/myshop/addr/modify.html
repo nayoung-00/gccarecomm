@@ -1,8 +1,9 @@
 <!--@layout(/layout/basic/layout.html)-->
 
 <style>
-  .h-right {display: none;}
 
+.sub-header .cart-wrap, .sub-header .main-close {display: none !important;}
+.header {border-bottom: 1px solid var(--line-normal);}
     /* 배송지 수정 */
   .xans-myshop-addrmodify {padding: 20px 16px 80px; box-sizing: border-box;}
   .xans-myshop-addrmodify .ec-base-table {border: 0;}
@@ -63,7 +64,7 @@
 
 <div class="myshopArea">
     <!-- 동적 타이틀 (게시판) -->
-    <span class="page-title-source" hidden>배송 주소록 관리</span>
+    <span class="page-title-source" hidden>배송지 주소록 관리</span>
 
 	<div module="myshop_AddrModify">
 		<!--@css(/css/module/myshop/addrModify.css)-->

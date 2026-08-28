@@ -133,26 +133,28 @@
 <script>
 (function () {
   function init() {
-    var el = document.getElementById('xans_myshop_basket_cnt');
-    if (!el) return;
+    var els = document.querySelectorAll('#xans_myshop_basket_cnt');
+    if (!els.length) return;
 
-    var fallback = window.setTimeout(reveal, 1500);
+    els.forEach(function (el) {
+      var fallback = window.setTimeout(function () { reveal(); }, 1500);
 
-    function reveal() {
-      window.clearTimeout(fallback);
-      var count = parseInt(el.textContent.trim(), 10) || 0;
-      if (count > 0) {
-        el.classList.add('is-ready');
+      function reveal() {
+        window.clearTimeout(fallback);
+        var count = parseInt(el.textContent.trim(), 10) || 0;
+        if (count > 0) {
+          el.classList.add('is-ready');
+        }
       }
-    }
 
-    new MutationObserver(reveal).observe(el, {
-      childList: true,
-      characterData: true,
-      subtree: true
+      new MutationObserver(reveal).observe(el, {
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+
+      reveal();
     });
-
-    reveal();
   }
 
   if (document.readyState === 'loading') {

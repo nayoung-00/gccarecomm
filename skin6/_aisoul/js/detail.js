@@ -249,7 +249,7 @@
             initDetailLayout($);
             initDetailPopup();
             initProductImageDrag($);
-            initNaverPayBenefit($);
+            // initNaverPayBenefit($);
             runAtDelays(function () {
                 initPriceUnitWrap($);
             }, [0, 250, 700, 1500]);
@@ -452,7 +452,8 @@ function initBestReview() {
                         }
   
                         // 3. 네이버페이  
-                        initNaverPayBenefit($, body.naverPayPaybackAmount);
+                        var naverPayPaybackAmount = body && body.productType === 'HEALTH_FUNCTIONAL_FOOD' ? body.naverPayPaybackAmount : null;
+                        initNaverPayBenefit($, naverPayPaybackAmount);
   
                         return;
                     }
@@ -460,6 +461,9 @@ function initBestReview() {
                     // 상품정보고시 미등록 → 정상 케이스
                     if(res.status === 422 && body && body.code === 'PRODUCT_INFORMATION_TYPE_MISSING'){
                       console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 미등록:', productCode);
+
+                      initNaverPayBenefit($);
+                      
                       return;
                     };
   
@@ -1042,7 +1046,7 @@ function initBestReview() {
                 .find('select');
             if (!$productOptions.length) return true;
 
-            return $sourceSelected.find('tr.option_product, tr.add_product').length > 0;
+            return $sourceSelected.find('tr.option_product').length > 0;
         }
 
         // 구매하기/장바구니 레이어 팝업 호출 막기
@@ -1050,7 +1054,7 @@ function initBestReview() {
             $origin.data('requiredOptionGuardBound', true);
             $origin.get(0).addEventListener('click', function (event) {
                 var actionTarget = event.target.closest &&
-                    event.target.closest('a.btnSubmit.sizeL, #actionCart');
+                    event.target.closest('a.btnSubmit.sizeL, .actionCart');
                 if (!actionTarget || hasRequiredOptionSelected()) return;
 
                 event.preventDefault();
@@ -1313,7 +1317,12 @@ function initBestReview() {
             $actions.find('[id]').removeAttr('id');
             $actions.find('[onclick]').removeAttr('onclick');
             $actions.find('a').attr('href', '#none');
-            $actions.find('.actionCart').on('click', function () { $origin.find('.actionCart').first().trigger('click'); });
+            $actions.find('.actionCart').on('click', function (event) {
+                event.preventDefault();
+                // 원본 장바구니 버튼 클릭 팝업 차단
+                var cartButton = $origin.find('.actionCart').first().get(0);
+                if (cartButton) cartButton.click();
+            });
             $actions.find('.fixed-btn-fill').on('click', function (event) {
                 event.preventDefault();
                 var submitButton = $origin.find('.btnSubmit:visible').first().get(0);

@@ -162,6 +162,7 @@ $(function () {
     const ROOT_PARENT_CATE_NO = 1;
 
     const categoryTabs = {
+        tabSwipers: {},
         categoryMap: {},
         childrenMap: {},
 
@@ -169,22 +170,66 @@ $(function () {
             categoryTabs.fetchCategories();
         },
 
+        initTabSwiper: function (
+            key,
+            swiperSelector,
+            listSelector
+        ) {
+            if (categoryTabs.tabSwipers[key]) {
+                categoryTabs.tabSwipers[key].destroy(true, true);
+                categoryTabs.tabSwipers[key] = null;
+            }
+
+            const activeIndex =
+                $(listSelector).children('.selected').index();
+
+            categoryTabs.tabSwipers[key] =
+                new Swiper(swiperSelector, {
+                    slidesPerView: 'auto',
+                    spaceBetween: 20,
+                    loop: false,
+                    freeMode: true,
+                    watchOverflow: true,
+                    observer: true,
+                    observeParents: true
+                });
+
+            if (activeIndex > -1) {
+                categoryTabs.tabSwipers[key].slideTo(
+                    activeIndex,
+                    0
+                );
+            }
+        },
+
         fetchCategories: function () {
             $.ajax({
                 url: '/exec/front/Product/SubCategory',
                 dataType: 'json',
+
                 success: function (data) {
                     if (!data || !data.length) {
-                        $('.category-tabs, .category-sub-tabs').hide();
+                        $(
+                            '.category-tabs, .category-sub-tabs'
+                        ).hide();
+
                         return;
                     }
 
                     categoryTabs.buildMaps(data);
                     categoryTabs.renderCategoryTabs();
                 },
+
                 error: function (xhr, status, error) {
-                    $('.category-tabs, .category-sub-tabs').hide();
-                    console.log('카테고리 ajax error', status, error);
+                    $(
+                        '.category-tabs, .category-sub-tabs'
+                    ).hide();
+
+                    console.log(
+                        '카테고리 ajax error',
+                        status,
+                        error
+                    );
                 }
             });
         },
@@ -194,26 +239,49 @@ $(function () {
             categoryTabs.childrenMap = {};
 
             $.each(data, function (_, category) {
-                const cateNo = Number(category.cate_no);
-                const parentCateNo = Number(category.parent_cate_no);
+                const cateNo =
+                    Number(category.cate_no);
 
-                categoryTabs.categoryMap[cateNo] = category;
+                const parentCateNo =
+                    Number(category.parent_cate_no);
 
-                if (!categoryTabs.childrenMap[parentCateNo]) {
-                    categoryTabs.childrenMap[parentCateNo] = [];
+                categoryTabs.categoryMap[cateNo] =
+                    category;
+
+                if (
+                    !categoryTabs.childrenMap[
+                    parentCateNo
+                    ]
+                ) {
+                    categoryTabs.childrenMap[
+                        parentCateNo
+                    ] = [];
                 }
 
-                categoryTabs.childrenMap[parentCateNo].push(category);
+                categoryTabs.childrenMap[
+                    parentCateNo
+                ].push(category);
             });
         },
 
         getCurrentCateNo: function () {
             const href = window.location.href;
-            const queryMatch = href.match(/[?&]cate_no=(\d+)/);
-            const seoMatch = href.match(/\/category\/[^/]+\/(\d+)/);
 
-            if (queryMatch) return Number(queryMatch[1]);
-            if (seoMatch) return Number(seoMatch[1]);
+            const queryMatch =
+                href.match(/[?&]cate_no=(\d+)/);
+
+            const seoMatch =
+                href.match(
+                    /\/category\/[^/]+\/(\d+)/
+                );
+
+            if (queryMatch) {
+                return Number(queryMatch[1]);
+            }
+
+            if (seoMatch) {
+                return Number(seoMatch[1]);
+            }
 
             return null;
         },
@@ -224,19 +292,27 @@ $(function () {
 
             while (
                 currentCateNo &&
-                categoryTabs.categoryMap[currentCateNo]
+                categoryTabs.categoryMap[
+                currentCateNo
+                ]
             ) {
                 const category =
-                    categoryTabs.categoryMap[currentCateNo];
+                    categoryTabs.categoryMap[
+                    currentCateNo
+                    ];
 
                 ancestors.unshift(category);
 
                 const parentCateNo =
-                    Number(category.parent_cate_no);
+                    Number(
+                        category.parent_cate_no
+                    );
 
                 if (
                     !parentCateNo ||
-                    !categoryTabs.categoryMap[parentCateNo]
+                    !categoryTabs.categoryMap[
+                    parentCateNo
+                    ]
                 ) {
                     break;
                 }
@@ -252,32 +328,51 @@ $(function () {
                 categoryTabs.getCurrentCateNo();
 
             const ancestors =
-                categoryTabs.getAncestors(currentCateNo);
+                categoryTabs.getAncestors(
+                    currentCateNo
+                );
 
-            const activeRoot = ancestors[0] || null;
-            const activeMiddle = ancestors[1] || null;
-            const isRootPage = ancestors.length === 1;
+            const activeRoot =
+                ancestors[0] || null;
+
+            const activeMiddle =
+                ancestors[1] || null;
 
             categoryTabs.renderRootTabs(
-                activeRoot ? Number(activeRoot.cate_no) : null
+                activeRoot
+                    ? Number(activeRoot.cate_no)
+                    : null
             );
 
             /*
-             * 중분류 탭 사용 시 아래 주석을 해제
-             * HTML의 .category-sub-tabs 영역도 함께 주석 해제
+             * 중분류 탭 사용 시 아래 주석 해제
+             * HTML의 .category-sub-tabs 영역도
+             * 함께 주석 해제
              */
+
             // categoryTabs.renderMiddleTabs(
-            //     activeRoot ? Number(activeRoot.cate_no) : null,
-            //     activeMiddle ? Number(activeMiddle.cate_no) : null,
-            //     isRootPage
+            //     activeRoot
+            //         ? Number(activeRoot.cate_no)
+            //         : null,
+            //     activeMiddle
+            //         ? Number(activeMiddle.cate_no)
+            //         : null
             // );
         },
 
         renderRootTabs: function (activeCateNo) {
-            const $tabs = $('.category-tabs');
-            const $tabList = $tabs.find('.category-tabs__list');
+            const $tabs =
+                $('.category-tabs');
+
+            const $tabList =
+                $tabs.find(
+                    '.category-tabs__list'
+                );
+
             const rootList =
-                categoryTabs.childrenMap[ROOT_PARENT_CATE_NO] || [];
+                categoryTabs.childrenMap[
+                ROOT_PARENT_CATE_NO
+                ] || [];
 
             $tabList.empty();
 
@@ -286,56 +381,121 @@ $(function () {
                 return;
             }
 
-            $.each(rootList, function (_, category) {
-                const cateNo = Number(category.cate_no);
-                const isActive =
-                    cateNo === Number(activeCateNo);
+            $.each(
+                rootList,
+                function (_, category) {
+                    const cateNo =
+                        Number(
+                            category.cate_no
+                        );
 
-                $('<li>', {
-                    id: 'category-tab-' + cateNo,
-                    class: isActive ? 'selected' : ''
-                }).append(
-                    $('<a>', {
-                        href: '/product/list.html?cate_no=' + cateNo,
-                        text: category.name
-                    })
-                ).appendTo($tabList);
-            });
+                    const isActive =
+                        cateNo ===
+                        Number(activeCateNo);
+
+                    $('<li>', {
+                        id:
+                            'category-tab-' +
+                            cateNo,
+
+                        class:
+                            'swiper-slide' +
+                            (
+                                isActive
+                                    ? ' selected'
+                                    : ''
+                            )
+                    }).append(
+                        $('<a>', {
+                            href:
+                                '/product/list.html?cate_no=' +
+                                cateNo,
+
+                            text:
+                                category.name
+                        })
+                    ).appendTo($tabList);
+                }
+            );
+
+            categoryTabs.initTabSwiper(
+                'root',
+                '.category-tab-swiper',
+                '.category-tabs__list'
+            );
+
+            $tabs.show();
         },
 
         renderMiddleTabs: function (
             rootCateNo,
             activeCateNo
         ) {
-            const $tabs = $('.category-sub-tabs');
+            const $tabs =
+                $('.category-sub-tabs');
+
             const $tabList =
-                $tabs.find('.category-sub-tabs__list');
+                $tabs.find(
+                    '.category-sub-tabs__list'
+                );
 
             const middleList =
-                categoryTabs.childrenMap[rootCateNo] || [];
+                categoryTabs.childrenMap[
+                rootCateNo
+                ] || [];
 
             $tabList.empty();
 
-            if (!rootCateNo || !middleList.length) {
+            if (
+                !rootCateNo ||
+                !middleList.length
+            ) {
                 $tabs.hide();
                 return;
             }
 
-            $.each(middleList, function (_, category) {
-                const cateNo = Number(category.cate_no);
-                const isActive =
-                    cateNo === Number(activeCateNo);
+            $.each(
+                middleList,
+                function (_, category) {
+                    const cateNo =
+                        Number(
+                            category.cate_no
+                        );
 
-                $('<li>', {
-                    id: 'category-sub-tab-' + cateNo,
-                    class: isActive ? 'selected' : ''
-                }).append(
-                    $('<a>', {
-                        href: '/product/list.html?cate_no=' + cateNo,
-                        text: category.name
-                    })
-                ).appendTo($tabList);
-            });
+                    const isActive =
+                        cateNo ===
+                        Number(activeCateNo);
+
+                    $('<li>', {
+                        id:
+                            'category-sub-tab-' +
+                            cateNo,
+
+                        class:
+                            'swiper-slide' +
+                            (
+                                isActive
+                                    ? ' selected'
+                                    : ''
+                            )
+                    }).append(
+                        $('<a>', {
+                            href:
+                                '/product/list.html?cate_no=' +
+                                cateNo,
+
+                            text:
+                                category.name
+                        })
+                    ).appendTo($tabList);
+                }
+            );
+
+            categoryTabs.initTabSwiper(
+                'middle',
+                '.category-sub-tab-swiper',
+                '.category-sub-tabs__list'
+            );
 
             $tabs.show();
         }
