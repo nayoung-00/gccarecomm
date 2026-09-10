@@ -5,9 +5,29 @@
     var JQUERY_WAIT_MAX_TRY = 100;
     var PRICE_LI_DEBOUNCE = 100;
 
+    // 상품 목록 캐시백 금액 — 퍼블리싱 임시값
+    // var PRODUCT_CASHBACK_AMOUNT = 4000;
+
     
     var ALPHA_REVIEW_API_URL ='https://review-widget.alphwidget.com/v2/api-widget';
-    var ALPHA_REVIEW_WIDGET_CODE = '5f91819b';  
+    var ALPHA_REVIEW_WIDGET_CODE = '5f91819b'; 
+
+    // var CAFE24_PRODUCT_CONFIG_URL = '/calendar/app/config.json';
+    // var CAFE24_PRODUCT_CODE_FIELDS = 'product_no,product_code';
+
+    // var cafe24ProductSdk = null;
+    // var cafe24ProductSdkPromise = null;
+    // var productCodeMap = {};
+    // var productCodeRequested = {};
+    // var productCodeFetchPromise = null;
+
+    var GC_PRODUCT_NOTICE_BASE_URL = 'https://gc.aisoul.co.kr/api/products';
+    var PRODUCT_NOTICE_EMPTY_CODES = [
+        'PRODUCT_INFORMATION_TYPE_MISSING',
+        'PRODUCT_INFORMATION_INVALID'
+    ];
+    var productCashbackCache = {};
+    var productCashbackRequested = {};
 
 
     waitForJQuery(init);
@@ -34,6 +54,7 @@
         $(function () {
             initProductItemLayout();
             initProductReviews();
+            initProductCashbacks();
             initDynamicProductItems();
             initSoldoutOverlay();
             initPriceLiTagging($);
@@ -137,8 +158,85 @@
                 nameEl.before(starWrap);
             }
 
+            // if (description) {
+            //     renderProductCashback(description);
+            // }
+
             item.dataset.productLayoutApplied = 'true';
         });
+
+
+    }
+
+    /* =====================================================
+       상품 description 마지막 캐시백
+    ===================================================== */
+
+    function parseNaverPayPaybackAmount(value) {
+        if (value == null) {
+            return 0;
+        }
+
+        var str = String(value).trim();
+        if (!str) {
+            return 0;
+        }
+
+        if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)$/.test(str)) {
+            return 0;
+        }
+
+        var parsed = parseInt(str.replace(/,/g, ''), 10);
+        if (!parsed || parsed <= 0) {
+            return 0;
+        }
+
+        return parsed;
+    }
+
+    function clearProductCashback(description) {
+        var existing = description.querySelector('.productCashback');
+        if (existing) {
+            existing.remove();
+        }
+    }
+
+    function renderProductCashback(description, amount) {
+        var parsedAmount = parseNaverPayPaybackAmount(amount);
+
+        if (!parsedAmount) {
+            clearProductCashback(description);
+            return;
+        }
+        var formattedAmount = parsedAmount.toLocaleString('ko-KR');
+        var existing = description.querySelector('.productCashback');
+
+        if(existing){
+            var amountEl = existing.querySelector('.productCashbackAmount');
+            if(amountEl){
+                amountEl.textContent = formattedAmount;
+            }
+
+            return;
+
+        }
+
+        description.insertAdjacentHTML(
+            'beforeend',
+            '<div class="productCashback">' +
+                '<svg class="productCashbackIcon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">' +
+                    '<path d="M2.50098 4V10C2.50098 11.1 4.50098 12 7.00098 12C9.50098 12 11.501 11.1 11.501 10V4" fill="#92E7BB"></path>' +
+                    '<path d="M2.50098 4V10C2.50098 11.1 4.50098 12 7.00098 12C9.50098 12 11.501 11.1 11.501 10V4" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                    '<path d="M11.501 7C11.501 8.1 9.50098 9 7.00098 9C4.50098 9 2.50098 8.1 2.50098 7" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                    '<path d="M7.00098 5.99805C9.48626 5.99805 11.501 5.10262 11.501 3.99805C11.501 2.89348 9.48626 1.99805 7.00098 1.99805C4.5157 1.99805 2.50098 2.89348 2.50098 3.99805C2.50098 5.10262 4.5157 5.99805 7.00098 5.99805Z" fill="#92E7BB" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                '</svg>' +
+                '<p class="productCashbackText">' +
+                    '최대 <span class="productCashbackAmount">' +
+                        formattedAmount +
+                    '</span>원 캐시백' +
+                '</p>' +
+            '</div>'
+        );
     }
 
     /* =====================================================
@@ -162,6 +260,7 @@
                 previousCount = currentCount;
                 initProductItemLayout();
                 initProductReviews();
+                initProductCashbacks();
             }, 100);
         });
     
@@ -247,6 +346,104 @@
         if (!productLi) return null;
     
         return productLi.id.replace('anchorBoxId_', '');
+    }
+
+
+    /* =====================================================
+       GC information-notice → 상품별 캐시백
+    ===================================================== */
+    function fetchProductCashbackNotice(productNo) {
+        var requestUrl =
+            GC_PRODUCT_NOTICE_BASE_URL + '/' +
+            encodeURIComponent(productNo) + '/information-notice';
+
+        return fetch(requestUrl)
+            .then(function (res) {
+                return res.text().then(function (text) {
+                    var body = text;
+
+                    try {
+                        body = text ? JSON.parse(text) : null;
+                    } catch (parseError) {
+                        // JSON이 아니면 원문 문자열 유지
+                    }
+
+                    if (res.ok) {
+                        return {
+                            amount: parseNaverPayPaybackAmount(
+                                body ? body.naverPayPaybackAmount : null
+                            )
+                        };
+                    }
+
+                    if (
+                        res.status === 422 &&
+                        body &&
+                        typeof body === 'object' &&
+                        PRODUCT_NOTICE_EMPTY_CODES.indexOf(body.code) !== -1
+                    ) {
+                        console.warn('[GC CASHBACK] no product notice:', {
+                            productNo: productNo,
+                            code: body.code,
+                            message: body.message
+                        });
+                        return { amount: 0 };
+                    }
+
+                    throw new Error(
+                        'unexpected response: ' + res.status
+                    );
+                });
+            });
+    }
+
+    function applyCashbackToItem(item, amount) {
+        var description = item.querySelector('.description');
+        if (!description) {
+            return;
+        }
+        renderProductCashback(description, amount);
+    }
+
+    function applyCashbackForProductNo(productNo, amount) {
+        document.querySelectorAll('.prdList__item').forEach(function (item) {
+            if (getProductNo(item) === productNo) {
+                applyCashbackToItem(item, amount);
+            }
+        });
+    }
+
+    function initProductCashbacks() {
+        document.querySelectorAll('.prdList__item').forEach(function (item) {
+            var productNo = getProductNo(item);
+            if (!productNo) {
+                return;
+            }
+
+            if (Object.prototype.hasOwnProperty.call(productCashbackCache, productNo)) {
+                applyCashbackToItem(item, productCashbackCache[productNo].amount);
+                return;
+            }
+
+            if (productCashbackRequested[productNo]) {
+                return;
+            }
+
+            productCashbackRequested[productNo] = true;
+
+            fetchProductCashbackNotice(productNo)
+                .then(function (result) {
+                    productCashbackCache[productNo] = {
+                        amount: result.amount || 0
+                    };
+                    delete productCashbackRequested[productNo];
+                    applyCashbackForProductNo(productNo, result.amount);
+                })
+                .catch(function (error) {
+                    delete productCashbackRequested[productNo];
+                    console.warn('[GC CASHBACK] request failed:', productNo, error);
+                });
+        });
     }
 
     function fetchAlphaReview(productNo) {

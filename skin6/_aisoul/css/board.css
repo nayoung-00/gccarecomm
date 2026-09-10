@@ -28,7 +28,7 @@
 .write-count span { padding-right: 2px; } 
 .notice-badge { display: inline-block; margin-bottom: 8px; padding: 4px 8px; color: #fff; background: #4cd37b; border-radius: 4px; font-size: 12px; font-weight: 600; line-height: 1; } 
 .category-name { color: var(--neutral-400); font-size: 12px; font-weight: 600; line-height: 1.5; } 
-.board-write-btn { width: 100%; margin: 20px 0; color: var(--neutral-0) !important; background: var(--common-black) !important; } 
+.board-write-btn { width: 100%; margin: 20px 0; color: var(--neutral-0) !important;background: var(--brand-color) !important; border-color: var(--brand-color) !important; } 
 
 @media screen and (max-width: 1024px){
  #wrap .xans-board-search,
@@ -42,7 +42,13 @@
 .ec-common-rwd-image { margin-bottom: 6px; } 
 
 /* FAQ 아코디언 */
-.board-type-faq .subject-link { position: relative; display: block; padding: 4px 30px 0 0; cursor: pointer; } 
+/* FAQ 전용 페이드 인: board.js가 .board-type-faq 를 붙이기 전까지 목록 숨김
+   (JS 미실행 대비 2.5s 후 fallback 노출) */
+html.is-faq-board .ec-base-table.typeList { opacity: 0; animation: faqListFallbackShow 0s linear 2.5s forwards; }
+html.is-faq-board .ec-base-table.typeList.board-type-faq { opacity: 1; animation: none; transition: opacity 0.25s ease; }
+@keyframes faqListFallbackShow { to { opacity: 1; } }
+
+.board-type-faq .subject-link { position: relative; display: block; padding: 4px 30px 0 0; cursor: pointer; }
 .board-type-faq .subject-link::after { position: absolute; top: -5px; right: 4px; width: 16px; height: 16px; content: ""; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M2 5.5L7.67692 11.3557C7.71836 11.4013 7.76841 11.4376 7.82397 11.4624C7.87954 11.4872 7.93945 11.5 8 11.5C8.06055 11.5 8.12046 11.4872 8.17603 11.4624C8.23159 11.4376 8.28164 11.4013 8.32308 11.3557L14 5.5' stroke='%236C6C6C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; transform: rotate(0deg); transition: transform 0.2s ease; } 
 .board-type-faq tr.is-open .subject-link { color: #222; font-weight: 600; } 
 .board-type-faq tr.is-open .subject-link::after { transform: rotate(-180deg); } 
@@ -54,7 +60,13 @@
 .faq-answer-inner img { max-width: 100%; height: auto; } 
 
 /* 카테고리 탭 */
-.category-tab-outer { display: flex; align-items: center; gap: 4px; } 
+/* 탭 생성 전 원본 select 깜빡임 방지 + 페이드 인 (JS 미실행 시 4s 후 fallback 노출) */
+.boardSort select#board_category { opacity: 0; pointer-events: none; animation: boardCategorySelectFallback 0s linear 4s forwards; }
+.boardSort .category-tab-wrap { opacity: 0; transition: opacity 0.3s ease; }
+.boardSort .category-tab-wrap.is-ready { opacity: 1; }
+@keyframes boardCategorySelectFallback { to { opacity: 1; pointer-events: auto; } }
+
+.category-tab-outer { display: flex; align-items: center; gap: 4px; }
 .category-tab-wrap { flex: 1 1 auto; overflow-x: auto; border-bottom: 1px solid #eee; cursor: grab; scroll-behavior: smooth; touch-action: pan-x; user-select: none; -webkit-overflow-scrolling: touch; } 
 .category-tab-wrap.is-dragging { cursor: grabbing; scroll-behavior: auto; } 
 .category-tab-wrap::-webkit-scrollbar { display: none; } 

@@ -13,6 +13,31 @@
     <!--@js(/layout/basic/js/common.js)-->
     <!--@js(/js/module/order/ec_orderform/orders.js)-->
     <!--@js(/js/module/order/ec_orderform/orders_v2.js)-->
+
+    <!--@js(/_aisoul/js/order.js)-->
+
+    <style>
+        :root { --brand-color: #0AC262;}
+        .v2 #titleArea.titleArea {opacity: 0 !important; margin: 0 !important;}
+        .v2 #orderFixItem.ec-base-button.gFull {box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04);}
+        /* 주문 헤더 */
+        .headerMenu > * {display: none !important;}
+        .v2 #header .header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px 6px !important;
+        }
+        
+        .back-btn-wrap {padding: 7px 6px 1px;}
+        .v2 #header .header h1.xans-layout-logotop {margin: 0 !important;line-height: 1.5;}
+        .v2 #mCafe24Order .ec-base-tab li.selected a{    color: var(--brand-color) !important;}
+        .v2 #orderFixItem.ec-base-button.gFull [class*="btn"], .v2 #mCafe24Order .ec-base-tab li.selected::after  {background: var(--brand-color) !important;}
+        .v2 #mCafe24Order input[type="checkbox"] { width: 24px !important; height: 24px !important; background: url(/_aisoul/img/checkboxOff-img.png) no-repeat 0 0 / contain !important;}
+        .v2 #mCafe24Order input:not(:disabled):checked[type="checkbox"] { width: 24px !important; height: 24px !important;background: url(/_aisoul/img/checkbox-img.png) no-repeat 0 0 / contain !important;}
+        .v2 #mCafe24Order .fRadio[type="radio"], .v2 #mCafe24Order input[type="radio"] { background: url(/_aisoul/img/radioOff-img.png) no-repeat 0 0 / contain!important;}
+        .v2 #mCafe24Order .fRadio:not(:disabled):checked[type="radio"], .v2 #mCafe24Order .selected > .fRadio, .v2 #mCafe24Order input:not(:disabled):checked[type="radio"] {background: url(/_aisoul/img/radio-img.png) no-repeat 0 0 / contain !important;}
+    </style>
 </head>
 
 <body id="userStyle" class="v2">

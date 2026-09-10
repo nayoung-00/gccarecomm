@@ -2,11 +2,12 @@
     'use strict';
 
     var AUTO_LOGIN_PARAM = 'gc_sso_auto';
+    var AUTO_LOGIN_CLASS = 'gc-sso-auto-login';
     var BUTTON_ID = 'gcSsoLogin';
     var STATUS_ID = 'gcSsoAutoLoginStatus';
     var RETRY_LIMIT = 30;
     var RETRY_INTERVAL_MS = 100;
-    var LOOP_GUARD_MS = 10000;
+    var LOOP_GUARD_MS = 1000;
     var LOOP_GUARD_KEY = 'gc_sso_auto_login_started_at';
 
     function isAutoLoginRequest() {
@@ -39,8 +40,16 @@
             form.setAttribute('aria-hidden', 'true');
         }
         if (status) {
-            status.hidden = false;
-            status.textContent = message;
+            status.hidden = true;
+            status.textContent = '';
+        }
+    }
+
+    function revealAutoLoginPage() {
+        document.documentElement.classList.remove(AUTO_LOGIN_CLASS);
+        if (window.gcSsoAutoLoginRevealTimer) {
+            window.clearTimeout(window.gcSsoAutoLoginRevealTimer);
+            window.gcSsoAutoLoginRevealTimer = null;
         }
     }
 
@@ -48,6 +57,7 @@
         var status = statusElement();
         var form = loginForm();
 
+        revealAutoLoginPage();
         if (form) {
             form.style.opacity = '';
             form.style.pointerEvents = '';

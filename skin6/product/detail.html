@@ -814,53 +814,69 @@ js -> /_aisoul/js/detail.js
 
                 <!-- 리뷰작성/리뷰게시판 이동 버튼 -->
                 <div class="ec-base-button">
-                    <a href="{$review_list}" class="btnNormalFix fixed-btn-outline">전체보기</a>
-                    <a href="{$review_write}" class="btnNormalFix fixed-btn-fill">리뷰작성</a>
+                    <a href="{$review_list}" class="btnNormalFix fixed-btn-outline displaynone ">전체보기</a>
+                    <!-- <a href="https://write.alphwidget.com/sfc6c12" class="btnNormalFix fixed-btn-fill" target="_blank">리뷰작성</a> -->
                 </div> 
 			</div>
 		</div><!-- //상품리뷰 -->
 	</div>
   <!-- //prdReview -->
 
-  <!-- 함께 보면 좋을 상품 -->
-  <div id="prdRelation">
-      <div module="product_relation" class="inner-m">
-          <div class="relation">
-              <div class="relation_title">함께 보면 좋은 상품</div>
+    <!-- 함께 보면 좋을 상품 -->
+    <div id="prdRelation">
+        <div module="product_relation" class="inner-m">
+            <div class="relation">
+                <div class="relation_title">함께 보면 좋은 상품</div>
 
-              <div module="product_relationlist" class="ec-base-product swiper-container relation_slide">
-                  <ul class="swiper-wrapper prdList">
-                      <li class="swiper-slide">
-                          <div class="prdList__item">
-                              <div class="thumbnail">
-                                  <a href="{$link_product_detail}"><img src="{$img_medium}" alt="{$seo_alt_tag}"></a>
-                              </div>
-                              <div class="description">
-                                  <div class="name"><a href="{$link_product_detail}">{$name}</a></div>
-                                  <div class="price"><span class="salePrice {$sale_price_display|display}">{$disp_sale_price}</span><span class="prdPrice {$product_sale_strike}">{$disp_product_price}{$product_tax_type_text}</span></div>
-                              </div>
-                          </div>
-                      </li>
-                      <li class="swiper-slide">
-                          <div class="prdList__item">
-                              <div class="thumbnail">
-                                  <a href="{$link_product_detail}"><img src="{$img_medium}" alt="{$seo_alt_tag}"></a>
-                              </div>
-                              <div class="description">
-                                  <div class="name"><a href="{$link_product_detail}">{$name}</a></div>
-                                  <div class="price"><span class="salePrice {$sale_price_display|display}">{$disp_sale_price}</span><span class="prdPrice {$product_sale_strike}">{$disp_product_price}{$product_tax_type_text}</span></div>
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
-                  <!-- <div class="swiper-scrollbar"></div> -->
-              </div>
-              <div class="swiper-button-next swiper-next-relation"></div>
-              <div class="swiper-button-prev swiper-prev-relation"></div>
-          </div>
-      </div><!-- //product_relation -->
-  </div>
-  <!-- // 함께 보면 좋을 상품 -->
+                <div module="product_relationlist" class="ec-base-product swiper-container relation_slide">
+                    <ul class="swiper-wrapper prdList">
+                        <li class="swiper-slide">
+                            <div class="prdList__item">
+                                    <div class="thumbnail">
+                                        <a href="{$link_product_detail}"><img src="{$img_medium}" alt="{$seo_alt_tag}"></a>
+                                    </div>
+                                    <div class="description">
+                                            
+                                        <div class="name"><a href="{$link_product_detail}">{$name}</a></div>
+                                        <div class="price">
+                                            <span class="prodPrice"></span>
+                                            <div class="bt-price">
+                                                <span class="detailSaleNum"></span>
+                                                <span class="salePrice {$sale_price_display|display}">{$disp_sale_price}</span>
+                                                <span class="prdPrice {$product_sale_strike}">{$disp_product_price}{$product_tax_type_text}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="prdList__item">
+                                <div class="thumbnail">
+                                    <a href="{$link_product_detail}"><img src="{$img_medium}" alt="{$seo_alt_tag}"></a>
+                                </div>
+                                <div class="description">
+                                            
+                                    <div class="name"><a href="{$link_product_detail}">{$name}</a></div>
+                                    <div class="price">
+                                        <span class="prodPrice"></span>
+                                        <div class="bt-price">
+                                            <span class="detailSaleNum"></span>
+                                            <span class="salePrice {$sale_price_display|display}">{$disp_sale_price}</span>
+                                            <span class="prdPrice {$product_sale_strike}">{$disp_product_price}{$product_tax_type_text}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- <div class="swiper-scrollbar"></div> -->
+                </div>
+                <div class="swiper-button-next swiper-next-relation"></div>
+                <div class="swiper-button-prev swiper-prev-relation"></div>
+            </div>
+        </div><!-- //product_relation -->
+    </div>
+    <!-- // 함께 보면 좋을 상품 -->
 
   <!-- QnA -->
 	<div id="prdQnA" class="inner-m">
@@ -1014,6 +1030,18 @@ js -> /_aisoul/js/detail.js
 				</div>
 			</div>
 
+            <!-- 서비스 문의 / 안내 -->
+			<div class="ec-base-fold theme1 selected eToggle">
+				<div class="title">
+					<h2>상품 구매 유의사항</h2>
+				</div>
+				<div class="contents">
+					<div class="info service-info">
+						{$service_info}
+					</div>
+				</div>
+			</div>
+
       <!-- 
         의학 고지
         className="medical-notice"
@@ -1037,4 +1065,3 @@ js -> /_aisoul/js/detail.js
 
 
 <!--@define(cmc_log)-->
-

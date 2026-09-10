@@ -68,7 +68,13 @@
         }
     };
 
+    var PRODUCT_NOTICE_EMPTY_CODES = [
+        'PRODUCT_INFORMATION_TYPE_MISSING',
+        'PRODUCT_INFORMATION_INVALID'
+    ];
+
     var productNoticeApiRequested = false;
+    var relatedProductsApiRequested = false;
 
     var PRODUCT_INFO_LABEL_CLASS_MAP = {
         '상품명': 'prd-name',
@@ -242,8 +248,11 @@
     function init($) {
         $(function () {
             initBestReview();
+            initReviewAllButton($);
             initProductInfoTable($);
             loadProductNotice($);
+            loadRelatedProducts();
+            initServiceInfo();
             // initProductNotice();
             //   initSummaryChips($);
             initDetailLayout($);
@@ -299,126 +308,182 @@
             .on('load.detailSkeleton error.detailSkeleton', hideSkeleton);
     }
 
-    /* 알파리뷰 베스트리뷰 - 모바일에서도 태블릿 데이터 개수 유지 */
-function initBestReview() {
-    var lastProvider = null;
+    /* 알파리뷰 - 리뷰 개수에 따른 전체보기/게시물 없음 처리 */
+    function initReviewAllButton($) {
+        var reviewCountSelector = '#tabProduct a[href="#prdReview"] .alpha_review_count';
+        var $reviewContents = $('#prdReview').find('.contents').first();
+        var $allButton = $('#prdReview').find('.btnNormalFix.fixed-btn-outline');
 
-    function applyBestReviewOverride() {
-        var widget = document.querySelector('review-best-widget');
+        function updateReviewState() {
+            var $reviewCount = $(reviewCountSelector).first();
+            var countText = $reviewCount
+                .text()
+                .replace(/[^0-9]/g, '');
 
-        if (!widget || !widget.provider) return;
+            // 아직 리뷰 개수가 출력되지 않은 경우 대기
+            if (!$reviewCount.length || countText === '') {
+                return;
+            }
 
-        var provider = widget.provider;
+            var reviewCount = parseInt(countText, 10);
 
-        // provider가 새로 생성된 경우에만 다시 패치
-        if (provider === lastProvider && provider.__tabletMobileApplied) {
-            return;
+            if (reviewCount > 0) {
+                // 리뷰 1개 이상: 전체보기 버튼 노출
+                $allButton.removeClass('displaynone');
+                $reviewContents.find('.no-data').remove();
+            } else {
+                // 리뷰 0개: 전체보기 버튼 숨김
+                $allButton.addClass('displaynone');
+
+                // 게시물 없음 문구 중복 생성 방지
+                if (!$reviewContents.find('.no-data').length) {
+                    $reviewContents.append(
+                        '<p class="no-data">게시물이 없습니다</p>'
+                    );
+                }
+            }
+
         }
 
-        lastProvider = provider;
-        provider.__tabletMobileApplied = true;
+        updateReviewState();
 
-        /*
-         * 알파리뷰 원본:
-         *
-         * mobile → pageUnit 1
-         * tablet/pc → num_col
-         *
-         * 모바일도 관리자 num_col 값을 사용하도록 변경
-         */
-        provider.options.getPageUnitOverride = function (deviceKind, designOption) {
-            return designOption.num_col;
-        };
+        var tabProduct = document.querySelector('#tabProduct');
 
-        /*
-         * 모바일에서도 2개 데이터를 담을 수 있도록 grid 유지
-         */
-        provider.options.setGridSizeOverride = function (deviceKind, designOption) {
-            return {
-                row: 1,
-                col: designOption.num_col,
-                gap: deviceKind === 'mobile' ? 16 : 20
-            };
-        };
-
-        /*
-         * ResizeManager가 initializeWidget()을 다시 호출해도
-         * mobile용 device=m / page_size=1로 돌아가지 않도록 처리
-         */
-        var originalInitializeWidget = provider.initializeWidget.bind(provider);
-
-        provider.initializeWidget = function () {
-            originalInitializeWidget();
-
-            if (this.deviceKind === 'mobile') {
-                this.filterOption.device = 'w';
-                this.filterOption.page_size = this.designOption.num_col;
-            }
-        };
-
-        // 현재 상태도 새 설정으로 다시 계산
-        provider.setGridSize();
-        provider.initializeWidget();
-
-        provider.getReviewMeta()
-            .then(function () {
-                provider.getReviewList();
-                return provider.requestQueue;
-            })
-            .then(function () {
-                widget.requestUpdate();
-            })
-            .catch(function (error) {
-                var message = error && error.message
-                    ? String(error.message)
-                    : String(error || '');
-            
-                // 베스트 리뷰가 없는 상품은 정상 케이스로 처리
-                if (message.indexOf('RESULT_EMPTY_HIDE') !== -1) {
-                    return;
-                }
-            
-                // 그 외 실제 오류만 에러로 출력
-                console.error(
-                    '[AlphaReview] mobile data override error:',
-                    error
-                );
+        if (tabProduct) {
+            var observer = new MutationObserver(function () {
+                updateReviewState();
             });
+
+            observer.observe(tabProduct, {
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+        }
     }
 
-    // 알파리뷰는 늦게 생성되므로 provider 생성 대기
-    window.setInterval(applyBestReviewOverride, 500);
-}
 
-    function getProductCode() {
-        var productCode =
-            window.product_code == null
-                ? ''
-                : String(window.product_code).trim();
-    
-        if (productCode) return productCode;
-    
-        var productCodeElement = document.querySelector(
-            '.xans-product-detail .imgArea .prdImg .thumbnail > a[alt]'
-        );
-    
-        return productCodeElement
-            ? String(productCodeElement.getAttribute('alt') || '').trim()
-            : '';
+    /* 알파리뷰 베스트리뷰 - 모바일에서도 태블릿 데이터 개수 유지 */
+    function initBestReview() {
+        var lastProvider = null;
+
+        function applyBestReviewOverride() {
+            var widget = document.querySelector('review-best-widget');
+
+
+
+            if (!widget || !widget.provider) return;
+
+            var provider = widget.provider;
+
+            // provider가 새로 생성된 경우에만 다시 패치
+            if (provider === lastProvider && provider.__tabletMobileApplied) {
+                return;
+            }
+
+            lastProvider = provider;
+            provider.__tabletMobileApplied = true;
+
+            /*
+            * 알파리뷰 원본:
+            *
+            * mobile → pageUnit 1
+            * tablet/pc → num_col
+            *
+            * 모바일도 관리자 num_col 값을 사용하도록 변경
+            */
+            provider.options.getPageUnitOverride = function (deviceKind, designOption) {
+                return designOption.num_col;
+            };
+
+            /*
+            * 모바일에서도 2개 데이터를 담을 수 있도록 grid 유지
+            */
+            provider.options.setGridSizeOverride = function (deviceKind, designOption) {
+                return {
+                    row: 1,
+                    col: designOption.num_col,
+                    gap: deviceKind === 'mobile' ? 16 : 20
+                };
+            };
+
+            /*
+            * ResizeManager가 initializeWidget()을 다시 호출해도
+            * mobile용 device=m / page_size=1로 돌아가지 않도록 처리
+            */
+            var originalInitializeWidget = provider.initializeWidget.bind(provider);
+
+            provider.initializeWidget = function () {
+                originalInitializeWidget();
+
+                if (this.deviceKind === 'mobile') {
+                    this.filterOption.device = 'w';
+                    this.filterOption.page_size = this.designOption.num_col;
+                }
+            };
+
+            // 현재 상태도 새 설정으로 다시 계산
+            provider.setGridSize();
+            provider.initializeWidget();
+
+            provider.getReviewMeta()
+                .then(function () {
+                    provider.getReviewList();
+                    return provider.requestQueue;
+                })
+                .then(function () {
+                    widget.requestUpdate();
+                })
+                .catch(function (error) {
+                    var message = error && error.message
+                        ? String(error.message)
+                        : String(error || '');
+                
+                    // 베스트 리뷰가 없는 상품은 정상 케이스로 처리
+                    if (message.indexOf('RESULT_EMPTY_HIDE') !== -1) {
+                        return;
+                    }
+                
+                    // 그 외 실제 오류만 에러로 출력
+                    console.error(
+                        '[AlphaReview] mobile data override error:',
+                        error
+                    );
+                });
+        }
+
+        // 알파리뷰는 늦게 생성되므로 provider 생성 대기
+        window.setInterval(applyBestReviewOverride, 500);
+    }
+
+
+
+    function getProductNo(){
+        if(window.iProductNo != null && String(window.iProductNo).trim() != ''){
+            return String(window.iProductNo).trim();
+        }
+
+        if(typeof getQueryString === 'function'){
+            if (queryProductNo) {
+                return String(queryProductNo).trim();
+            }
+
+        }
+
+        return '';
     }
 
     function loadProductNotice($) {
-        if (productNoticeApiRequested) return;
-        productNoticeApiRequested = true;
-  
-        var productCode = getProductCode();
-        if (!productCode) {
-            console.warn('[DETAIL][PRODUCT_NOTICE] productCode is empty');
+        var productNo = getProductNo();
+        if (!productNo) {
+            console.warn('[DETAIL][PRODUCT_NOTICE] productNo is empty');
             return;
         }
+
+        productNoticeApiRequested = true;
   
         var apiConfig = getProductNoticeApiConfig();
-        var requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productCode) + '/information-notice';
+        var requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productNo) + '/information-notice';
   
   
         fetch(requestUrl, apiConfig.fetchOptions)
@@ -452,18 +517,21 @@ function initBestReview() {
                         }
   
                         // 3. 네이버페이  
-                        var naverPayPaybackAmount = body && body.productType === 'HEALTH_FUNCTIONAL_FOOD' ? body.naverPayPaybackAmount : null;
+                        var naverPayPaybackAmount = body ? body.naverPayPaybackAmount : null;
                         initNaverPayBenefit($, naverPayPaybackAmount);
   
                         return;
                     }
   
                     // 상품정보고시 미등록 → 정상 케이스
-                    if(res.status === 422 && body && body.code === 'PRODUCT_INFORMATION_TYPE_MISSING'){
-                      console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 미등록:', productCode);
+                    if(res.status === 422 && 
+                        body && 
+                        PRODUCT_NOTICE_EMPTY_CODES.indexOf(body.code) !== -1){
+                      console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 데이터 없음/처리불가:', productNo, body.code);
 
+                      renderMedicalNotice(null);
                       initNaverPayBenefit($);
-                      
+
                       return;
                     };
   
@@ -477,9 +545,257 @@ function initBestReview() {
             });
     }
 
+    /* =====================================================
+       관련상품(#prdRelation) — /related-products
+    ===================================================== */
+    function getRelatedProductNoFromHref(href) {
+        if (!href) return '';
+
+        var path = href;
+        try {
+            path = new URL(href, window.location.origin).pathname;
+        } catch (e) {
+            // keep href as path fallback
+        }
+
+        var seoMatch = String(path).match(/\/product\/(?:[^/]+\/)*(\d+)\/category\//);
+        if (seoMatch) return seoMatch[1];
+
+        var queryMatch = String(href).match(/[?&]product_no=(\d+)/);
+        return queryMatch ? queryMatch[1] : '';
+    }
+
+    function isValidRelatedPrice(value) {
+        return typeof value === 'number' && isFinite(value) && value > 0;
+    }
+
+    function formatRelatedPrice(value) {
+        return Number(value).toLocaleString('ko-KR') + '원';
+    }
+
+    function getRelatedDiscountPercent(product) {
+        var rateText =
+            product && product.discountRate != null
+                ? String(product.discountRate).trim()
+                : '';
+
+        if (rateText) {
+            var parsedRate = parseFloat(rateText.replace(/%/g, ''));
+            if (isFinite(parsedRate) && parsedRate > 0) {
+                return Math.round(parsedRate);
+            }
+        }
+
+        if (
+            isValidRelatedPrice(product.retailPrice) &&
+            isValidRelatedPrice(product.price) &&
+            product.retailPrice > product.price
+        ) {
+            return Math.round(100 - (product.price * 100) / product.retailPrice);
+        }
+
+        return 0;
+    }
+
+    function parseRelatedPaybackAmount(value) {
+        if (typeof value === 'number' && isFinite(value) && value > 0) {
+            return Math.round(value);
+        }
+
+        if (value == null) return 0;
+
+        var str = String(value).trim();
+        if (!str) return 0;
+
+        if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)$/.test(str)) {
+            return 0;
+        }
+
+        var parsed = parseInt(str.replace(/,/g, ''), 10);
+        return parsed > 0 ? parsed : 0;
+    }
+
+    function renderRelatedCashback(description, amount) {
+        var parsedAmount = parseRelatedPaybackAmount(amount);
+        if (!description) return;
+
+        var existing = description.querySelector('.productCashback');
+
+        if (!parsedAmount) {
+            if (existing) existing.remove();
+            return;
+        }
+
+        var formattedAmount = parsedAmount.toLocaleString('ko-KR');
+
+        if (existing) {
+            var amountEl = existing.querySelector('.productCashbackAmount');
+            if (amountEl) amountEl.textContent = formattedAmount;
+            return;
+        }
+
+        description.insertAdjacentHTML(
+            'beforeend',
+            '<div class="productCashback">' +
+                '<svg class="productCashbackIcon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">' +
+                    '<path d="M2.50098 4V10C2.50098 11.1 4.50098 12 7.00098 12C9.50098 12 11.501 11.1 11.501 10V4" fill="#92E7BB"></path>' +
+                    '<path d="M2.50098 4V10C2.50098 11.1 4.50098 12 7.00098 12C9.50098 12 11.501 11.1 11.501 10V4" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                    '<path d="M11.501 7C11.501 8.1 9.50098 9 7.00098 9C4.50098 9 2.50098 8.1 2.50098 7" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                    '<path d="M7.00098 5.99805C9.48626 5.99805 11.501 5.10262 11.501 3.99805C11.501 2.89348 9.48626 1.99805 7.00098 1.99805C4.5157 1.99805 2.50098 2.89348 2.50098 3.99805C2.50098 5.10262 4.5157 5.99805 7.00098 5.99805Z" fill="#92E7BB" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
+                '</svg>' +
+                '<p class="productCashbackText">' +
+                    '최대 <span class="productCashbackAmount">' +
+                        formattedAmount +
+                    '</span>원 캐시백' +
+                '</p>' +
+            '</div>'
+        );
+    }
+
+    function applyRelatedProductItem(item, product) {
+        var description = item.querySelector('.description');
+        var priceWrap = item.querySelector('.price');
+        if (!description || !priceWrap) return;
+
+        var prodPriceEl = priceWrap.querySelector('.prodPrice');
+        var saleNumEl = priceWrap.querySelector('.detailSaleNum');
+        var prdPriceEl = priceWrap.querySelector('.prdPrice');
+        var retailPrice = product.retailPrice;
+        var sellPrice = product.price;
+
+        if (isValidRelatedPrice(sellPrice) && prdPriceEl) {
+            prdPriceEl.textContent = formatRelatedPrice(sellPrice);
+        }
+
+        if (
+            isValidRelatedPrice(retailPrice) &&
+            isValidRelatedPrice(sellPrice) &&
+            retailPrice > sellPrice
+        ) {
+            var discountPercent = getRelatedDiscountPercent(product);
+
+            if (prodPriceEl) {
+                prodPriceEl.textContent = formatRelatedPrice(retailPrice);
+            }
+            if (saleNumEl) {
+                saleNumEl.textContent =
+                    discountPercent > 0 ? discountPercent + '%' : '';
+            }
+        } else {
+            if (prodPriceEl) prodPriceEl.textContent = '';
+            if (saleNumEl) saleNumEl.textContent = '';
+        }
+
+        renderRelatedCashback(description, product.naverPayPaybackAmount);
+    }
+
+    function applyRelatedProducts(relatedProducts) {
+        if (!relatedProducts || !relatedProducts.length) return;
+
+        var relationRoot = document.getElementById('prdRelation');
+        if (!relationRoot) return;
+
+        var productMap = new Map();
+        relatedProducts.forEach(function (product) {
+            if (!product || product.productNo == null) return;
+            productMap.set(String(product.productNo), product);
+        });
+
+        if (!productMap.size) return;
+
+        relationRoot.querySelectorAll('.prdList__item').forEach(function (item) {
+            var link = item.querySelector(
+                '.thumbnail a[href], .name a[href], a[href]'
+            );
+            var productNo = getRelatedProductNoFromHref(
+                link && link.getAttribute('href')
+            );
+            if (!productNo) return;
+
+            var product = productMap.get(String(productNo));
+            if (!product) return;
+
+            try {
+                applyRelatedProductItem(item, product);
+            } catch (error) {
+                console.warn(
+                    '[DETAIL][RELATED_PRODUCTS] apply failed:',
+                    productNo,
+                    error
+                );
+            }
+        });
+    }
+
+    function loadRelatedProducts() {
+        if (relatedProductsApiRequested) return;
+
+        var productNo = getProductNo();
+        if (!productNo) {
+            console.warn('[DETAIL][RELATED_PRODUCTS] productNo is empty');
+            return;
+        }
+
+        relatedProductsApiRequested = true;
+
+        var apiConfig = getProductNoticeApiConfig();
+        var requestUrl =
+            apiConfig.baseUrl +
+            '/' +
+            encodeURIComponent(productNo) +
+            '/related-products';
+
+        fetch(requestUrl, apiConfig.fetchOptions)
+            .then(function (res) {
+                return res.text().then(function (text) {
+                    var body = null;
+
+                    try {
+                        body = text ? JSON.parse(text) : null;
+                    } catch (parseError) {
+                        body = null;
+                    }
+
+                    if (!res.ok) {
+                        console.error(
+                            '[DETAIL][RELATED_PRODUCTS] error response:',
+                            res.status,
+                            body
+                        );
+                        return;
+                    }
+
+                    applyRelatedProducts(
+                        body && body.relatedProducts
+                            ? body.relatedProducts
+                            : []
+                    );
+                });
+            })
+            .catch(function (error) {
+                console.error(
+                    '[DETAIL][RELATED_PRODUCTS] fetch error:',
+                    error
+                );
+            });
+    }
+
     function formatNoticeValue(value) {
         return value === null || value === undefined || (typeof value === 'string' && value.trim() === '') ? '-' : String(value);
     }
+
+    // 서비스 문의 / 안내: Cafe24 {$service_info}가 비어 있을 때만 '-' 표시
+    function initServiceInfo() {
+        var info = document.querySelector('.service-info');
+
+        if (!info) return;
+
+        if (info.textContent.trim() === '') {
+            info.textContent = formatNoticeValue('');
+        }
+    }
+
+
 
     function renderProductNotice(notice, data) {
         var list = notice.querySelector('.product-notice__list');
@@ -513,17 +829,7 @@ function initBestReview() {
 
         if (!info) return;
 
-        var value =
-            medicalNotice == null
-                ? ''
-                : String(medicalNotice).trim();
-
-        if (!value) {
-            medicalNoticeSection.hidden = true;
-            return;
-        }
-
-        info.textContent = value;
+        info.textContent = formatNoticeValue(medicalNotice);
         medicalNoticeSection.hidden = false;
     }
 
@@ -755,7 +1061,7 @@ function initBestReview() {
                 '<span class="price-tooltip">' +
                 '<button type="button" class="price-tooltip-trigger" ' +
                 'aria-label="실구매가 안내">?</button>' +
-                '<span class="reward-unit">1개 기준</span>' +
+                // '<span class="reward-unit">1개 기준</span>' +
                 '<span class="price-tooltip-panel" role="tooltip">결제는 구매가로 진행되며, 최대 리워드 지급 시의 최종 혜택가</span>' +
                 '</span>' +
                 '</th>' +
@@ -1003,6 +1309,10 @@ function initBestReview() {
             var trigger = event.target.closest('.detail-img__trigger-btn');
             if (!trigger) return;
 
+            // if (window.matchMedia('(max-width: 1024px)').matches) {
+            //     return;
+            // }
+
             event.preventDefault();
             event.stopPropagation();
 
@@ -1120,7 +1430,7 @@ function initBestReview() {
                 var $field = $('<div class="fixed-option-field"></div>');
                 var $select = $('<select class="fixed-option-select"></select>')
                     .html($source.html())
-                    .val($source.val())
+                    .prop('selectedIndex', 0)
                     .attr('aria-label', label)
                     .attr('data-source-index', index)
                     .attr('data-source-id', sourceId)

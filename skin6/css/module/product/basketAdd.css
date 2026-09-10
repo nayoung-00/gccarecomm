@@ -1,1 +1,18 @@
-.xans-product-basketadd .content p { font-weight:bold; color:#2e2e2e; }
+/* .xans-product-basketadd .content p { font-weight:bold; color:#2e2e2e; } */
+.xans-product-basketadd .content {font-size: 18px;font-weight: 500;color: var(--neutral-700);line-height: 1.4;}
+.xans-product-basketadd .ec-base-button {margin: 0;display: flex;align-items: center;justify-content: center;gap: 8px; padding: 0 16px 20px;}
+.xans-product-basketadd .ec-base-button:after {display: none;}
+.xans-product-basketadd .ec-base-button .sizeM {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--brand-color);
+    border-radius: 8px;
+    background: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--common-black);
+    line-height: 1.5;
+}
+.xans-product-basketadd .ec-base-button .btnSubmit {color: var(--neutral-0); background: var(--brand-color);}

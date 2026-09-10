@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>주문완료</title>
     <!--@css(/css/module/order/ec_orderform/form_onetouch.css)-->
     <!-- @css(/css/module/order/ec_orderform/form_onetouch_v2.css) -->
@@ -13,6 +13,7 @@
     <!--@css(/_aisoul/css/order.css)-->
 
     <!--@js(/layout/basic/js/common.js)-->
+    <!--@js(/_aisoul/js/common.js)-->
     <!--@js(/js/module/order/ec_orderform/orders.js)-->
     <!--@js(/js/module/order/ec_orderform/orders_v2.js)-->
 </head>
@@ -23,14 +24,14 @@
 <header class="header sub-header" data-ez="module-0o84y8t-1">
     <div class="inner-m header-inner">
         <div class="h-left">
-            <span module="Layout_MobileAction" class>
+            <!-- <span module="Layout_MobileAction" class>
                 <a href="#none" onclick="{$go_back}" class="back-btn"><i
-                        class="sr-only">뒤로가기</i><!--@import(/svg/icon-go-back.html)--></a>
-            </span>
+                        class="sr-only">뒤로가기</i>@import(/svg/icon-go-back.html)</a>
+            </span> -->
         </div>
         <h1 class="title"></h1>
         <div class="h-right">
-            <!-- <button type="button" class="main-close">@import(/_aisoul/svg/close.html)<i class="sr-only">닫기</i></button> -->
+            <button type="button" class="main-close"><!--@import(/_aisoul/svg/close.html)--><i class="sr-only">닫기</i></button>
         </div>
     </div>
 </header>

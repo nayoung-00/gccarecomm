@@ -2,6 +2,11 @@
  * 상품상세 Q&A
  */
 $(function () {
+
+    var $prdQnA = $('#prdQnA');
+    $prdQnA.find('.btnNormalFix.fixed-btn-outline').toggle($prdQnA.find('.nodata').length === 0);
+
+
   $('.xans-product-qna a').on('click', function (e) {
     e.preventDefault();
 
@@ -232,6 +237,8 @@ var QNA = {
     });
   },
 
+  
+
   // 댓글 보기
   comment_view: function (sId) {
     if ($('#commentList_' + sId).css('display') == 'none') {
@@ -269,3 +276,4 @@ var QNA = {
 
   END: function () { }
 };
+

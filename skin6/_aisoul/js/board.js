@@ -89,6 +89,26 @@
         });
     }
 
+    // 현재 FAQ 카테고리와 동일하면 true (전체 탭: category_no 없음/빈 문자열)
+    function isSameFaqCategory(categoryNo) {
+        var currentCategoryNo =
+            new URL(window.location.href).searchParams.get('category_no') ||
+            '';
+
+        return currentCategoryNo === String(categoryNo || '');
+    }
+
+    // FAQ 탭 전환: Cafe24 location.href(push) 대신 replace로 History entry 교체
+    // URL은 Cafe24 change handler와 동일 (?board_no=3&category_no={value})
+    function navigateFaqCategoryWithoutHistory(categoryNo) {
+        window.location.replace(
+            '?board_no=' +
+                BOARD_NO_FAQ +
+                '&category_no=' +
+                encodeURIComponent(categoryNo || '')
+        );
+    }
+
     function createSelectTabs($select, $, options) {
         if ($select.length === 0 || $select.data('tabified')) return null;
 
@@ -119,6 +139,13 @@
 
         scrollTabIntoView($tabWrap, $tabList.find('.is-active'));
 
+        // 탭 생성 완료 후 페이드 인 (원본 select 깜빡임 방지)
+        window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () {
+                $tabWrap.addClass('is-ready');
+            });
+        });
+
         $tabWrap.on(
             'click.' + options.namespace,
             '.category-tab-item a',
@@ -139,7 +166,22 @@
                 scrollTabIntoView($tabWrap, $item);
 
                 $select.val(selected.value);
-                if (options.triggerChange) $select.trigger('change');
+                // if (options.triggerChange) $select.trigger('change');
+                if (options.triggerChange) {
+                    // FAQ: Cafe24 location.href(push) 대신 replace로 History 교체
+                    if (getCurrentBoardNo($) === BOARD_NO_FAQ) {
+                        if (isSameFaqCategory(selected.value)) {
+                            return;
+                        }
+
+                        navigateFaqCategoryWithoutHistory(selected.value);
+                        return;
+                    }
+
+                    $select.trigger('change');
+                }
+
+
                 if (options.onSelect) options.onSelect(selected);
             }
         );

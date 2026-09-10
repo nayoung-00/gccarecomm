@@ -167,7 +167,64 @@ $(function () {
         childrenMap: {},
 
         init: function () {
+            categoryTabs.bindTabNavigation();
             categoryTabs.fetchCategories();
+        },
+        isSameCategoryTabUrl: function (href) {
+            try {
+                var nextUrl = new URL(href, window.location.origin);
+                var currentUrl = new URL(window.location.href);
+
+                return (
+                    nextUrl.pathname === currentUrl.pathname &&
+                    nextUrl.searchParams.get('cate_no') ===
+                        currentUrl.searchParams.get('cate_no')
+                );
+            } catch (error) {
+                return false;
+            }
+        },
+
+        bindTabNavigation: function () {
+            $(document)
+                .off('click.categoryTabReplace')
+                .on(
+                    'click.categoryTabReplace',
+                    '.category-tabs__list a, .category-sub-tabs__list a',
+                    function (event) {
+                        var href = $(this).attr('href');
+
+                        if (
+                            !href ||
+                            href === '#none' ||
+                            href.indexOf('javascript:') === 0
+                        ) {
+                            return;
+                        }
+
+                        if ($(this).attr('target') === '_blank') {
+                            return;
+                        }
+
+                        if (
+                            event.metaKey ||
+                            event.ctrlKey ||
+                            event.shiftKey ||
+                            event.altKey ||
+                            event.which === 2
+                        ) {
+                            return;
+                        }
+
+                        event.preventDefault();
+
+                        if (categoryTabs.isSameCategoryTabUrl(href)) {
+                            return;
+                        }
+
+                        window.location.replace(href);
+                    }
+                );
         },
 
         initTabSwiper: function (

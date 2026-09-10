@@ -12,8 +12,8 @@ button svg { display: block; flex-shrink: 0; }
 #wrap .myshopArea { width: 100% !important; max-width: 768px !important; padding: 0 !important; min-height: auto !important; } 
 
 /* 바텀 고정 버튼 */
-.fixed-btn-comm { display: flex; text-align: initial; justify-content: space-between; gap: 8px; position: fixed; bottom: 0; left: 50%; z-index: 100; width: 100%; max-width: 768px; margin: 0 auto; padding: 24px 16px calc(20px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: var(--neutral-0); box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04); transform: translateX(-50%); }
-.fixed-btn-comm a, .fixed-btn-comm button { width: 100%; height: 50px !important; padding: 12px !important; border-color: var(--brand-color) !important; border-radius: 8px; background-color: #fff !important; color: var(--common-black) !important; font-size: 16px !important; font-weight: 500; line-height: 1.6 !important; -webkit-appearance: none; appearance: none; }
+.fixed-btn-comm { display: flex; text-align: center; justify-content: space-between; gap: 8px; position: fixed; bottom: 0; left: 50%; z-index: 100; width: 100%; max-width: 768px; margin: 0 auto; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: var(--neutral-0); box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04); transform: translateX(-50%); }
+.fixed-btn-comm a, .fixed-btn-comm button { width: 100%; height: 50px !important; padding: 12px !important; border: 1px solid; border-color: var(--brand-color) !important; border-radius: 8px; background-color: #fff !important; color: var(--common-black) !important; font-size: 16px !important; font-weight: 500; line-height: 1.6 !important; -webkit-appearance: none; appearance: none; }
 .fixed-btn-comm .fixed-btn-fill { background-color: var(--brand-color) !important; color: var(--neutral-0) !important; }
 
 /* ios 버튼 컬러 상속 */
@@ -22,7 +22,7 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"] {color: inherit;font: inherit;}
 
-
+#wrap .xans-layout-mobileaction {position: unset;}
 /********************************************************* 
  ec-base-button 
 *********************************************************/

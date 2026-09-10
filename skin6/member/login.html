@@ -1,4 +1,25 @@
 <!--@layout(/layout/basic/layout.html)-->
+<style>
+    html.gc-sso-auto-login body {
+        visibility: hidden !important;
+    }
+</style>
+<script>
+    (function (window, document) {
+        'use strict';
+
+        try {
+            if (new URL(window.location.href).searchParams.get('gc_sso_auto') === '1') {
+                document.documentElement.classList.add('gc-sso-auto-login');
+                window.gcSsoAutoLoginRevealTimer = window.setTimeout(function () {
+                    document.documentElement.classList.remove('gc-sso-auto-login');
+                }, 10000);
+            }
+        } catch (error) {
+            document.documentElement.classList.remove('gc-sso-auto-login');
+        }
+    }(window, document));
+</script>
 <div class="section path">
     <span>현재 위치</span>
     <ol>

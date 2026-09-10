@@ -4,15 +4,15 @@
 .xans-myshop-orderhistoryapplyexchange .productSelect { border-bottom:1px solid #e5e5e5; background:#f9f9f9; }
 .xans-myshop-orderhistoryapplyexchange .exchangeProduct { border-top:1px solid #000; }
 .xans-myshop-orderhistoryapplyexchange .direct { width:100%; }
-.xans-myshop-orderhistoryapplyexchange .direct .input { display:flex; }
-.xans-myshop-orderhistoryapplyexchange .direct #pickup_invoiceno { margin-left:10px; }
+.xans-myshop-orderhistoryapplyexchange .direct .input { display:flex; flex-direction: column; margin-bottom: 4px; gap: 4px;}
+/* .xans-myshop-orderhistoryapplyexchange .direct #pickup_invoiceno { margin-left:10px; } */
 
 .xans-myshop-orderhistoryapplyexchange .ec-base-table.typeList .xans-myshop-products .multiDelivery{background-color:#fbfafa;vertical-align:middle;padding:10px 20px 10px 40px;}
 .xans-myshop-orderhistoryapplyexchange .ec-base-table.typeList .xans-myshop-products .multiDelivery .inner{display: flex;align-items:center;}
 .xans-myshop-orderhistoryapplyexchange .ec-base-table.typeList .xans-myshop-products .multiDelivery .address{flex:1;display: block;padding-right:20px;}
 .xans-myshop-orderhistoryapplyexchange .ec-base-table.typeList .xans-myshop-products .multiDelivery .waybill{flex:none;display: inline-block;}
 
-.xans-myshop-orderhistoryapplyexchange textarea { width:100%; }
+.xans-myshop-orderhistoryapplyexchange textarea { width:100%; border-radius: 8px; }
 .itemAddInfo input { width:100%; }
 
 .xans-myshop-orderhistoryapplyexchange p.ec-base-help { margin:10px 0 0; }

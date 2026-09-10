@@ -1,16 +1,24 @@
 /**
  * 상품상세 사용후기
  */
-$(function(){
-    $('.xans-product-review a').on('click', function(e) {
+$(function () {
+    $('.xans-product-review a').on('click', function (e) {
+        var href = $(this).attr('href') || '';
+        var noMatch = href.match(/[?&]no=(\d+)/);
+
+        // href가 없거나 게시글 번호가 없는 링크는 제외
+        if (!noMatch) {
+            return;
+        }
+
         e.preventDefault();
 
-        var no = $(this).attr('href').replace(/(\S*)[?&]no=(\d+)(\S*)/g, '$2');
-        var $obj = $('#product-review-read_'+no);
+        var no = noMatch[1];
+        var $obj = $('#product-review-read_' + no);
 
-        //로드된 엘리먼트 존재 체크
+        // 로드된 엘리먼트 존재 체크
         if ($obj.length > 0) {
-            if ($obj.css('display') =='none') {
+            if ($obj.css('display') === 'none') {
                 $obj.show();
             } else {
                 $obj.hide();
@@ -21,10 +29,14 @@ $(function(){
         REVIEW.getReadData($(this));
     });
 
-    // review 탭 바로 활성화처리
+    // review 탭 바로 활성화 처리
     var href = document.location.href.split('#')[1];
     var winWidth = window.innerWidth;
-    if (winWidth < 1026 && href == 'use_review' || href == 'prdReview') {
+
+    if (
+        (winWidth < 1026 && href === 'use_review') ||
+        href === 'prdReview'
+    ) {
         $('a[name^="use_review"]').trigger('click');
     }
 });

@@ -1,5 +1,6 @@
 <!--@layout(/layout/basic/layout.html)-->
 <!--@css(/_aisoul/css/order.css)-->
+<!--@js(/_aisoul/js/basket.js)-->
 
 <div class="section titleArea">
      
@@ -28,7 +29,17 @@
         <p class="right {$basket_perd_display|display} RW">장바구니에 담긴 상품은 {$basket_remove_perd}일 동안 보관됩니다.</p>
     </div> -->
 
-    <p module="Order_Empty" class="ec-base-prdEmpty">장바구니에 담긴 상품이 없어요</p>
+     <div module="Order_Empty">
+        <p class="ec-base-prdEmpty"> 
+            장바구니에 담긴 상품이 없어요
+        </p>
+
+        <div class="ec-base-button fixed-btn-comm btn-basket-empty">
+            <a href="/product/list.html?cate_no=47" class="sizeM fixed-btn-fill">
+                상품 보러 가기
+            </a>
+        </div>
+    </div>
     <div class="cart-container">
         <div class="cart-product">
 
@@ -1412,7 +1423,7 @@
             </div>
         </div>
     </div>
-
+    
 
     <!-------------------------------------------------- 
         주문 버튼 

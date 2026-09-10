@@ -50,7 +50,7 @@
             speed: 500,
             pagination: {
                 el: '.visual-pagination',
-                type: 'progressbar'
+                type: 'fraction'
             }
         });
 
