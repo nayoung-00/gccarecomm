@@ -30,9 +30,9 @@
 
   .xans-myshop-addrmodify .icoRequired {width: auto; height: auto; margin-right: 5px; vertical-align: middle;}
 
-  .xans-myshop-addrmodify input[type="text"], .xans-myshop-addrmodify input[type="tel"], .xans-myshop-addrmodify select {height: 56px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 10px; background: #fff; font-size: 16px; color: #222;}
-  .xans-myshop-addrmodify input[type="text"], .xans-myshop-addrmodify input[type="tel"] {padding: 0 18px;}
-  .xans-myshop-addrmodify select {padding: 0 42px 0 18px;}
+  #wrap .xans-myshop-addrmodify input[type="text"], #wrap .xans-myshop-addrmodify input[type="tel"], #wrap .xans-myshop-addrmodify select {height: 56px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 10px; background: #fff; font-size: 16px; color: #222;}
+  #wrap .xans-myshop-addrmodify input[type="text"], #wrap .xans-myshop-addrmodify input[type="tel"] {padding: 0 18px;}
+  #wrap .xans-myshop-addrmodify select {padding: 0 42px 0 18px;}
 
   /* 배송지명 / 성명 */
   .addr-modify__label td input, .addr-modify__name td input {width: 100% !important;}
@@ -123,3 +123,113 @@
     <!--@import(/myshop/myshop_main.html)-->
 
 </div>
+<script>
+    (function () {
+        'use strict';
+    
+        if (window.__gcAddrModifyBackBound) return;
+        window.__gcAddrModifyBackBound = true;
+    
+        document.addEventListener(
+            'click',
+            function (event) {
+                var back =
+                    event.target.closest &&
+                    event.target.closest('.back-btn');
+    
+                if (!back) return;
+    
+                event.preventDefault();
+                event.stopPropagation();
+                if (typeof event.stopImmediatePropagation === 'function') {
+                    event.stopImmediatePropagation();
+                }
+    
+                window.location.replace('/myshop/addr/list.html');
+            },
+            true
+        );
+    })();
+    </script>
+
+<script>
+    (function () {
+        'use strict';
+    
+        var isIOS =
+            /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+        if (!isIOS) return;
+
+        if (!window.__gcAddrModifyIosInputStyle) {
+        window.__gcAddrModifyIosInputStyle = true;
+
+        var style = document.createElement('style');
+        style.textContent =
+            '#wrap .xans-myshop-addrmodify input[type="text"]:not(:disabled):hover,' +
+            '#wrap .xans-myshop-addrmodify input[type="password"]:not(:disabled):hover{' +
+            'border-color:#ddd;transition:none;}' +
+            '#wrap .xans-myshop-addrmodify input[type="text"]:not(:disabled):focus,' +
+            '#wrap .xans-myshop-addrmodify input[type="password"]:not(:disabled):focus{' +
+            'border-color:var(--common-black);transition:none;}';
+        document.head.appendChild(style);
+    }
+    
+        if (window.__gcAddrModifyEnterFocusBound) return;
+        window.__gcAddrModifyEnterFocusBound = true;
+    
+        var FIELD_IDS = [
+            'ma_rcv_title',
+            'ma_rcv_name',
+            'address_addr2',
+            'ma_rcv_phone1',
+            'ma_rcv_phone2',
+            'ma_rcv_phone3',
+            'ma_rcv_mobile_no1',
+            'ma_rcv_mobile_no2',
+            'ma_rcv_mobile_no3'
+        ];
+    
+        function isFocusable(el) {
+            if (!el || el.disabled || el.readOnly) return false;
+            if (el.type === 'hidden') return false;
+            if (el.offsetParent === null && el.getClientRects().length === 0) {
+                return false;
+            }
+            return true;
+        }
+    
+        function getField(id) {
+            return document.getElementById(id);
+        }
+    
+        function focusNext(currentId) {
+            var start = FIELD_IDS.indexOf(currentId);
+            if (start === -1) return false;
+    
+            for (var i = start + 1; i < FIELD_IDS.length; i++) {
+                var next = getField(FIELD_IDS[i]);
+                if (isFocusable(next)) {
+                    next.focus();
+                    return true;
+                }
+            }
+            return false;
+        }
+    
+        document.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter') return;
+    
+            var target = event.target;
+            if (!target || !target.id) return;
+            if (FIELD_IDS.indexOf(target.id) === -1) return;
+    
+            event.preventDefault();
+    
+            if (!focusNext(target.id)) {
+                target.blur();
+            }
+        });
+    })();
+    </script>

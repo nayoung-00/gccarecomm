@@ -111,6 +111,46 @@
         }
       });
     }
+
+   /**
+   * Header MENU/BACK 비교 전용.
+   * /product/list.html 끼리는 cate_no 차이를 무시한다.
+   * /board/free/list.html + board_no=3 끼리는 category_no 차이를 무시한다.
+   */
+  function isSameCommerceEntry(entryPath, currentPath) {
+    if (!entryPath || !currentPath) return false;
+    if (entryPath === currentPath) return true;
+
+    try {
+      var entryUrl = new URL(entryPath, window.location.origin);
+      var currentUrl = new URL(currentPath, window.location.origin);
+
+      if (
+        entryUrl.pathname === '/product/list.html' &&
+        currentUrl.pathname === '/product/list.html'
+      ) {
+        entryUrl.searchParams.delete('cate_no');
+        currentUrl.searchParams.delete('cate_no');
+      } else if (
+        entryUrl.pathname === '/board/free/list.html' &&
+        currentUrl.pathname === '/board/free/list.html' &&
+        entryUrl.searchParams.get('board_no') === '3' &&
+        currentUrl.searchParams.get('board_no') === '3'
+      ) {
+        entryUrl.searchParams.delete('category_no');
+        currentUrl.searchParams.delete('category_no');
+      } else {
+        return false;
+      }
+
+      return (
+        toComparablePath(entryUrl.pathname + entryUrl.search) ===
+        toComparablePath(currentUrl.pathname + currentUrl.search)
+      );
+    } catch (e) {
+      return false;
+    }
+  }
   
     function resolveAndApplyHeader() {
       // 1~3. Token 있으면 entry 저장 후 URL에서 Token 제거
@@ -125,8 +165,85 @@
   
       // 8~10. A 타입 MENU/BACK 판정
       var currentPath = toComparablePath(window.location.href);
-      applyHeaderType(entryPath === currentPath ? 'MENU' : 'BACK');
+      applyHeaderType(
+        isSameCommerceEntry(entryPath, currentPath) ? 'MENU' : 'BACK'
+      );
     }
+
+
+    // 사이드바 메뉴/뒤로가기 판정
+
+    var SIDEBAR_ENTRY_PATHS = [
+      '/product/promotion_list.html',
+      '/product/list.html?cate_no=50',
+      '/product/list.html?cate_no=51',
+      '/myshop/index.html',
+      '/member/login.html',
+      '/board/consult/list.html',
+      '/board/free/list.html?board_no=3',
+      '/board/free/list.html?board_no=1'
+    ].map(function (href) {
+      return toComparablePath(href);
+    });
+  
+    function isSidebarEntryLink(link) {
+      if (!link || !link.href) return false;
+      if (!link.closest || !link.closest('#aside')) return false;
+  
+      var destination;
+  
+      try {
+        destination = toComparablePath(link.href);
+      } catch (e) {
+        return false;
+      }
+  
+      return SIDEBAR_ENTRY_PATHS.indexOf(destination) !== -1;
+    }
+
+    // Store Home 링크 판별
+    function isSubHeaderStoreHomeEntryLink(link) {
+      if (!link || !link.href) return false;
+      if (
+        !link.matches ||
+        !link.matches('.sub-header .title a, .main-header .logo a')
+      ) {
+        return false;
+      }
+  
+      try {
+        return toComparablePath(link.href) === '/';
+      } catch (e) {
+        return false;
+      }
+    }
+  
+    function handleSidebarEntryClick(event) {
+      var link =
+        event.target &&
+        event.target.closest &&
+        event.target.closest('a[href]');
+  
+        if (!isSidebarEntryLink(link) && !isSubHeaderStoreHomeEntryLink(link)) return;
+  
+      var currentEntry = getEntryPath();
+      if (!currentEntry) return;
+  
+      try {
+        sessionStorage.setItem(ENTRY_KEY, toComparablePath(link.href));
+      } catch (storageError) {
+        // sessionStorage 사용 불가 시 navigation은 그대로 진행
+      }
+    }
+  
+    function bindSidebarEntryUpdate() {
+      if (window.__gcSidebarEntryUpdateBound) return;
+      window.__gcSidebarEntryUpdateBound = true;
+  
+      document.addEventListener('click', handleSidebarEntryClick, true);
+    }
+
+    // 사이드바 메뉴/뒤로가기 판정 종료
   
     function initHeaderPolicy() {
       if (document.readyState === 'loading') {
@@ -143,5 +260,6 @@
     }
   
     initHeaderPolicy();
+    bindSidebarEntryUpdate();
   })();
   

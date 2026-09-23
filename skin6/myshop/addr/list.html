@@ -124,3 +124,121 @@
     <!--@import(/myshop/myshop_main.html)-->
 
 </div>
+
+<script>
+	(function () {
+		'use strict';
+	
+		var GC_ADDR_RETURN_URL_KEY = 'gcAddrReturnUrl';
+		var ADDR_FALLBACK_RETURN = '/myshop/index.html';
+	
+		if (window.__gcAddrListNavBound) return;
+		window.__gcAddrListNavBound = true;
+	
+		function getSessionItem(key) {
+			try {
+				return sessionStorage.getItem(key);
+			} catch (e) {
+				return null;
+			}
+		}
+	
+		function setSessionItem(key, value) {
+			try {
+				sessionStorage.setItem(key, value);
+			} catch (e) {}
+		}
+	
+		function removeSessionItem(key) {
+			try {
+				sessionStorage.removeItem(key);
+			} catch (e) {}
+		}
+	
+		function toSameOriginPath(href) {
+			try {
+				var url = new URL(href, window.location.origin);
+				if (url.origin !== window.location.origin) {
+					return '';
+				}
+				if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+					return '';
+				}
+				return url.pathname + url.search + url.hash;
+			} catch (e) {
+				return '';
+			}
+		}
+	
+		function isAddrInternalPath(pathname) {
+			var path = pathname || '';
+			if (/^\/myshop\/addr(\/|$)/i.test(path)) return true;
+			if (/^\/exec\/front\/Myshop\/Addr(\/|$)/i.test(path)) return true;
+			return false;
+		}
+	
+		function getSafeAddrReturnUrl() {
+			var stored = getSessionItem(GC_ADDR_RETURN_URL_KEY);
+			if (!stored) return ADDR_FALLBACK_RETURN;
+	
+			var path = toSameOriginPath(stored);
+			if (!path) return ADDR_FALLBACK_RETURN;
+			if (isAddrInternalPath(path.split('?')[0].split('#')[0])) {
+				return ADDR_FALLBACK_RETURN;
+			}
+	
+			return path;
+		}
+	
+		function captureReturnUrlFromReferrer() {
+			var referrer = document.referrer;
+			if (!referrer) return;
+	
+			var path = toSameOriginPath(referrer);
+			if (!path) return;
+	
+			var pathname = '';
+			try {
+				pathname = new URL(referrer, window.location.origin).pathname;
+			} catch (e) {
+				return;
+			}
+	
+			// 배송지 내부 navigation으로 list에 돌아온 경우 기존 값 유지
+			if (isAddrInternalPath(pathname)) return;
+	
+			setSessionItem(GC_ADDR_RETURN_URL_KEY, path);
+		}
+	
+		function stopBackEvent(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			if (typeof event.stopImmediatePropagation === 'function') {
+				event.stopImmediatePropagation();
+			}
+		}
+	
+		function initListBack() {
+			document.addEventListener(
+				'click',
+				function (event) {
+					var back =
+						event.target.closest &&
+						event.target.closest('.back-btn');
+	
+					if (!back) return;
+	
+					stopBackEvent(event);
+	
+					var returnUrl = getSafeAddrReturnUrl();
+					removeSessionItem(GC_ADDR_RETURN_URL_KEY);
+					window.location.replace(returnUrl);
+				},
+				true
+			);
+		}
+	
+		captureReturnUrlFromReferrer();
+		initListBack();
+	})();
+	</script>

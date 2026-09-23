@@ -38,6 +38,64 @@
         });
     }
 
+    
+  /* =====================================================
+     1:1 문의 목록 진입 직전 URL 저장 (CF History 우회용)
+  ===================================================== */
+  var GC_CONSULT_LIST_RETURN_URL_KEY = 'gcConsultListReturnUrl';
+
+  initConsultListReturnUrlCapture();
+
+  function isConsultListOrWritePath(pathname) {
+      return /\/board\/consult\/(list|write)\.html$/i.test(pathname || '');
+  }
+
+  function toSameOriginPath(href) {
+      try {
+          var url = new URL(href, window.location.origin);
+          if (url.origin !== window.location.origin) {
+              return '';
+          }
+          return url.pathname + url.search + url.hash;
+      } catch (e) {
+          return '';
+      }
+  }
+
+  function initConsultListReturnUrlCapture() {
+      if (window.__gcConsultListReturnUrlCaptureBound) {
+          return;
+      }
+      window.__gcConsultListReturnUrlCaptureBound = true;
+
+      document.addEventListener(
+          'click',
+          function (event) {
+              var link =
+                  event.target.closest &&
+                  event.target.closest('a[href*="/board/consult/list.html"]');
+
+              if (!link) return;
+
+              // 문의 list/write 안에서의 이동은 returnUrl로 쓰지 않음
+              if (isConsultListOrWritePath(window.location.pathname)) {
+                  return;
+              }
+
+              var currentPath = toSameOriginPath(window.location.href);
+              if (!currentPath) return;
+
+              try {
+                  sessionStorage.setItem(
+                      GC_CONSULT_LIST_RETURN_URL_KEY,
+                      currentPath
+                  );
+              } catch (e) {}
+          },
+          true
+      );
+  }
+
 
     // 배너매니저 공통 
     $('.df-bannermanager').each(function () {

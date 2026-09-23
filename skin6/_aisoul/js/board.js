@@ -7,7 +7,15 @@
     var JQUERY_WAIT_MAX_TRY = 100;
     var DRAG_THRESHOLD = 5;
     var WRITE_PAGE_PATH_PATTERN = /\/(write|modify|reply)\.html/;
+    var CONSULT_WRITE_PATH_PATTERN = /\/board\/consult\/write\.html$/i;
+    var CONSULT_LIST_PATH_PATTERN = /\/board\/consult\/list\.html$/i;
+    var GC_CONSULT_LIST_RETURN_URL_KEY = 'gcConsultListReturnUrl';
+    var GC_CONSULT_SKIP_HIST_BACK_KEY = 'gcConsultSkipHistBack';
+    var CONSULT_FALLBACK_RETURN = '/';
     var dragEventId = 0;
+
+    // jQuery 대기와 무관하게 consult list/write back 상태 관리
+    initConsultNavigation();
 
     waitForJQuery(init);
 
@@ -46,6 +54,198 @@
     function isWritePage() {
         return WRITE_PAGE_PATH_PATTERN.test(window.location.pathname);
     }
+
+    
+    /* =====================================================
+       1:1 문의 list/write — CF History 우회 navigation state
+    ===================================================== */
+    function initConsultNavigation() {
+        initConsultWriteBack();
+        initConsultListBack();
+        initConsultListReturnUrlFallback();
+    }
+
+    function getSessionItem(key) {
+        try {
+            return sessionStorage.getItem(key);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function setSessionItem(key, value) {
+        try {
+            sessionStorage.setItem(key, value);
+        } catch (e) {}
+    }
+
+    function removeSessionItem(key) {
+        try {
+            sessionStorage.removeItem(key);
+        } catch (e) {}
+    }
+
+    function toSameOriginPath(href) {
+        try {
+            var url = new URL(href, window.location.origin);
+            if (url.origin !== window.location.origin) {
+                return '';
+            }
+            return url.pathname + url.search + url.hash;
+        } catch (e) {
+            return '';
+        }
+    }
+
+    function isConsultListOrWritePath(pathname) {
+        return /\/board\/consult\/(list|write)\.html$/i.test(pathname || '');
+    }
+
+    function isCloudflareRelatedUrl(href) {
+        try {
+            var url = new URL(href, window.location.origin);
+            var host = url.hostname.toLowerCase();
+            var path = url.pathname.toLowerCase();
+
+            if (host.indexOf('cloudflare') !== -1) return true;
+            if (path.indexOf('/cdn-cgi/') !== -1) return true;
+            if (path.indexOf('challenge') !== -1) return true;
+            return false;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    function getSafeConsultReturnUrl() {
+        var stored = getSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY);
+        if (!stored) return CONSULT_FALLBACK_RETURN;
+
+        var path = toSameOriginPath(stored);
+        if (!path) return CONSULT_FALLBACK_RETURN;
+        if (isConsultListOrWritePath(path.split('?')[0])) {
+            return CONSULT_FALLBACK_RETURN;
+        }
+        if (isCloudflareRelatedUrl(path)) {
+            return CONSULT_FALLBACK_RETURN;
+        }
+
+        return path;
+    }
+
+    function stopBackEvent(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+        }
+    }
+
+    function initConsultWriteBack() {
+        if (!CONSULT_WRITE_PATH_PATTERN.test(window.location.pathname)) {
+            return;
+        }
+
+        if (window.__gcConsultWriteBackBound) {
+            return;
+        }
+        window.__gcConsultWriteBackBound = true;
+
+        document.addEventListener(
+            'click',
+            function (event) {
+                var back =
+                    event.target.closest &&
+                    event.target.closest('.back-btn');
+
+                if (!back) return;
+
+                stopBackEvent(event);
+
+                setSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY, '1');
+
+                var boardNo = '9';
+                try {
+                    boardNo =
+                        new URLSearchParams(window.location.search).get(
+                            'board_no'
+                        ) || '9';
+                } catch (e) {}
+
+                window.location.replace(
+                    '/board/consult/list.html?board_no=' +
+                        encodeURIComponent(boardNo)
+                );
+            },
+            true
+        );
+    }
+
+    function initConsultListBack() {
+        if (!CONSULT_LIST_PATH_PATTERN.test(window.location.pathname)) {
+            return;
+        }
+
+        if (getSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY) !== '1') {
+            return;
+        }
+
+        if (window.__gcConsultListBackBound) {
+            return;
+        }
+        window.__gcConsultListBackBound = true;
+
+        document.addEventListener(
+            'click',
+            function (event) {
+                var back =
+                    event.target.closest &&
+                    event.target.closest('.back-btn');
+
+                if (!back) return;
+
+                // 플래그가 이미 소비된 경우 기본 back 유지
+                if (getSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY) !== '1') {
+                    return;
+                }
+
+                stopBackEvent(event);
+
+                var returnUrl = getSafeConsultReturnUrl();
+
+                removeSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY);
+                removeSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY);
+
+                window.location.replace(returnUrl);
+            },
+            true
+        );
+    }
+
+    function initConsultListReturnUrlFallback() {
+        if (!CONSULT_LIST_PATH_PATTERN.test(window.location.pathname)) {
+            return;
+        }
+
+        // write → replace(list) 복귀 시 returnUrl/referrer 덮어쓰기 금지
+        if (getSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY) === '1') {
+            return;
+        }
+
+        if (getSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY)) {
+            return;
+        }
+
+        var referrer = document.referrer;
+        if (!referrer) return;
+
+        var path = toSameOriginPath(referrer);
+        if (!path) return;
+        if (isConsultListOrWritePath(path.split('?')[0])) return;
+        if (isCloudflareRelatedUrl(referrer)) return;
+
+        setSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY, path);
+    }
+
 
     /* =====================================================
        게시판 종류
