@@ -37,20 +37,29 @@
         ===================================================== */
         function extractPriceText($li) {
             if (!$li || !$li.length) return '';
+
             var text = '';
 
             $li.contents().each(function () {
                 var node = this;
-                if (node.nodeType === 3) text += node.nodeValue || '';
+
+                if (node.nodeType === 3) {
+                    text += node.nodeValue || '';
+                }
+
                 if (node.nodeType === 1) {
                     var $node = $(node);
+
                     if (
                         $node.hasClass('percent-text') ||
+                        $node.hasClass('sale_box') ||
+                        $node.hasClass('discount-rate') ||
                         $node.hasClass('title') ||
                         $node.attr('id') === 'span_product_tax_type_text'
                     ) {
                         return;
                     }
+
                     text += $node.text();
                 }
             });

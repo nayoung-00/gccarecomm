@@ -68,6 +68,11 @@
         }
     };
 
+    var PRODUCT_NOTICE_EMPTY_CODES = [
+        'PRODUCT_INFORMATION_TYPE_MISSING',
+        'PRODUCT_INFORMATION_INVALID'
+    ];
+
     var productNoticeApiRequested = false;
 
     var PRODUCT_INFO_LABEL_CLASS_MAP = {
@@ -249,7 +254,7 @@
             initDetailLayout($);
             initDetailPopup();
             initProductImageDrag($);
-            initNaverPayBenefit($);
+            // initNaverPayBenefit($);
             runAtDelays(function () {
                 initPriceUnitWrap($);
             }, [0, 250, 700, 1500]);
@@ -390,35 +395,34 @@ function initBestReview() {
     window.setInterval(applyBestReviewOverride, 500);
 }
 
-    function getProductCode() {
-        var productCode =
-            window.product_code == null
-                ? ''
-                : String(window.product_code).trim();
-    
-        if (productCode) return productCode;
-    
-        var productCodeElement = document.querySelector(
-            '.xans-product-detail .imgArea .prdImg .thumbnail > a[alt]'
-        );
-    
-        return productCodeElement
-            ? String(productCodeElement.getAttribute('alt') || '').trim()
-            : '';
+
+
+    function getProductNo(){
+        if(window.iProductNo != null && String(window.iProductNo).trim() != ''){
+            return String(window.iProductNo).trim();
+        }
+
+        if(typeof getQueryString === 'function'){
+            if (queryProductNo) {
+                return String(queryProductNo).trim();
+            }
+
+        }
+
+        return '';
     }
 
     function loadProductNotice($) {
-        if (productNoticeApiRequested) return;
-        productNoticeApiRequested = true;
-  
-        var productCode = getProductCode();
-        if (!productCode) {
-            console.warn('[DETAIL][PRODUCT_NOTICE] productCode is empty');
+        var productNo = getProductNo();
+        if (!productNo) {
+            console.warn('[DETAIL][PRODUCT_NOTICE] productNo is empty');
             return;
         }
+
+        productNoticeApiRequested = true;
   
         var apiConfig = getProductNoticeApiConfig();
-        var requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productCode) + '/information-notice';
+        var requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productNo) + '/information-notice';
   
   
         fetch(requestUrl, apiConfig.fetchOptions)
@@ -452,14 +456,21 @@ function initBestReview() {
                         }
   
                         // 3. 네이버페이  
-                        initNaverPayBenefit($, body.naverPayPaybackAmount);
+                        var naverPayPaybackAmount = body && body.productType === 'HEALTH_FUNCTIONAL_FOOD' ? body.naverPayPaybackAmount : null;
+                        initNaverPayBenefit($, naverPayPaybackAmount);
   
                         return;
                     }
   
                     // 상품정보고시 미등록 → 정상 케이스
-                    if(res.status === 422 && body && body.code === 'PRODUCT_INFORMATION_TYPE_MISSING'){
-                      console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 미등록:', productCode);
+                    if(res.status === 422 && 
+                        body && 
+                        PRODUCT_NOTICE_EMPTY_CODES.indexOf(body.code) !== -1){
+                      console.warn( '[DETAIL][PRODUCT_NOTICE] 상품정보고시 데이터 없음/처리불가:', productNo, body.code);
+
+                      renderMedicalNotice(null);
+                      initNaverPayBenefit($);
+
                       return;
                     };
   
@@ -509,17 +520,7 @@ function initBestReview() {
 
         if (!info) return;
 
-        var value =
-            medicalNotice == null
-                ? ''
-                : String(medicalNotice).trim();
-
-        if (!value) {
-            medicalNoticeSection.hidden = true;
-            return;
-        }
-
-        info.textContent = value;
+        info.textContent = formatNoticeValue(medicalNotice);
         medicalNoticeSection.hidden = false;
     }
 
@@ -751,7 +752,7 @@ function initBestReview() {
                 '<span class="price-tooltip">' +
                 '<button type="button" class="price-tooltip-trigger" ' +
                 'aria-label="실구매가 안내">?</button>' +
-                '<span class="reward-unit">1개 기준</span>' +
+                // '<span class="reward-unit">1개 기준</span>' +
                 '<span class="price-tooltip-panel" role="tooltip">결제는 구매가로 진행되며, 최대 리워드 지급 시의 최종 혜택가</span>' +
                 '</span>' +
                 '</th>' +
@@ -1042,7 +1043,7 @@ function initBestReview() {
                 .find('select');
             if (!$productOptions.length) return true;
 
-            return $sourceSelected.find('tr.option_product, tr.add_product').length > 0;
+            return $sourceSelected.find('tr.option_product').length > 0;
         }
 
         // 구매하기/장바구니 레이어 팝업 호출 막기
@@ -1050,7 +1051,7 @@ function initBestReview() {
             $origin.data('requiredOptionGuardBound', true);
             $origin.get(0).addEventListener('click', function (event) {
                 var actionTarget = event.target.closest &&
-                    event.target.closest('a.btnSubmit.sizeL, #actionCart');
+                    event.target.closest('a.btnSubmit.sizeL, .actionCart');
                 if (!actionTarget || hasRequiredOptionSelected()) return;
 
                 event.preventDefault();
@@ -1313,7 +1314,12 @@ function initBestReview() {
             $actions.find('[id]').removeAttr('id');
             $actions.find('[onclick]').removeAttr('onclick');
             $actions.find('a').attr('href', '#none');
-            $actions.find('.actionCart').on('click', function () { $origin.find('.actionCart').first().trigger('click'); });
+            $actions.find('.actionCart').on('click', function (event) {
+                event.preventDefault();
+                // 원본 장바구니 버튼 클릭 팝업 차단
+                var cartButton = $origin.find('.actionCart').first().get(0);
+                if (cartButton) cartButton.click();
+            });
             $actions.find('.fixed-btn-fill').on('click', function (event) {
                 event.preventDefault();
                 var submitButton = $origin.find('.btnSubmit:visible').first().get(0);
