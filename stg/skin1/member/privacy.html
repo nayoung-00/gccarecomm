@@ -1,0 +1,25 @@
+<!--@layout(/layout/basic/layout.html)-->
+
+
+<!-- 동적 타이틀 -->
+<span class="page-title-source" data-href="/" hidden>어떠케어몰</span>
+
+
+<div class="section  titleArea--middle inner-m">
+    <h3>개인정보처리방침</h3>
+</div>
+
+<div module="mall_privacy" class="section gInnerMargin inner-m">
+    <!--@css(/css/module/mall/privacy.css)-->
+    <p class="date {$displayEnforce|display}">{$enforce_date}</p>
+    <div class="ec-base-box typeThin">
+        <div class="agree">
+            {$privacy_agreement}
+        </div>
+    </div>
+    <div class="ec-base-button {$displayBeforeEnforce|display}">
+        <span class="gLeft">
+        	<a href="{$before_enforce_link}" class="btnDate" target="_blank">{$before_enforce_date}</a>
+        </span>
+    </div>
+</div>

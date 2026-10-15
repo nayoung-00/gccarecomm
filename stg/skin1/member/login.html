@@ -1,0 +1,124 @@
+<!--@layout(/layout/basic/layout.html)-->
+<style>
+    html.gc-sso-auto-login body {
+        visibility: hidden !important;
+    }
+</style>
+
+<script>
+    (function (window, document) {
+        'use strict';
+
+        try {
+            if (new URL(window.location.href).searchParams.get('gc_sso_auto') === '1') {
+                document.documentElement.classList.add('gc-sso-auto-login');
+                window.gcSsoAutoLoginRevealTimer = window.setTimeout(function () {
+                    document.documentElement.classList.remove('gc-sso-auto-login');
+                }, 10000);
+            }
+        } catch (error) {
+            document.documentElement.classList.remove('gc-sso-auto-login');
+        }
+
+        // Bridge 호출
+        if (window.__gcLoginCommerceCloseInvoked) {
+            return;
+        }
+
+        var isSsoAutoLogin = false;
+        try {
+            isSsoAutoLogin =
+                new URL(window.location.href).searchParams.get('gc_sso_auto') === '1';
+        } catch (ssoAutoCheckError) {}
+
+        if (isSsoAutoLogin) {
+            return;
+        }
+
+        try {
+            if (
+                window.android &&
+                typeof window.android.webToAppCommerceClose === 'function'
+            ) {
+                window.__gcLoginCommerceCloseInvoked = true;
+                window.android.webToAppCommerceClose(JSON.stringify({}));
+                return;
+            }
+
+            var iosCommerceCloseHandler =
+                window.webkit &&
+                window.webkit.messageHandlers &&
+                window.webkit.messageHandlers.webToAppCommerceClose;
+
+            if (
+                iosCommerceCloseHandler &&
+                typeof iosCommerceCloseHandler.postMessage === 'function'
+            ) {
+                window.__gcLoginCommerceCloseInvoked = true;
+                iosCommerceCloseHandler.postMessage({});
+            }
+        } catch (commerceCloseError) {
+            console.error('[LOGIN][COMMERCE_CLOSE]', commerceCloseError);
+        }
+
+        // Bridge 호출 후 처리
+
+
+
+    }(window, document));
+
+
+    </script>
+<!-- <div class="section path">
+    <span>현재 위치</span>
+    <ol>
+        <li><a href="/">홈</a></li>
+        <li title="현재 위치"><strong>로그인</strong></li>
+    </ol>
+</div> -->
+<!-- <div class="section titleArea">
+    <h2>로그인</h2>
+</div> -->
+
+<div module="member_login" id="{$member_login_module_id} login-box">
+    <!--@css(/css/module/member/login.css)-->
+    <!--@js(/js/module/member/login.js)-->
+    <!--@js(/js/module/member/sso-auto-login.js)-->
+    <!--
+        $defaultReturnUrl = /index.html
+        $forbidIpUrl = member/adminFail.html
+    -->
+    <div id="gcSsoAutoLoginStatus" role="status" aria-live="polite" hidden></div>
+    <fieldset class="form">
+        <legend>회원로그인</legend>
+        <!-- 로그인 -->
+
+
+        <!-- 회원가입 -->
+
+        <!-- SNS -->
+        <div class="login__sns displaynone">
+            <div class="sns_h">SNS 로그인</div>
+            <div class="wrap_sns_log">
+                <a href="#none"
+                    id="gcSsoLogin"
+                    class="{$display_sso|display}"
+                    onclick="{$sso_func_login}"
+                    aria-label="SSO 로그인"
+                    style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">SSO 로그인</a>
+                <a href="#none" class="btnKakao {$display_kakao|display}" onclick="{$kakao_func_login}">카카오 로그인</a>
+                <a href="#none" class="btnNaver {$display_naver|display}" onclick="{$naver_func_login}">네이버 로그인</a>
+                <a href="#none" class="btnFacebook {$display_facebook|display}" onclick="{$facebook_func_login}">페이스북 로그인</a>
+                <a href="#none" class="btnLine {$display_line|display}" onclick="{$line_func_login}">라인 로그인</a>
+                <a href="#none" class="btnGoogle {$display_google|display}" onclick="{$google_func_login}">구글 로그인</a>
+                <a href="#none" class="btnApple {$display_apple|display}" onclick="{$apple_func_login}">Apple로 로그인</a>
+                <a href="#none" class="yahoojp {$display_yahoojp|display}" onclick="{$yahoojp_func_login}">Yahoo! JAPAN<br>ID로 로그인</a>
+            </div>
+        </div>
+
+
+        
+    </fieldset>
+</div>
+
+<!-- 비회원 로그인 -->

@@ -3,6 +3,9 @@
   
     var TOKEN_PARAM = 'gcUiContextToken';
     var ENTRY_KEY = 'gcCommerceEntryPath';
+    var HEADER_ENTRY_STATE_KEY = 'gcHeaderEntry';
+    var PENDING_KEY = 'gcHeaderEntryPending';
+    var MARKER_MODE_KEY = 'gcHeaderMarkerActive';
   
     /**
      * Token을 제외한 pathname + search.
@@ -39,6 +42,106 @@
       var search = normalized.toString();
       return url.pathname + (search ? '?' + search : '');
     }
+
+    function getHistoryStateObject() {
+      var state = history.state;
+      if (state && typeof state === 'object') {
+        return Object.assign({}, state);
+      }
+      return {};
+    }
+
+    function setMarkerModeActive() {
+      try {
+        sessionStorage.setItem(MARKER_MODE_KEY, '1');
+      } catch (storageError) {
+        // ignore
+      }
+    }
+
+    function isMarkerModeActive() {
+      try {
+        return sessionStorage.getItem(MARKER_MODE_KEY) === '1';
+      } catch (storageError) {
+        return false;
+      }
+    }
+
+    function isHistoryHeaderEntry() {
+      var state = history.state;
+      return !!(
+        state &&
+        typeof state === 'object' &&
+        state[HEADER_ENTRY_STATE_KEY] === true
+      );
+    }
+
+    /**
+     * 현재 History entry에 MENU marker만 병합한다.
+     * 기존 history.state는 보존한다. replaceState(null, ...) 사용 금지.
+     */
+    function markCurrentHistoryEntry(url) {
+      var nextState = getHistoryStateObject();
+      nextState[HEADER_ENTRY_STATE_KEY] = true;
+
+      try {
+        history.replaceState(
+          nextState,
+          '',
+          url || window.location.href
+        );
+        setMarkerModeActive();
+      } catch (historyError) {
+        // replaceState 실패 시에도 이후 판정은 기존 로직에 맡김
+      }
+    }
+
+    function setPendingHeaderEntry(path) {
+      try {
+        sessionStorage.setItem(
+          PENDING_KEY,
+          JSON.stringify({ path: path })
+        );
+      } catch (storageError) {
+        // ignore
+      }
+    }
+
+    function getPendingHeaderEntry() {
+      try {
+        var raw = sessionStorage.getItem(PENDING_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed.path !== 'string') return null;
+        return parsed;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function clearPendingHeaderEntry() {
+      try {
+        sessionStorage.removeItem(PENDING_KEY);
+      } catch (storageError) {
+        // ignore
+      }
+    }
+
+    /**
+     * 목적지 문서에서 pending을 1회만 소비한다.
+     * path가 일치할 때만 현재 History entry에 marker를 남긴다.
+     */
+    function consumePendingHeaderEntry(currentPath) {
+      var pending = getPendingHeaderEntry();
+      if (!pending) return;
+
+      // 영구 잔류 방지: 문서당 1회 시도 후 항상 제거
+      clearPendingHeaderEntry();
+
+      if (pending.path === currentPath) {
+        markCurrentHistoryEntry();
+      }
+    }
   
     function syncEntryPathFromUrl() {
       var url;
@@ -67,11 +170,8 @@
         (url.search ? url.search : '') +
         (url.hash ? url.hash : '');
   
-      try {
-        history.replaceState(history.state, '', cleanUrl);
-      } catch (historyError) {
-        // replaceState 실패 시에도 entry는 이미 저장된 상태 유지
-      }
+      // Token 제거 + MENU marker를 한 번의 replaceState로 적용
+      markCurrentHistoryEntry(cleanUrl);
     }
   
     function getEntryPath() {
@@ -116,6 +216,9 @@
    * Header MENU/BACK 비교 전용.
    * /product/list.html 끼리는 cate_no 차이를 무시한다.
    * /board/free/list.html + board_no=3 끼리는 category_no 차이를 무시한다.
+   *
+   * 레거시 fallback 전용. History marker 모드가 켜진 뒤에는
+   * 동일 URL 재방문이 잘못 MENU가 되지 않도록 사용하지 않는다.
    */
   function isSameCommerceEntry(entryPath, currentPath) {
     if (!entryPath || !currentPath) return false;
@@ -153,18 +256,41 @@
   }
   
     function resolveAndApplyHeader() {
-      // 1~3. Token 있으면 entry 저장 후 URL에서 Token 제거
+      // 1. Token 있으면 레거시 entry 저장 + History MENU marker + URL에서 Token 제거
       syncEntryPathFromUrl();
+
+      var currentPath = toComparablePath(window.location.href);
+
+      // 2. 사이드바/스토어홈 클릭으로 넘어온 목적지라면 현재 entry에 marker
+      consumePendingHeaderEntry(currentPath);
   
-      // 4~5. B 타입: 기존 BACK-only HTML/CSS 유지
+      // 3. B 타입: 기존 BACK-only HTML/CSS 유지
       if (isBackOnlyPage()) return;
+
+      // 4. History entry marker 우선
+      if (isHistoryHeaderEntry()) {
+        applyHeaderType('MENU');
+        return;
+      }
+
+      // 5. 스토어 홈은 Navigation Group / marker와 무관하게 MENU
+      if (currentPath === '/') {
+        applyHeaderType('MENU');
+        return;
+      }
   
-      // 6~7. entry 없으면 SSR 기본 헤더 유지
+      // 6. 레거시: entry 없으면 SSR 기본 헤더 유지
       var entryPath = getEntryPath();
       if (!entryPath) return;
+
+      // 7. History marker 모드가 켜진 뒤에는 path 비교로 MENU를 주지 않는다.
+      //    (동일 URL 새 History entry가 gcCommerceEntryPath 때문에 MENU 되는 것 방지)
+      if (isMarkerModeActive()) {
+        applyHeaderType('BACK');
+        return;
+      }
   
-      // 8~10. A 타입 MENU/BACK 판정
-      var currentPath = toComparablePath(window.location.href);
+      // 8. 레거시 fallback: marker 도입 전 세션만 path 비교
       applyHeaderType(
         isSameCommerceEntry(entryPath, currentPath) ? 'MENU' : 'BACK'
       );
@@ -228,9 +354,20 @@
   
       var currentEntry = getEntryPath();
       if (!currentEntry) return;
+
+      var destinationPath;
+      try {
+        destinationPath = toComparablePath(link.href);
+      } catch (e) {
+        return;
+      }
+
+      // 목적지는 아직 History entry가 없으므로 pending으로만 표시
+      setPendingHeaderEntry(destinationPath);
   
       try {
-        sessionStorage.setItem(ENTRY_KEY, toComparablePath(link.href));
+        // 레거시 호환: 기존 Navigation Group pointer도 갱신
+        sessionStorage.setItem(ENTRY_KEY, destinationPath);
       } catch (storageError) {
         // sessionStorage 사용 불가 시 navigation은 그대로 진행
       }
@@ -262,4 +399,3 @@
     initHeaderPolicy();
     bindSidebarEntryUpdate();
   })();
-  

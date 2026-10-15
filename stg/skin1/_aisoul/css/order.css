@@ -1,0 +1,203 @@
+/***************************************************** 
+ basket
+*****************************************************/
+.cart-product { margin-bottom: 40px; } 
+#wrap .cart-product .xans-order-selectorder { margin: 20px 0 0; padding-bottom: 20px; border-bottom: 1px solid var(--line-normal); } 
+.xans-order-selectorder.typeMulti .gLeft { display: flex; align-items: center; justify-content: space-between; } 
+.xans-order-selectorder.typeMulti .gLeft .basket-all-btn { display: flex; align-items: center; } 
+#wrap .xans-order-selectorder #product_select_all { flex: 0 0 24px; width: 24px; height: 24px; margin: 0; padding: 0; } 
+#wrap .xans-order-selectorder label[for="product_select_all"] { margin: 0 0 0 8px; font-size: 16px; font-weight: 400; line-height: 24px; color: var(--common-black); letter-spacing: -0.4px; cursor: pointer; } 
+.xans-order-selectorder label[for="product_select_all"] + .btnNormal { margin-left: auto; } 
+
+.xans-order-basketpackage .cart-container .cart-total { width: 100%; } 
+.cart-product .xans-order-list .ec-base-prdInfo .prdBox { gap: 8px; padding: 20px 0; } 
+.basket-item-layout { flex: 1; min-width: 0; } 
+.basket-prod-box { display: flex; align-items: self-start; gap: 8px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box { gap: 12px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box .thumbnail { flex-shrink: 0; width: 78px; margin: 0; aspect-ratio: 1 / 1; border: 1px solid var(--line-normal); border-radius: 8px; } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-prod-box .thumbnail a { line-height: 0; } 
+.ec-base-prdInfo .basket-prod-box .description { margin: 0 0 12px } 
+@media (min-width: 1025px) { 
+ .ec-base-prdInfo .basket-prod-box .description { margin: 0 0 12px; } 
+ } 
+.ec-base-prdInfo .prdBox .check { flex-shrink: 0; margin: 0; } 
+.ec-base-prdInfo .basket-prod-box .description .prdName { display: block; margin: 0 20px 6px 0; font-size: 14px; font-weight: 500; line-height: 1.5; letter-spacing: -0.4%; color: var(--common-black); } 
+.ec-base-prdInfo .basket-prod-box .description .prdName a { display: block; margin-bottom: 4px; } 
+#wrap .ec-base-prdInfo .basket-prod-box .description .price { margin-bottom: 16px; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
+#wrap .ec-base-prdInfo .description .price li { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--common-black); } 
+#wrap .ec-base-prdInfo .description .price li.basket-sale-price {color: var(--font-color-secondary); } 
+#wrap .ec-base-prdInfo .description .price strong { font-weight: 700; } 
+.ec-base-prdInfo .basket-prod-box .description .info { display: flex; flex-direction: column; gap: 6px; margin: 0 0 12px; } 
+.ec-base-prdInfo .basket-prod-box .description .info .basket-shipping { margin: 0; font-size: 12px; font-weight: 500; line-height: 1.5; color: var(--neutral-300); } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup { margin: 0 0 16px; padding: 10px; background: var(--coolNeutral-50); border-radius: 8px; } 
+.ec-base-prdInfo .basket-option-quantity-box .optionGroup li { margin: 0; } 
+.xans-order-basketpackage .ec-base-prdInfo.gCheck .basket-option-quantity-box .quantity { margin: 0; padding: 0; } 
+
+.cart-total { margin-bottom: 10px; } 
+#wrap .xans-order-basketpackage .totalSummary { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 16px; border: 1px solid var(--line-normal); border-radius: 12px; } 
+.xans-order-basketpackage .cart-total .totalSummary__item { margin: 0; } 
+.xans-order-basketpackage .cart-total .totalSummary__item .title,
+.xans-order-basketpackage .cart-total .totalSummary__item .data,
+.xans-order-basketpackage .cart-total .totalSummary__item .data strong
+ { 
+ font-size: 12px; font-weight: 500; color: var(--neutral-600); } 
+.xans-order-basketpackage .cart-total .totalSummary__item .heading { margin: 0; } 
+.xans-order-basketpackage .cart-total .totalSummary .total { margin-top: 16px; padding-top: 16px; } 
+.xans-order-basketpackage .cart-total .totalSummary .total .title,
+.xans-order-basketpackage .cart-total .totalSummary .total .paymentPrice,
+.xans-order-basketpackage .cart-total .totalSummary .total .paymentPrice strong
+ { 
+ font-size: 14px; font-weight: 700; color: var(--common-black); } 
+
+.xans-order.ec-base-help .inner { border: none; border-top: none; border-radius: 12px; padding: 16px; background: var(--neutral-50); } 
+.xans-order.ec-base-help ul li { font-size: 14px; font-weight: 500; color: var(--neutral-500); } 
+/* .xans-order.ec-base-help ul li::before { content: ''; display: none; } */
+body .fixed-btn-comm { flex-direction: column; } 
+
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .name { padding: 0; margin-bottom: 10px;font-size: 12px; font-weight: 500; color: var(--neutral-700); } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .option-modal-btn { text-align: right; font-size: 12px; font-weight: 500; color: var(--neutral-400); } 
+.xans-order-basketpackage .ec-base-prdInfo .basket-option-quantity-box .optionGroup li .name::before { content: '옵션'; position: unset; width: auto; height: auto; top: 0; padding: 1px 4px 2px; font-size: 10px; font-weight: 500; line-height: 1.6; color: var(--neutral-400); border: 1px solid var(--line-normal); border-radius: 4px; background: var(--neutral-0); } 
+.ec-base-prdInfo .basket-option-quantity-box .optionGroup li .product.displaynone + .optionStr { font-size: 12px; font-weight: 500; color: var(--neutral-700); } 
+
+.btn-basket-empty .fixed-btn-fill {text-align: center;}
+
+
+/*********************************************
+ 옵션 변경 모달
+*********************************************/
+
+html.option-modal-open,
+body.option-modal-open { overflow:hidden; overscroll-behavior:none; } 
+#ec-basketOptionModifyLayer { z-index:99999; width:100%; height:100dvh; margin:0; background:rgba(0, 0, 0, 0.6); box-sizing:border-box; transform:none; } 
+#ec-basketOptionModifyLayer.is-open { display:flex !important; align-items:center; justify-content:center; } 
+#ec-basketOptionModifyLayer .ec-base-layer { 
+ position:relative; 
+ top:auto; 
+ width: 460px; 
+ max-height:calc(100dvh - 40px); 
+ border:0; 
+ border-radius:24px; 
+ background:var(--neutral-0); 
+ box-sizing:border-box; 
+ transform:none; 
+ } 
+#ec-basketOptionModifyLayer .option-layer-title { margin: 24px 24px 0; text-align: left; } 
+#ec-basketOptionModifyLayer .header 
+ { 
+ position:relative !important; 
+ z-index: 0 !important; 
+ display:flex; 
+ align-items:center; 
+ margin: 0 0 12px; 
+ padding: 0 0 16px; 
+ border-bottom:1px solid var(--line-normal); 
+ background:transparent; 
+ } 
+#ec-basketOptionModifyLayer .header h5 { font-size: 16px; font-weight: 500; letter-spacing: -2%; color: var(--neutral-900); } 
+#ec-basketOptionModifyLayer.optionModifyLayer .prdInfo li { margin: 0 0 16px; line-height: 1.5; font-size: 14px; font-weight: 500; letter-spacing: -0.4%; color: var(--neutral-900); } 
+.ec-base-prdInfo .optionModifyLayer .prdModify .title { font-size: 12px; letter-spacing: -0.4%; color: var(--neutral-700); } 
+#ec-basketOptionModifyLayer.optionModifyLayer .prdModify .optionDesc { display: none; } 
+
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box { display: flex; align-items: center; justify-content: center; gap: 8px; } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box::after { display: none !important; } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box a { 
+ display: inline-flex; 
+ align-items: center; 
+ justify-content: center; 
+ width: 100%; 
+ height: 56px; 
+ margin-left: 0; 
+ background-color: var(--coolNeutral-100); 
+ color: var(--common-black); 
+ } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box .btnSubmitFix { 
+ background-color: var(--brand-color); 
+ color: var(--neutral-0); 
+ } 
+#ec-basketOptionModifyLayer.optionModifyLayer .basket-option-btn-box { 
+ display: flex; 
+ align-items: center; 
+ justify-content: space-between; 
+ gap: 8px; 
+ padding: 24px 16px 16px; 
+ margin: 0; } 
+
+#ec-basketOptionModifyLayer .btnClose::before, #ec-basketOptionModifyLayer .btnClose::after {display: none;}
+#ec-basketOptionModifyLayer .btnClose::before, #ec-basketOptionModifyLayer .btnClose {right: 16px;top: 16px;padding: 4px;transform: rotate(0);width: 32px;height: 32px;}
+
+.xans-order-basketpackage.section .ec-base-prdEmpty {padding: 120px 0 !important;}
+
+
+
+/* 주문완료 */
+.orderResult #mCafe24Order .resultArea:after {display: none !important;}
+.orderResult .ec-base-table caption {display: none;}
+.orderResult #mCafe24Order .ec-base-fold {margin: 0;}
+.orderResult #mCafe24Order.xans-order-result .ec-base-table.typeView > table > tbody > tr > th,
+.orderResult #mCafe24Order.xans-order-result .ec-base-table.typeView > table > tbody > tr > td {padding: 0 0 12px;border: none;}
+#mCafe24Order .ec-base-table.typeView > table > tbody > tr > td:not(.xans-order-ordadd td) {text-align: right;}
+
+.orderResult #mCafe24Order.xans-order-result .ec-base-table tr th {font-size: 16px;font-weight: 500;color: var(--neutral-400);line-height: 1.5;}
+.orderResult #mCafe24Order.xans-order-result .ec-base-table tr td {color: var(--neutral-400);font-size: 16px;font-weight: 500;line-height: 1.5;}
+.orderResult #mCafe24Order.xans-order-result .ec-base-table td .ec-base-table {margin: 0;}
+
+/* 주문번호 */
+.orderResult, .orderResult .xans-order-result {max-width: var(--max-container);width: 100%;margin: 0 auto;}
+.orderResult #mCafe24Order.xans-order-result {width: 100%;padding: 50px 16px 250px;border: none;background: var(--neutral-0);}
+.orderResult #mCafe24Order.xans-order-result .resultArea {margin: 0;padding: 0;position: unset;}
+.orderResult #mCafe24Order .resultArea .message {margin-bottom: 30px;padding: 0;font-size: 20px;font-weight: 700;line-height: 1.5;color: var(--common-black);background-image: none;}
+.orderResult #mCafe24Order .resultInfo {margin: 0;padding-bottom: 20px;border-top: none;border-bottom: 3px solid var(--neutral-50);}
+.orderResult #mCafe24Order .resultInfo .orderNumber {margin-bottom: 12px;}
+.orderResult #mCafe24Order .resultInfo .orderNumber, .orderResult #mCafe24Order .resultInfo .totalPrice {display: flex;align-items: center;justify-content: space-between;font-size: 16px;}
+.orderResult #mCafe24Order .resultInfo .orderNumber .title {padding: 0;font-weight: 600;color: var(--common-black);}
+.orderResult #mCafe24Order.xans-order-result .totalPrice > * {font-size: 16px;font-weight: 500;color: var(--neutral-400);}
+.orderResult #mCafe24Order.xans-order-result .totalPrice .title {padding: 0;}
+.orderResult #mCafe24Order .resultInfo .orderNumber .price {padding: 0;font-weight: 500;color: var(--neutral-600);}
+.total-price-box {display: flex;align-items: center;gap: 4px;}
+
+/* 주문상품 */
+.orderResult #mCafe24Order.xans-order-result .title h2 {font-size: 16px;font-weight: 600;color: var(--common-black);}
+.orderResult #mCafe24Order .ec-base-hold {margin: 0;padding: 20px 0;border: none;}
+.orderResult #mCafe24Order.xans-order-result .title {padding: 20px 0;}
+.orderResult #mCafe24Order.xans-order-result .ec-base-fold > .title:after {top: 50%;}
+.orderResult #mCafe24Order .ec-base-fold.selected > .contents {border: none;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist {margin-bottom: 12px;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo {border: 0;padding: 0;margin: 0;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox {gap: 16px;align-items: self-start;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox .thumbnail {flex-shrink: 0; margin: 0;border: 1px solid var(--line-normal);border-radius: 12px;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox .description {margin: 0;padding: 2px 0 0;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox .description .prdName {margin-bottom: 4px;font-size: 14px;font-weight: 500;color: var(--neutral-800);line-height: 1.5;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox .description .info {margin-bottom: 12px;}
+.orderResult #mCafe24Order .orderArea .xans-order-normalresultlist .ec-base-prdInfo .prdBox .description .proPrice {font-size: 14px;font-weight: 600;color: var(--neutral-900);}
+.orderResult #mCafe24Order .orderArea .totalPrice {margin: 0;padding: 0 4px 12px;background: transparent;}
+.orderResult #mCafe24Order .orderArea .totalPrice .title {background: transparent;}
+.orderResult #mCafe24Order .orderArea .totalPrice .title h3,
+.orderResult #mCafe24Order .orderArea .totalPrice .title .deliveryFee {font-size: 16px;font-weight: 600;color: var(--neutral-400);}
+
+.orderResult #mCafe24Order .ec-base-fold {border-bottom: 3px solid var(--neutral-50);}
+
+/* 배송지 */
+.orderResult #mCafe24Order.xans-order-result .contents {border: none;}
+.orderResult #mCafe24Order.xans-order-result .ec-base-table:first-child, .orderResult #mCafe24Order.xans-order-result .displaynone + .ec-base-table {margin-top: 0;}
+.orderResult #mCafe24Order.xans-order-result .deliveryInfo .ec-base-table tr > * {padding: 0 0 12px!important;border: none;}
+
+/* 추가정보 */
+.orderResult .xans-order-ordadd .xans-record- {display: flex;flex-direction: column;}
+
+/* 결제수단 */
+.orderResult #mCafe24Order .cash-btn .methodButton .sizeS {height: auto;padding: 6px 12px;border: 1px solid var(--line-normal);border-radius: 8px;font-size: 14px;font-weight: 500;line-height: 1.5;}
+
+/* 결제정보 */
+.orderResult #mCafe24Order.xans-order-result .ec-base-table.gCellNarrow tbody th,
+.orderResult #mCafe24Order.xans-order-result .ec-base-table.gCellNarrow tbody td {padding: 0 0 12px;}
+
+.orderResult #mCafe24Order .ec-base-box {padding: 0;background: var(--neutral-0);}
+.orderResult #mCafe24Order .discountArea .ec-base-box > .heading {border: none;font-weight: 500;font-size: 16px;color: var(--neutral-400);}
+.orderResult #mCafe24Order.xans-order-result .totalPay {background: #fff;padding: 20px 0;}
+.orderResult #mCafe24Order .txtStrong {color: var(--common-black) !important;}
+.ec-order-expandwrap.selected{display: none !important;}
+
+.orderResult #mCafe24Order .ec-order-expandwrap .ec-order-expand {width: 108px;padding-right: 16px;}
+
+
+.orderResult #mCafe24Order .ec-base-button {margin: 0;}
