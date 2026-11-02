@@ -1472,7 +1472,7 @@
             <!-- <li class="{$shipping_info_show_display|display}">장바구니 금액은 쿠폰 적용 전 판매가 기준으로 표시됩니다. 보유 쿠폰은 주문서에서 적용 시 결제금액에 반영됩니다.</li>
             <li class="{$shipping_info_show_display|display}">선택하신 상품의 수량을 변경하시려면 수량변경 후 [변경] 버튼을 누르시면 됩니다.</li> -->
             <!-- <li>선택하신 상품의 수량을 변경하시려면 수량변경 후 [변경] 버튼을 누르시면 됩니다.</li> -->
-            <li>[쇼핑계속하기] 버튼을 누르시면 쇼핑을 계속 하실 수 있습니다.</li>
+            <li>[상품보러가기] 버튼을 누르시면 쇼핑을 계속 하실 수 있습니다.</li>
             <!-- <li>장바구니와 관심상품을 이용하여 원하시는 상품만 주문하거나 관심상품으로 등록하실 수 있습니다.</li>
             <li>파일첨부 옵션은 동일상품을 장바구니에 추가할 경우 마지막에 업로드 한 파일로 교체됩니다.</li> -->
         </ul>
@@ -1490,13 +1490,8 @@
 <script>
 (function () {
     'use strict';
-
     var cartLink = document.querySelector('.sub-header .cart-wrap > a');
-
-    if (!cartLink) {
-        return;
-    }
-
+    if (!cartLink) { return; }
     var cartIcon = cartLink.querySelector('svg');
 
     if (cartIcon) {

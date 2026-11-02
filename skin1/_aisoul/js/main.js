@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    var JQUERY_WAIT_INTERVAL = 50;
-    var JQUERY_WAIT_MAX_TRY = 100;
+    const JQUERY_WAIT_INTERVAL = 50;
+    const JQUERY_WAIT_MAX_TRY = 100;
     // var ALL_VISIBLE_LIMIT = 8;
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
-        var currentTry = tryCount || 0;
+        const currentTry = tryCount || 0;
 
         if (window.jQuery) {
             callback(window.jQuery);
@@ -35,10 +35,10 @@
        비주얼 스와이퍼
     ===================================================== */
     function initVisualSwiper($) {
-        var $visualSwiper = $('.visual-swiper');
+        const $visualSwiper = $('.visual-swiper');
         if (!$visualSwiper.length) return;
 
-        var visualArrowSvg = `
+        const visualArrowSvg = `
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M4.33296 11.9893C4.52822 12.1846 4.84571 12.1846 5.04097 11.9893L9.66695 7.36332C9.76696 7.26331 9.81489 7.1311 9.81245 7.00004C9.81492 6.86894 9.76698 6.73679 9.66695 6.63676L5.04097 2.01078C4.84571 1.81552 4.52822 1.81552 4.33296 2.01078C4.13813 2.20603 4.13795 2.52267 4.33296 2.71781L8.61519 7.00004L4.33296 11.2823C4.13798 11.4774 4.1381 11.7941 4.33296 11.9893Z" fill="white"/>
             </svg>
