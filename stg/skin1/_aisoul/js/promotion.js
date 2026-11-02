@@ -1,24 +1,24 @@
 (function () {
     // 페이지당 노출 개수
-    var ITEMS_PER_PAGE = 4;
+    const ITEMS_PER_PAGE = 4;
 
-    var currentFilter = 'all';
-    var currentPage = 1;
-    var searchKeyword = '';
-    var renderTimer = null;
-    var isInitialLoading = true;
-    var isFinishingInitialLoading = false;
+    let currentFilter = 'all';
+    let currentPage = 1;
+    let searchKeyword = '';
+    let renderTimer = null;
+    let isInitialLoading = true;
+    let isFinishingInitialLoading = false;
 
     function initPromotionList() {
-        var section = document.querySelector('.promotion-list');
-        var promotions = section && section.querySelector('.promotions');
-        var bannerContainer = section && section.querySelector('[df-banner-code="promotion-list"]');
-        var searchInput =section && section.querySelector('.promotion-search-input');
-        var searchButton = section && section.querySelector('.promotion-search-button');
+        const section = document.querySelector('.promotion-list');
+        const promotions = section && section.querySelector('.promotions');
+        const bannerContainer = section && section.querySelector('[df-banner-code="promotion-list"]');
+        const searchInput =section && section.querySelector('.promotion-search-input');
+        const searchButton = section && section.querySelector('.promotion-search-button');
 
         if (!section || !promotions || !bannerContainer) { return; }
         function getToday() {
-            var now = new Date();
+            const now = new Date();
 
             return new Date(
                 now.getFullYear(),
@@ -28,13 +28,13 @@
         }
 
         function parseDate(value) {
-            var match = String(value).match(/(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
+            const match = String(value).match(/(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
             if (!match) { return null;}
 
-            var year = Number(match[1]);
-            var month = Number(match[2]) - 1;
-            var day = Number(match[3]);
-            var date = new Date(year, month, day);
+            const year = Number(match[1]);
+            const month = Number(match[2]) - 1;
+            const day = Number(match[3]);
+            const date = new Date(year, month, day);
             if (
                 date.getFullYear() !== year ||
                 date.getMonth() !== month ||
@@ -44,11 +44,11 @@
         }
 
         function getPromotionStatus(item) {
-            var dateElement = item.querySelector('.promo-date');
-            var dateValues;
-            var startDate;
-            var endDate;
-            var today;
+            const dateElement = item.querySelector('.promo-date');
+            let dateValues;
+            let startDate;
+            let endDate;
+            let today;
             if (!dateElement) {return 'invalid';}
             dateValues = dateElement.textContent.match( /\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}/g );
             if (!dateValues || dateValues.length < 2) {return 'invalid';}
@@ -75,10 +75,10 @@
         }
 
         function isMatchingTitle(item) {
-            var titleElement =
+            const titleElement =
                 item.querySelector('.promo-title');
 
-            var title;
+            let title;
 
             if (!searchKeyword) {
                 return true;
@@ -101,15 +101,21 @@
 
         function getFilteredItems(items) {
             return items.filter(function (item) {
-                var status =
+                const status =
                     getPromotionStatus(item);
 
-                var matchesFilter;
+                let matchesFilter;
 
                 item.setAttribute(
                     'data-promotion-status',
                     status
                 );
+
+                if (status === 'ended') {
+                    item.setAttribute('aria-disabled', 'true');
+                } else {
+                    item.removeAttribute('aria-disabled');
+                }
 
                 if (
                     status === 'scheduled' ||
@@ -130,7 +136,7 @@
         }
 
         function renderEmptyState(show) {
-            var emptyElement =
+            let emptyElement =
                 promotions.querySelector(
                     '.promotion-empty'
                 );
@@ -155,11 +161,11 @@
         }
 
         function createPaginationButton(options) {
-            var button =
+            const button =
                 document.createElement('button');
 
-            var arrowTemplate;
-            var screenReaderText;
+            let arrowTemplate;
+            let screenReaderText;
 
             button.type = 'button';
             button.disabled = options.disabled;
@@ -242,19 +248,19 @@
         }
 
         function renderPagination(totalItems) {
-            var existingPagination =
+            const existingPagination =
                 section.querySelector(
                     '.promotion-pagination'
                 );
 
-            var totalPages =
+            const totalPages =
                 Math.ceil(
                     totalItems /
                     ITEMS_PER_PAGE
                 );
 
-            var pagination;
-            var page;
+            let pagination;
+            let page;
 
             if (existingPagination) {
                 existingPagination.remove();
@@ -316,7 +322,7 @@
         }
 
         function scrollToListTop() {
-            var top =
+            const top =
                 section
                     .getBoundingClientRect()
                     .top +
@@ -330,11 +336,11 @@
         }
 
         function finishPromotionLoading(items) {
-            var imagePromises = [];
+            const imagePromises = [];
             if (!isInitialLoading || isFinishingInitialLoading) {return;}
             isFinishingInitialLoading = true;
             items.forEach(function (item) {
-                var image = item.querySelector('img');
+                const image = item.querySelector('img');
 
                 if (!image || image.complete) {return;}
 
@@ -361,7 +367,7 @@
                         function () {
                             requestAnimationFrame(
                                 function () {
-                                    var skeletonList = section.querySelector('.promotion-skeleton-list');
+                                    const skeletonList = section.querySelector('.promotion-skeleton-list');
                                     section.classList.remove('is-promotion-loading');
                                     section.removeAttribute('aria-busy');
 
@@ -378,12 +384,12 @@
         }
 
         function render() {
-            var items = getPromotionItems();
-            var filteredItems;
-            var totalPages;
-            var startIndex;
-            var endIndex;
-            var visibleItems;
+            const items = getPromotionItems();
+            let filteredItems;
+            let totalPages;
+            let startIndex;
+            let endIndex;
+            let visibleItems;
             if (!items.length && bannerContainer.hidden) { return;}
             if (!items.length) {
                 renderEmptyState(true);
@@ -477,6 +483,15 @@
                     }
                 );
             });
+
+        // 종료된 프로모션은 링크 이동 차단
+        bannerContainer.addEventListener('click', function (event) {
+            const link = event.target.closest('a[data-promotion-status="ended"]');
+
+            if (link) {
+                event.preventDefault();
+            }
+        });
 
         if (searchButton) {
             searchButton.addEventListener('click',runSearch);

@@ -1,14 +1,14 @@
 $(function () {
-    var itemCheckboxSelector = '.ec-base-prdInfo.gCheck > .prdBox > input.check';
-    var selectAllSelector = '#product_select_all';
-    var isSelectAllChanging = false;
-    var syncTimer = null;
+    const itemCheckboxSelector = '.ec-base-prdInfo.gCheck > .prdBox > input.check';
+    const selectAllSelector = '#product_select_all';
+    let isSelectAllChanging = false;
+    let syncTimer = null;
 
     function updateSelectAllCheckbox() {
-        var $itemCheckboxes = $(itemCheckboxSelector);
-        var checkedCount = $itemCheckboxes.filter(':checked').length;
+        const $itemCheckboxes = $(itemCheckboxSelector);
+        const checkedCount = $itemCheckboxes.filter(':checked').length;
 
-        var isAllChecked = $itemCheckboxes.length > 0 && checkedCount === $itemCheckboxes.length;
+        const isAllChecked = $itemCheckboxes.length > 0 && checkedCount === $itemCheckboxes.length;
         $(selectAllSelector).prop('checked', isAllChecked).attr('data-status', isAllChecked ? 'on' : 'off');
     }
     document.addEventListener('click',function (event) {

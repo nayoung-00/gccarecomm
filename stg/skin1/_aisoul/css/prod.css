@@ -10,7 +10,7 @@
 .prdList__item .description .name { margin-bottom:4px; } 
 .prdList__item .description .name a { display:-webkit-box; overflow:hidden; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.5; text-overflow:ellipsis; word-break:break-all; } 
 .prdList__item .description .name a span {word-break:break-all;}
-.prdList__item .description .price-li { display:flex; align-items:center; gap:6px; } 
+.prdList__item .description .price-li, .prdList__item .description .discount-li { display:flex; align-items:center; gap:6px; } 
 
 .starRating[hidden] { display: none;}
 .starRating { display: flex; align-items: center; gap: 6px;}
@@ -29,7 +29,15 @@
 .prdList__item .description .percent-text .percent-sign { font-size:12px; } 
 #wrap .ec-base-product .prdList .spec,
 #wrap .ec-base-product .prdList .spec > li { margin:0; } 
-#wrap .ec-base-product .prdList .spec > .price-li { font-weight: 700; } 
+#wrap .ec-base-product .prdList .spec > .price-li { font-weight: 700; }
+#wrap .ec-base-product .prdList .spec:has(> .discount-li) > .price-li { display:none; }
+#wrap .ec-base-product .prdList .spec:has(> .discount-li) > .price-li.is-owned-coupon-price { display:flex; }
+#wrap .ec-base-product .prdList .spec:has(> .price-li.is-owned-coupon-price) > .discount-li { display:none; }
+.prdList__item .list-coupon-label { font-size:12px; font-weight:500; line-height:1.4; color:var(--neutral-500); }
+.prdList__item .list-coupon-sale-amount { font-weight:700;font-size: 18px;color: #000; }
+.prdList__item .list-coupon-sale-origin { position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0, 0, 0, 0) !important; white-space:nowrap !important; border:0 !important; }
+.main-owned-coupon-note { margin:8px 0 0; font-size:11px; line-height:1.4; color:#9b9b9b; }
+.main-owned-coupon-note[hidden] { display:none !important; }
 
 .main-prod .tab-prod-swiper { overflow:hidden; border-bottom:1px solid var(--line-normal); } 
 .main-prod .prod-list { display:flex; width:max-content; min-width:100%; } 
@@ -99,6 +107,10 @@ background: var(--coolNeutral-50) url(/skin-skin1/_aisoul/svg/arrow_bt.svg) no-r
 }
 
 /* 캐시백 */
-.productCashback {display: inline-flex;align-items: center;gap: 4px;margin-top: 2px;padding: 3px 6px 4px;border: 1px solid #0ac26270;border-radius: 4px;background: #0ac26212;}
+.productCashback {display: inline-flex;align-items: center;gap: 1px;margin-top: 2px;padding: 2px 3px 2px 2px;border: 1px solid #0ac26270;border-radius: 4px;background: #0ac26212;}
 
-.productCashbackText {font-size: 10px;font-weight: 500;line-height: 1.5;letter-spacing: -.2px;color: var(--brand-color);}
+.productCashbackText {font-size: 10px;font-weight: 500;line-height: 1.5;letter-spacing: -3%;color: var(--brand-color);}
+
+
+/* 높이값 */
+.ec-base-product .prdList .thumbnail a img {height: 100%;}

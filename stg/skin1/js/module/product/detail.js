@@ -59,7 +59,7 @@ jQuery(document).ready(function() {
 	if (jQuery('.xans-product-relation').val() != undefined) {	//관련상품 모듈 있을떄만 실행(없으면 주문서페이지에서 오류) -정환
 		var relation_slide = new Swiper('.relation_slide', {
 			slidesPerView: 3,
-			spaceBetween: 10,
+			spaceBetween: 2,
 			observer: true,
 			observeParents: true,
 			watchOverflow: 'true', // 스와이프가 한개일때 버튼 라인 비활성
@@ -80,7 +80,7 @@ jQuery(document).ready(function() {
 			breakpoints: {
 				768: {
 					slidesPerView: 3,
-					spaceBetween: 10,
+					spaceBetween: 2,
 				},
 			}
 		});

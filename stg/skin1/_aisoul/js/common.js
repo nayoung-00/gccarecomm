@@ -29,6 +29,7 @@
     function init($) {
         $(function () {
             initSidebar($);
+            initNavigationCategoryExclude();
             initHeaderScroll();
             initFooterAccordion($);
             initFixedButton($);
@@ -190,6 +191,37 @@
                 closeSidebar();
             }
         });
+    }
+
+    /* =====================================================
+    사이드 메뉴 카테고리 중 특정 카테고리 섹션 제거
+    ===================================================== */
+    function initNavigationCategoryExclude() {
+        const EXCLUDED_CATEGORY_NO = '23';
+        const links = document.querySelectorAll(
+            '#navigation-category .navigation-title a'
+        );
+
+        for (let i = 0; i < links.length; i++) {
+            if (getCategoryNo(links[i].href) !== EXCLUDED_CATEGORY_NO) continue;
+
+            const section = links[i].closest('.navigation-section');
+            if (section) section.remove();
+        }
+    }
+
+    /* ?cate_no=24 또는 SEO URL(/category/이름/24/) 에서 카테고리 번호 추출 */
+    function getCategoryNo(href) {
+        try {
+            var url = new URL(href, window.location.origin);
+            var cateNo = url.searchParams.get('cate_no');
+            if (cateNo) return cateNo;
+
+            var seoMatch = url.pathname.match(/\/category\/[^/]+\/(\d+)\/?$/);
+            return seoMatch ? seoMatch[1] : '';
+        } catch (e) {
+            return '';
+        }
     }
 
     /* =====================================================

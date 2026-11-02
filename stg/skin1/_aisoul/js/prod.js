@@ -1,39 +1,43 @@
 (function () {
     'use strict';
 
-    var JQUERY_WAIT_INTERVAL = 50;
-    var JQUERY_WAIT_MAX_TRY = 100;
-    var PRICE_LI_DEBOUNCE = 100;
+    const JQUERY_WAIT_INTERVAL = 50;
+    const JQUERY_WAIT_MAX_TRY = 100;
+    const PRICE_LI_DEBOUNCE = 100;
 
     // 상품 목록 캐시백 금액 — 퍼블리싱 임시값
-    // var PRODUCT_CASHBACK_AMOUNT = 4000;
+    // const PRODUCT_CASHBACK_AMOUNT = 4000;
 
     
-    var ALPHA_REVIEW_API_URL ='https://review-widget.alphwidget.com/v2/api-widget';
-    var ALPHA_REVIEW_WIDGET_CODE = '5f91819b'; 
+    const ALPHA_REVIEW_API_URL ='https://review-widget.alphwidget.com/v2/api-widget';
+    const ALPHA_REVIEW_WIDGET_CODE = '5f91819b'; 
 
-    // var CAFE24_PRODUCT_CONFIG_URL = '/calendar/app/config.json';
-    // var CAFE24_PRODUCT_CODE_FIELDS = 'product_no,product_code';
+    // const CAFE24_PRODUCT_CONFIG_URL = '/calendar/app/config.json';
+    // const CAFE24_PRODUCT_CODE_FIELDS = 'product_no,product_code';
 
-    // var cafe24ProductSdk = null;
-    // var cafe24ProductSdkPromise = null;
-    // var productCodeMap = {};
-    // var productCodeRequested = {};
-    // var productCodeFetchPromise = null;
+    // let cafe24ProductSdk = null;
+    // let cafe24ProductSdkPromise = null;
+    // const productCodeMap = {};
+    // const productCodeRequested = {};
+    // let productCodeFetchPromise = null;
 
-    var GC_PRODUCT_NOTICE_BASE_URL = 'https://gc.aisoul.co.kr/api/products';
-    var PRODUCT_NOTICE_EMPTY_CODES = [
+    const GC_PRODUCT_NOTICE_BASE_URL = 'https://stg-cafe24.howcare.co.kr/api/products';
+    const PRODUCT_NOTICE_EMPTY_CODES = [
         'PRODUCT_INFORMATION_TYPE_MISSING',
         'PRODUCT_INFORMATION_INVALID'
     ];
-    var productCashbackCache = {};
-    var productCashbackRequested = {};
+    const productCashbackCache = {};
+    const productCashbackRequested = {};
+
+    // 소비자가 li 마지막에 붙는 가격 라벨
+    const PRICE_LABEL_CLASS = 'price-label';
+    // const PRICE_LABEL_MEMBER = '어떠케어 회원 특별가';
 
 
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
-        var currentTry = tryCount || 0;
+        const currentTry = tryCount || 0;
 
         if (window.jQuery) {
             callback(window.jQuery);
@@ -66,22 +70,22 @@
        품절 상품 썸네일 오버레이 (카페24 품절 아이콘 기준)
     ===================================================== */
     function initSoldoutOverlay() {
-        var timer = null;
+        let timer = null;
 
         function applySoldoutOverlay() {
             document.querySelectorAll('.prdList__item').forEach(function (item) {
-                var thumbnail = item.querySelector('.thumbnail');
+                const thumbnail = item.querySelector('.thumbnail');
                 if (!thumbnail) return;
 
-                var soldoutIcon = thumbnail.querySelector('.icon img[alt="품절"], .badge--onThumb img[alt="품절"]');
-                var hasSoldout = !!soldoutIcon;
+                const soldoutIcon = thumbnail.querySelector('.icon img[alt="품절"], .badge--onThumb img[alt="품절"]');
+                const hasSoldout = !!soldoutIcon;
                 item.classList.toggle('is-soldout', hasSoldout);
 
                 if (!hasSoldout) return;
                 soldoutIcon.classList.add('soldout-source-icon');
 
                 if (!thumbnail.querySelector('.soldout-thumb-overlay')) {
-                    var overlay = document.createElement('span');
+                    const overlay = document.createElement('span');
                     overlay.className = 'soldout-thumb-overlay';
                     overlay.textContent = '품절';
                     thumbnail.appendChild(overlay);
@@ -108,12 +112,12 @@
             if (item.dataset.productLayoutApplied === 'true') {
                 return;
             }
-            
-            var thumbnail = item.querySelector('.thumbnail');
-            var description = item.querySelector('.description');
-            var iconBox = description ? description.querySelector('.icon') : null;
-            var saleBox = item.querySelector('.sale_box');
-            var specList = description ? description.querySelector('ul.spec') : null;
+        
+            const thumbnail = item.querySelector('.thumbnail');
+            const description = item.querySelector('.description');
+            const iconBox = description ? description.querySelector('.icon') : null;
+            const saleBox = item.querySelector('.sale_box');
+            const specList = description ? description.querySelector('ul.spec') : null;
 
             // 배지(아이콘)를 썸네일 위로 이동
             if (iconBox && thumbnail) {
@@ -123,7 +127,7 @@
 
             // 할인율을 판매가 앞으로 이동
             if (saleBox && specList) {
-                var priceLi = Array.prototype.find.call(
+                const priceLi = Array.prototype.find.call(
                     specList.querySelectorAll('li'),
                     function (li) {
                         return li.textContent.includes('판매가');
@@ -135,7 +139,7 @@
             // 사용후기 항목 제거
             if (specList) {
                 specList.querySelectorAll('li').forEach(function (li) {
-                    var titleEl = li.querySelector('.title');
+                    const titleEl = li.querySelector('.title');
                     if (titleEl && titleEl.textContent.includes('사용후기')) {
                         li.remove();
                     }
@@ -143,9 +147,9 @@
             }
 
             // 별점 영역 삽입
-            var nameEl = description ? description.querySelector('.name') : null;
+            const nameEl = description ? description.querySelector('.name') : null;
             if (nameEl && description && !description.querySelector('.starRating')) {
-                var starWrap = document.createElement('div');
+                const starWrap = document.createElement('div');
 
                 starWrap.className = 'starRating';
                 starWrap.hidden = true;
@@ -177,7 +181,7 @@
             return 0;
         }
 
-        var str = String(value).trim();
+        const str = String(value).trim();
         if (!str) {
             return 0;
         }
@@ -186,7 +190,7 @@
             return 0;
         }
 
-        var parsed = parseInt(str.replace(/,/g, ''), 10);
+        const parsed = parseInt(str.replace(/,/g, ''), 10);
         if (!parsed || parsed <= 0) {
             return 0;
         }
@@ -195,24 +199,24 @@
     }
 
     function clearProductCashback(description) {
-        var existing = description.querySelector('.productCashback');
+        const existing = description.querySelector('.productCashback');
         if (existing) {
             existing.remove();
         }
     }
 
     function renderProductCashback(description, amount) {
-        var parsedAmount = parseNaverPayPaybackAmount(amount);
+        const parsedAmount = parseNaverPayPaybackAmount(amount);
 
         if (!parsedAmount) {
             clearProductCashback(description);
             return;
         }
-        var formattedAmount = parsedAmount.toLocaleString('ko-KR');
-        var existing = description.querySelector('.productCashback');
+        const formattedAmount = parsedAmount.toLocaleString('ko-KR');
+        const existing = description.querySelector('.productCashback');
 
         if(existing){
-            var amountEl = existing.querySelector('.productCashbackAmount');
+            const amountEl = existing.querySelector('.productCashbackAmount');
             if(amountEl){
                 amountEl.textContent = formattedAmount;
             }
@@ -231,9 +235,9 @@
                     '<path d="M7.00098 5.99805C9.48626 5.99805 11.501 5.10262 11.501 3.99805C11.501 2.89348 9.48626 1.99805 7.00098 1.99805C4.5157 1.99805 2.50098 2.89348 2.50098 3.99805C2.50098 5.10262 4.5157 5.99805 7.00098 5.99805Z" fill="#92E7BB" stroke="#0AC262" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>' +
                 '</svg>' +
                 '<p class="productCashbackText">' +
-                    '최대 <span class="productCashbackAmount">' +
+                    '리워드 적용 시 <span class="productCashbackAmount">' +
                         formattedAmount +
-                    '</span>원 캐시백' +
+                    '</span>원' +
                 '</p>' +
             '</div>'
         );
@@ -244,15 +248,15 @@
     ===================================================== */
     function initDynamicProductItems() {
 
-        var timer = null;
-        var productList = document.querySelector('.prdList');
+        let timer = null;
+        const productList = document.querySelector('.prdList');
         if (!productList) return;
-        var previousCount = document.querySelectorAll('.prdList__item').length;
-        var observer = new MutationObserver(function () {
+        let previousCount = document.querySelectorAll('.prdList__item').length;
+        const observer = new MutationObserver(function () {
             window.clearTimeout(timer);
             timer = window.setTimeout(function () {
     
-                var currentCount =
+                const currentCount =
                     document.querySelectorAll('.prdList__item').length;
                 if (currentCount <= previousCount) {
                     return;
@@ -277,15 +281,22 @@
        판매가 li 클래스명 추가 (동적 DOM 대응)
     ===================================================== */
     function initPriceLiTagging($) {
-        var priceTimer = null;
+        let priceTimer = null;
+
+        // spec 항목 title 텍스트 → 추가할 클래스 (li 순서는 상품마다 달라서 title로 매칭)
+        const SPEC_TITLE_CLASS = {
+            '소비자가': 'consumer-li',
+            '판매가': 'price-li',
+            '최적할인가': 'discount-li'
+        };
 
         function tagPriceLi() {
             $('.prdList__item ul.spec > li').each(function () {
-                var $li = $(this);
-                var text = $li.text().replace(/\s+/g, '');
+                const $li = $(this);
+                const title = getSpecTitle(this);
 
-                if (text.indexOf('판매가') > -1) {
-                    $li.addClass('price-li');
+                if (SPEC_TITLE_CLASS[title]) {
+                    $li.addClass(SPEC_TITLE_CLASS[title]);
                 }
             });
         }
@@ -297,8 +308,54 @@
 
         tagPriceLi();
 
-        var observer = new MutationObserver(scheduleRun);
+        const observer = new MutationObserver(scheduleRun);
         observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // spec li의 title 텍스트 (공백·콜론 제거, 직접 붙인 price-label은 제외)
+    function getSpecTitle(li) {
+        const titleEl = li.querySelector(':scope > .title') || li;
+        let text = '';
+
+        titleEl.childNodes.forEach(function (node) {
+            if (node.nodeType === 1 && node.classList.contains(PRICE_LABEL_CLASS)) return;
+            text += node.textContent;
+        });
+
+        return text.replace(/[\s:]/g, '');
+    }
+
+    function findSpecLi(specList, title) {
+        return Array.prototype.find.call(specList.children, function (li) {
+            return getSpecTitle(li) === title;
+        }) || null;
+    }
+
+    /* =====================================================
+       소비자가 li 가격 라벨
+       - 소비자가 li의 마지막 자식(가격 span 뒤 형제)으로 추가
+       - 리워드(캐시백) 상품만 어떠케어 회원 특별가, 리워드가 아니면 라벨 제거
+    ===================================================== */
+    function renderPriceLabel(item, isReward) {
+        const specList = item.querySelector('ul.spec');
+        if (!specList) return;
+
+        const consumerLi = findSpecLi(specList, '소비자가');
+        if (!consumerLi) return;
+
+        let labelEl = consumerLi.querySelector(':scope > .' + PRICE_LABEL_CLASS);
+        if (!isReward) {
+            if (labelEl) labelEl.remove();
+            return;
+        }
+
+        if (!labelEl) {
+            labelEl = document.createElement('span');
+            labelEl.className = PRICE_LABEL_CLASS;
+            consumerLi.appendChild(labelEl);
+        }
+
+        // labelEl.textContent = PRICE_LABEL_MEMBER;
     }
 
     /* =====================================================
@@ -310,7 +367,7 @@
 
     // 메인 상품 조회
     function initProductReviews() {
-        var items = document.querySelectorAll(
+        const items = document.querySelectorAll(
             '.prdList__item'
         );
     
@@ -320,7 +377,7 @@
                 return;
             }
             
-            var productNo = getProductNo(item);
+            const productNo = getProductNo(item);
     
             if (!productNo) return;
             item.dataset.alphaReviewRequested = 'true';
@@ -341,7 +398,7 @@
 
     // 상품번호
     function getProductNo(item) {
-        var productLi = item.closest('li[id^="anchorBoxId_"]');
+        const productLi = item.closest('li[id^="anchorBoxId_"]');
     
         if (!productLi) return null;
     
@@ -353,14 +410,14 @@
        GC information-notice → 상품별 캐시백
     ===================================================== */
     function fetchProductCashbackNotice(productNo) {
-        var requestUrl =
+        const requestUrl =
             GC_PRODUCT_NOTICE_BASE_URL + '/' +
             encodeURIComponent(productNo) + '/information-notice';
 
         return fetch(requestUrl)
             .then(function (res) {
                 return res.text().then(function (text) {
-                    var body = text;
+                    let body = text;
 
                     try {
                         body = text ? JSON.parse(text) : null;
@@ -398,7 +455,10 @@
     }
 
     function applyCashbackToItem(item, amount) {
-        var description = item.querySelector('.description');
+        // 리워드 여부가 확정된 시점에 가격 라벨도 함께 반영 - 261029 수정
+        // renderPriceLabel(item, !!parseNaverPayPaybackAmount(amount));
+
+        const description = item.querySelector('.description');
         if (!description) {
             return;
         }
@@ -415,7 +475,7 @@
 
     function initProductCashbacks() {
         document.querySelectorAll('.prdList__item').forEach(function (item) {
-            var productNo = getProductNo(item);
+            const productNo = getProductNo(item);
             if (!productNo) {
                 return;
             }
@@ -442,12 +502,19 @@
                 .catch(function (error) {
                     delete productCashbackRequested[productNo];
                     console.warn('[GC CASHBACK] request failed:', productNo, error);
+
+                    // 리워드 여부를 알 수 없으면 회원 특별가 라벨을 붙이지 않는다.
+                    document.querySelectorAll('.prdList__item').forEach(function (target) {
+                        if (getProductNo(target) === productNo) {
+                            renderPriceLabel(target, false);
+                        }
+                    });
                 });
         });
     }
 
     function fetchAlphaReview(productNo) {
-        var url =
+        const url =
             ALPHA_REVIEW_API_URL +
             '?page=1' +
             '&page_size=10' +
@@ -478,14 +545,14 @@
             return;
         }
     
-        var starRating = item.querySelector('.starRating');
+        const starRating = item.querySelector('.starRating');
     
         if (!starRating) return;
     
-        var scoreEl =
+        const scoreEl =
             starRating.querySelector('.starRating__score');
     
-        var countEl =
+        const countEl =
             starRating.querySelector('.starRating__count');
     
         if (!scoreEl || !countEl) return;

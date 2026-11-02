@@ -1,6 +1,22 @@
 (function () {
     'use strict';
 
+    window.__saleJsBootCount = (window.__saleJsBootCount || 0) + 1;
+    if (window.__saleJsBootCount > 1) {
+        console.info('[DETAIL][OWNED_COUPON]', {
+            event: 'sale.js 중복 실행',
+            bootCount: window.__saleJsBootCount,
+            elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0,
+            reason: '두 번째 실행은 초기화하지 않음'
+        });
+        return;
+    }
+    console.info('[DETAIL][OWNED_COUPON]', {
+        event: 'sale.js 로드',
+        bootCount: window.__saleJsBootCount,
+        elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0
+    });
+
     var JQUERY_WAIT_INTERVAL = 50;
     var JQUERY_WAIT_MAX_TRY = 100;
     var SALE_PERCENT_DEBOUNCE = 100;
@@ -55,6 +71,8 @@
                         $node.hasClass('sale_box') ||
                         $node.hasClass('discount-rate') ||
                         $node.hasClass('title') ||
+                        $node.hasClass('list-coupon-sale-amount') ||
+                        $node.hasClass('list-coupon-label') ||
                         $node.attr('id') === 'span_product_tax_type_text'
                     ) {
                         return;
@@ -133,6 +151,7 @@
         function applySalePercent($targets) {
             $targets.each(function () {
                 var $card = $(this);
+                if ($card.hasClass('is-owned-coupon-price')) return;
                 var $spec = $card.find('ul.spec').first();
                 if (!$spec.length) return;
 
@@ -197,8 +216,14 @@
         function applyDetailSalePercent() {
             var $design = $('.xans-product-detaildesign').first();
             if (!$design.length) return;
+            if (!$design.hasClass('is-detail-price-ready') && !window.__detailPriceAllowSalePercent) return;
 
             function findRow(className, labels) {
+                if (className === 'prd-sale-price') {
+                    var $marked = $design.find('tr[data-sale-price-row]').first();
+                    if ($marked.length) return $marked;
+                }
+
                 var $row = $design.find('tr.' + className).first();
                 if ($row.length) return $row;
 
@@ -211,17 +236,35 @@
             function priceFromRow($row) {
                 if (!$row.length) return NaN;
                 var $priceCell = $row.find('td').first().clone();
-                $priceCell.find('.discount-rate, .percent-text').remove();
+                // [임시 수정] 판매가 td로 옮겨진 소비자가(.consumer-price-inline)도 제외 - 원복 시 아래 줄로 교체
+                // $priceCell.find('.discount-rate, .percent-text').remove();
+                $priceCell.find('.discount-rate, .percent-text, .consumer-price-inline, .coupon-sale-amount').remove();
+                // [임시 수정 끝]
                 var match = $priceCell.text().match(/([0-9][0-9,]*)/);
                 return match ? parseInt(match[1].replace(/,/g, ''), 10) : NaN;
             }
 
             var $consumerRow = findRow('prd-consumer-price', ['소비자가', '정가']);
-            var $saleRow = findRow('prd-sale-price', ['판매가', '구매가']);
+            var $saleRow = findRow('prd-sale-price', ['판매가', '구매가', '최대할인가']);
             var consumer = priceFromRow($consumerRow);
             var sale = priceFromRow($saleRow);
             var $saleCell = $saleRow.find('td').first();
+            if ($saleRow.hasClass('is-coupon-sale-display')) {
+                $saleCell.find('.discount-rate').not('.coupon-sale-rate').remove();
+                return;
+            }
             var $existingRate = $saleCell.find('.discount-rate').first();
+
+            // [임시 수정] detail.js initPriceRows()가 소비자가를 판매가 td(.consumer-price-inline)로 옮긴 경우 거기서 소비자가 읽기
+            var $inlineConsumer = $saleCell.find('.consumer-price-inline').first();
+            if ($inlineConsumer.length) {
+                var inlineMatch = $inlineConsumer.text().match(/([0-9][0-9,]*)/);
+                consumer = inlineMatch ? parseInt(inlineMatch[1].replace(/,/g, ''), 10) : NaN;
+            }
+            // 할인율을 .sale-price-group 안에 넣어 판매가와 한 줄로 표시
+            var $rateTarget = $saleCell.children('.sale-price-group').first();
+            if (!$rateTarget.length) $rateTarget = $saleCell;
+            // [임시 수정 끝]
 
             if (!isValidPrice(consumer) || !isValidPrice(sale) || consumer <= sale) {
                 if ($existingRate.length) $existingRate.remove();
@@ -231,18 +274,27 @@
             var percent = Math.round(100 - (sale * 100) / consumer);
             if (percent <= 0) return;
 
-            if ($existingRate.length && $.trim($existingRate.text()) === percent + '%') return;
+            // [임시 수정] 위치(.sale-price-group)까지 맞을 때만 유지 - 원복 시 아래 주석 줄로 교체
+            // if ($existingRate.length && $.trim($existingRate.text()) === percent + '%') return;
+            if ($existingRate.length && $.trim($existingRate.text()) === percent + '%' &&
+                $existingRate.parent().is($rateTarget)) return;
+            // [임시 수정 끝]
             $existingRate.remove();
 
             $('<strong class="discount-rate"></strong>')
                 .text(percent + '%')
-                .prependTo($saleCell);
+                // [임시 수정] 원복 시 .prependTo($saleCell);
+                .prependTo($rateTarget);
         }
 
         function runSalePercent() {
             applySalePercent($('.prdList__item'));
             applyDetailSalePercent();
         }
+
+        window.__runDetailSalePercent = function () {
+            applyDetailSalePercent();
+        };
 
         runSalePercent();
 

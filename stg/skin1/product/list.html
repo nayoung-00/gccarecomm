@@ -1,10 +1,136 @@
 <!--@layout(/layout/basic/layout.html)-->
+<!--@js(/_aisoul/js/owned-coupon.js)-->
+<!--@js(/_aisoul/js/owned-coupon-list.js)-->
 <!--@js(/js/module/product/menucategory.js)-->
 <!--@css(/css/module/product/menupackage.css)-->
 
 <style>
     .sub-header {display: none !important;}
+
+    [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row] { position: relative; visibility: hidden !important; }
+    [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row]::after { content: ""; position: absolute; left: 0; top: 50%; z-index: 1; visibility: visible !important; pointer-events: none; border-radius: 4px; transform: translateY(-50%); background: linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size: 220% 100%; animation: list-price-skeleton-shimmer 1.8s ease-in-out infinite; }
+    [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row="consumer"]::after { width: 72px; height: 8px; }
+    [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row="sale"]::after { width: 132px; height: 14px; }
+    [data-owned-coupon-list] .list-coupon-sale-origin { position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+    [data-owned-coupon-list] .list-coupon-rate { color: #e53935; font-weight: 700; }
+    @keyframes list-price-skeleton-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+    @media (prefers-reduced-motion: reduce) {
+        [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row]::after { animation: none; }
+    }
 </style>
+<noscript>
+<style>
+    [data-owned-coupon-list] .prdList__item [data-owned-coupon-price-row] { visibility: visible !important; }
+    [data-owned-coupon-list] .prdList__item [data-owned-coupon-price-row]::after { content: none !important; }
+</style>
+</noscript>
+<script>
+window.__bootOwnedCouponListPrices = function (root, scope) {
+    if (!root || !root.hasAttribute('data-owned-coupon-list')) return;
+    if (root.getAttribute('data-owned-coupon-price-booted') === '1') return;
+    root.setAttribute('data-owned-coupon-price-booted', '1');
+
+    var LIMIT = window.GC_OWNED_COUPON_RECOVERY_MS || 8000;
+    var timer = 0;
+    root.setAttribute('data-owned-coupon-price-token', '1');
+    root.setAttribute('data-owned-coupon-price-aborted', '0');
+    root.setAttribute('aria-busy', 'true');
+
+    function specTitle(li) {
+        var titleEl = li.querySelector(':scope > .title') || li;
+        var text = '';
+        titleEl.childNodes.forEach(function (node) {
+            if (node.nodeType === 1 && node.classList.contains('price-label')) return;
+            text += node.textContent;
+        });
+        return text.replace(/[\s:]/g, '');
+    }
+
+    function markNode(node) {
+        if (!node || node.nodeType !== 1 || !root.contains(node)) return;
+        var rows = [];
+        if (node.matches && node.matches('ul.spec > li')) rows.push(node);
+        if (node.querySelectorAll) {
+            var found = node.querySelectorAll('ul.spec > li');
+            for (var i = 0; i < found.length; i++) rows.push(found[i]);
+        }
+        for (var j = 0; j < rows.length; j++) {
+            var title = specTitle(rows[j]);
+            if (title === '소비자가') rows[j].setAttribute('data-owned-coupon-price-row', 'consumer');
+            else if (title === '판매가' || title === '구매가') rows[j].setAttribute('data-owned-coupon-price-row', 'sale');
+        }
+    }
+
+    function markAll() {
+        markNode(root);
+    }
+
+    root.__markOwnedCouponPriceRows = markAll;
+
+    if (typeof MutationObserver !== 'undefined') {
+        new MutationObserver(function (records) {
+            for (var i = 0; i < records.length; i++) {
+                var added = records[i].addedNodes;
+                for (var n = 0; n < added.length; n++) markNode(added[n]);
+            }
+        }).observe(root, { childList: true, subtree: true });
+    }
+
+    function reveal(reason) {
+        if (timer) {
+            window.clearTimeout(timer);
+            timer = 0;
+        }
+        var cards = root.querySelectorAll('.prdList__item');
+        for (var i = 0; i < cards.length; i++) cards[i].classList.add('is-list-price-ready');
+        root.removeAttribute('aria-busy');
+        console.info('[LIST][PRICE_TIMING]', {
+            event: '스켈레톤 해제',
+            now: Math.round(window.performance && window.performance.now ? window.performance.now() : 0),
+            reason: reason || '조회 완료',
+            scope: scope || 'product-list'
+        });
+        if (reason) {
+            console.info('[LIST][OWNED_COUPON]', {
+                event: reason,
+                limitMs: LIMIT,
+                temporaryLimit: true,
+                requestClosed: true,
+                scope: scope || 'product-list'
+            });
+        }
+    }
+
+    function abort() {
+        root.setAttribute('data-owned-coupon-price-aborted', '1');
+        root.setAttribute('data-owned-coupon-price-token', String(Number(root.getAttribute('data-owned-coupon-price-token') || '1') + 1));
+        reveal('복구 제한');
+    }
+
+    root.__releaseOwnedCouponPrices = function () {
+        reveal('');
+    };
+    root.__restartOwnedCouponPrices = function () {
+        root.setAttribute('data-owned-coupon-price-aborted', '0');
+        root.setAttribute('data-owned-coupon-price-token', String(Number(root.getAttribute('data-owned-coupon-price-token') || '1') + 1));
+        var cards = root.querySelectorAll('.prdList__item');
+        for (var i = 0; i < cards.length; i++) cards[i].classList.remove('is-list-price-ready');
+        root.setAttribute('aria-busy', 'true');
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(abort, LIMIT);
+    };
+
+    console.info('[LIST][OWNED_COUPON]', {
+        event: '스켈레톤 시작',
+        limitMs: LIMIT,
+        temporaryLimit: true,
+        scope: scope || 'product-list'
+    });
+    timer = window.setTimeout(abort, LIMIT);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', markAll);
+    else markAll();
+};
+</script>
 
 <!--@import(/_aisoul/layout/header.html)-->
 <div class="section titleArea inner-m" module="product_headcategory" data-ez-module="product-list-head-title/1">
@@ -34,11 +160,12 @@
 <!-- <div module="product_headcategory" data-ez-module="product-list-categoryimage/1" class="section product_top_image">{$top_image1_tag}{$top_image2_tag}{$top_image3_tag}</div> -->
 <div class="section inner-m" data-ez-module="product-listrecommend/1" data-ez-layout="grid2">
 	<div data-ez-holder="product_list">
-		<div module="product_listrecommend" class="ec-base-product">
+		<div module="product_listrecommend" class="ec-base-product" data-owned-coupon-list="product-list-recommend">
 			<!--@css(/css/module/product/listrecommend_swipe.css)-->
 			<!--
 				$count = 8
 			-->
+			<script>window.__bootOwnedCouponListPrices(document.currentScript.parentElement, 'product-list-recommend');</script>
 
 			<div class="listpage_title ez-align-left" data-ez-role="ez-align" data-ez-align="left">
 				<div data-ez-role="title">Best Item</div>
@@ -47,6 +174,12 @@
 			<ul class="prdList grid4" data-ez-role="layout ez-discount-tag">
 				<!--@import(/product/list_product.html)-->
 			</ul>
+			<script>
+			(function () {
+				var root = document.currentScript && document.currentScript.parentElement;
+				if (root && typeof root.__markOwnedCouponPriceRows === 'function') root.__markOwnedCouponPriceRows();
+			})();
+			</script>
 		</div>
 	</div><!-- //product_list -->
 </div>
@@ -54,11 +187,12 @@
 <!-- 추천 상품리스트 2 -->
 <div class="section inner-m" data-ez-module="product-listnew/1" data-ez-layout="grid2">
 	<div data-ez-holder="product_list">
-		<div module="product_listnew" class="ec-base-product">
+		<div module="product_listnew" class="ec-base-product" data-owned-coupon-list="product-list-new">
 			<!--@css(/css/module/product/listnew_swipe.css)-->
 			<!--
 				$count = 4
 			-->
+			<script>window.__bootOwnedCouponListPrices(document.currentScript.parentElement, 'product-list-new');</script>
 			<div class="listpage_title ez-align-left" data-ez-role="ez-align" data-ez-align="left">
 				<div data-ez-role="title">New Arrival</div>
 				<span data-ez-role="subtitle">카테고리별 새로운 아이템</span>
@@ -66,6 +200,12 @@
 			<ul class="prdList grid4" data-ez-role="layout ez-discount-tag">
 				<!--@import(/product/list_product.html)-->
 			</ul>
+			<script>
+			(function () {
+				var root = document.currentScript && document.currentScript.parentElement;
+				if (root && typeof root.__markOwnedCouponPriceRows === 'function') root.__markOwnedCouponPriceRows();
+			})();
+			</script>
 		</div>
 	</div><!-- //product_list -->
 </div>
@@ -111,7 +251,7 @@
 			</fieldset>
 		</div>
 		<div data-ez-holder="product_list">
-			<div module="product_listnormal" class="ec-base-product">
+			<div module="product_listnormal" class="ec-base-product" data-owned-coupon-list="product-list-normal">
 				<!--
 					$count = 8
 					※ 상품진열갯수를 설정하는 변수입니다. 설정하지 않을 경우, 최대 200개의 상품이 진열 됩니다.
@@ -121,9 +261,16 @@
 					$basket_result = /product/add_basket.html
 					$basket_option = /product/basket_option.html
 				-->
+				<script>window.__bootOwnedCouponListPrices(document.currentScript.parentElement, 'product-list-normal');</script>
 				<ul class="prdList grid-col" data-ez-role="layout ez-discount-tag">
 					<!--@import(/product/list_product.html)-->
 				</ul>
+				<script>
+				(function () {
+					var root = document.currentScript && document.currentScript.parentElement;
+					if (root && typeof root.__markOwnedCouponPriceRows === 'function') root.__markOwnedCouponPriceRows();
+				})();
+				</script>
 			</div>
 
 			<div module="product_listmore" class="more">
@@ -148,3 +295,4 @@
 		</div><!-- //product_list -->
 	</div><!-- //product_normalpackage -->
 </div>
+<!--@import(/_aisoul/myshop/owned_coupon_data.html)-->

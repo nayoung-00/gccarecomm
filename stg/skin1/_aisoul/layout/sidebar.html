@@ -46,14 +46,25 @@
 
     <nav class="navigation-menu" aria-label="전체 메뉴">
         <section class="navigation-section">
-            <h2 class="navigation-title"><a href="/product/promotion_list.html" class="">프로모션</a></h2>
+            <h2 class="navigation-title">
+                <a href="/product/promotion_list.html">프로모션</a>
+            </h2>
         </section>
-        <section class="navigation-section">
-            <h2 class="navigation-title"><a href="/product/list.html?cate_no=50" class="">실시간 혈당 관리</a></h2>
-        </section>
-        <section class="navigation-section">
-            <h2 class="navigation-title"><a href="/product/list.html?cate_no=51" class="">데일리 영양 관리</a></h2>
-        </section>
+
+        <div id="navigation-category" module="Layout_category">
+            <ul>
+                <li class="navigation-section">
+                    <h2 class="navigation-title">
+                        <a href="/product/list.html{$param}">{$name_or_img_tag}</a>
+                    </h2>
+                </li>
+                <li class="navigation-section">
+                    <h2 class="navigation-title">
+                        <a href="/product/list.html{$param}">{$name_or_img_tag}</a>
+                    </h2>
+                </li>
+            </ul>
+        </div>
 
         <section class="navigation-section">
             <!-- 로그아웃 상태 -->

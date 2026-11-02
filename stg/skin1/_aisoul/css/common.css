@@ -303,6 +303,41 @@ input[type="reset"] {color: inherit;font: inherit;}
 #wrap .ec-base-paginate.typeSwipe [id*='swipe-button'] button { display: inline-block; width: 8px; height: 8px; overflow: hidden; font-size: 1px; line-height: 0; text-indent: -9999px; border-radius:100%; background:var(--common-black); opacity: .2; } 
 #wrap .ec-base-paginate.typeSwipe [id*='swipe-button'] button.selected { opacity: 1; } 
 
+/* typeList */
+#popup .ec-base-paginate.typeList, #wrap .ec-base-paginate ol { margin:0; text-align:center; display: flex; align-items: center; justify-content: center; gap: 8px; } 
+#popup .ec-base-paginate.typeList { margin-top: 40px !important; } 
+.paging-btn svg { display: flex; align-items: center; justify-content: center; } 
+.paging-btn svg path { stroke: #000; } 
+.paging-prev-button svg { transform: rotate(90deg); } 
+.paging-next-button svg { transform: rotate(-90deg); } 
+.paging-btn.is-disabled { 
+ opacity: 0.2; 
+ pointer-events: none; /* 클릭도 같이 막음 */
+ } 
+#popup .ec-base-paginate.typeList > a { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0; text-align: center; background:transparent; box-sizing:border-box; } 
+#popup .ec-base-paginate.typeList > a::after,
+#popup .ec-base-paginate.typeList > a:first-child::before,
+#popup .ec-base-paginate.typeList > a:last-child::before { content: ''; display: inline-block; width: 7px; height: 7px; border-width:1px 1px 0 0; border-style:solid; border-color:var(--common-black); vertical-align: middle; transform: rotate(45deg); } 
+#popup .ec-base-paginate.typeList > a:first-child::before,
+#popup .ec-base-paginate.typeList > a:last-child::before { margin: 0 -3px; } 
+#popup .ec-base-paginate.typeList > a:first-child::after,
+#popup .ec-base-paginate.typeList > a:first-child::before,
+#popup .ec-base-paginate.typeList > a:first-child + a::after { transform: rotate(-135deg); } 
+#popup .ec-base-paginate.typeList li { display:inline-block; margin:0 0 0 -1px; vertical-align:top; } 
+#popup .ec-base-paginate.typeList li:first-child { margin-left:0; } 
+#popup .ec-base-paginate.typeList img { vertical-align:top; } 
+#popup .ec-base-paginate.typeList li a { display:block; width:26px; height: 26px; padding: 0; font-size:14px; line-height: 1.8; color:var(--common-black); background:var(--neutral-0); box-sizing:border-box; border: none; } 
+#popup .ec-base-paginate.typeList a:hover { text-decoration:none; } 
+#popup .ec-base-paginate.typeList a.this { position:relative; z-index:1; color:var(--neutral-0); background-color: var(--gray-black); border-radius: 4px; } 
+#popup .ec-base-paginate.typeList a.nolink { cursor:default; } 
+/* typeSwipe */
+#popup .ec-base-paginate.typeSwipe { text-align: center; } 
+#popup .ec-base-paginate.typeSwipe .prev,
+#popup .ec-base-paginate.typeSwipe .next { display: none; } 
+#popup .ec-base-paginate.typeSwipe [id*='swipe-button'] button { display: inline-block; width: 8px; height: 8px; overflow: hidden; font-size: 1px; line-height: 0; text-indent: -9999px; border-radius:100%; background:var(--common-black); opacity: .2; } 
+#popup .ec-base-paginate.typeSwipe [id*='swipe-button'] button.selected { opacity: 1; } 
+
+
 
 
 
@@ -353,7 +388,7 @@ input[type="reset"] {color: inherit;font: inherit;}
 #wrap select {
     max-width: 100%;
     height: 44px;
-    padding: 12px 40px 12px 16px;
+    padding: 11px 40px 12px 16px;
     margin: 0;
     overflow: hidden;
     font-size: 14px;

@@ -1,18 +1,18 @@
 (function () {
     'use strict';
 
-    var BOARD_NO_NOTICE = 1;
-    var BOARD_NO_FAQ = 3;
-    var JQUERY_WAIT_INTERVAL = 50;
-    var JQUERY_WAIT_MAX_TRY = 100;
-    var DRAG_THRESHOLD = 5;
-    var WRITE_PAGE_PATH_PATTERN = /\/(write|modify|reply)\.html/;
-    var CONSULT_WRITE_PATH_PATTERN = /\/board\/consult\/write\.html$/i;
-    var CONSULT_LIST_PATH_PATTERN = /\/board\/consult\/list\.html$/i;
-    var GC_CONSULT_LIST_RETURN_URL_KEY = 'gcConsultListReturnUrl';
-    var GC_CONSULT_SKIP_HIST_BACK_KEY = 'gcConsultSkipHistBack';
-    var CONSULT_FALLBACK_RETURN = '/';
-    var dragEventId = 0;
+    const BOARD_NO_NOTICE = 1;
+    const BOARD_NO_FAQ = 3;
+    const JQUERY_WAIT_INTERVAL = 50;
+    const JQUERY_WAIT_MAX_TRY = 100;
+    const DRAG_THRESHOLD = 5;
+    const WRITE_PAGE_PATH_PATTERN = /\/(write|modify|reply)\.html/;
+    const CONSULT_WRITE_PATH_PATTERN = /\/board\/consult\/write\.html$/i;
+    const CONSULT_LIST_PATH_PATTERN = /\/board\/consult\/list\.html$/i;
+    const GC_CONSULT_LIST_RETURN_URL_KEY = 'gcConsultListReturnUrl';
+    const GC_CONSULT_SKIP_HIST_BACK_KEY = 'gcConsultSkipHistBack';
+    const CONSULT_FALLBACK_RETURN = '/';
+    let dragEventId = 0;
 
     // jQuery 대기와 무관하게 consult list/write back 상태 관리
     initConsultNavigation();
@@ -20,7 +20,7 @@
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
-        var currentTry = tryCount || 0;
+        const currentTry = tryCount || 0;
 
         if (window.jQuery) {
             callback(window.jQuery);
@@ -47,7 +47,7 @@
 
             initConsultTabs($);
             initPaging();
-            initFixedWriteBtn($);
+            // initFixedWriteBtn($);
         });
     }
 
@@ -87,7 +87,7 @@
 
     function toSameOriginPath(href) {
         try {
-            var url = new URL(href, window.location.origin);
+            const url = new URL(href, window.location.origin);
             if (url.origin !== window.location.origin) {
                 return '';
             }
@@ -103,9 +103,9 @@
 
     function isCloudflareRelatedUrl(href) {
         try {
-            var url = new URL(href, window.location.origin);
-            var host = url.hostname.toLowerCase();
-            var path = url.pathname.toLowerCase();
+            const url = new URL(href, window.location.origin);
+            const host = url.hostname.toLowerCase();
+            const path = url.pathname.toLowerCase();
 
             if (host.indexOf('cloudflare') !== -1) return true;
             if (path.indexOf('/cdn-cgi/') !== -1) return true;
@@ -117,10 +117,10 @@
     }
 
     function getSafeConsultReturnUrl() {
-        var stored = getSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY);
+        const stored = getSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY);
         if (!stored) return CONSULT_FALLBACK_RETURN;
 
-        var path = toSameOriginPath(stored);
+        const path = toSameOriginPath(stored);
         if (!path) return CONSULT_FALLBACK_RETURN;
         if (isConsultListOrWritePath(path.split('?')[0])) {
             return CONSULT_FALLBACK_RETURN;
@@ -153,7 +153,7 @@
         document.addEventListener(
             'click',
             function (event) {
-                var back =
+                const back =
                     event.target.closest &&
                     event.target.closest('.back-btn');
 
@@ -163,7 +163,7 @@
 
                 setSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY, '1');
 
-                var boardNo = '9';
+                let boardNo = '9';
                 try {
                     boardNo =
                         new URLSearchParams(window.location.search).get(
@@ -197,7 +197,7 @@
         document.addEventListener(
             'click',
             function (event) {
-                var back =
+                const back =
                     event.target.closest &&
                     event.target.closest('.back-btn');
 
@@ -210,7 +210,7 @@
 
                 stopBackEvent(event);
 
-                var returnUrl = getSafeConsultReturnUrl();
+                const returnUrl = getSafeConsultReturnUrl();
 
                 removeSessionItem(GC_CONSULT_SKIP_HIST_BACK_KEY);
                 removeSessionItem(GC_CONSULT_LIST_RETURN_URL_KEY);
@@ -235,10 +235,10 @@
             return;
         }
 
-        var referrer = document.referrer;
+        const referrer = document.referrer;
         if (!referrer) return;
 
-        var path = toSameOriginPath(referrer);
+        const path = toSameOriginPath(referrer);
         if (!path) return;
         if (isConsultListOrWritePath(path.split('?')[0])) return;
         if (isCloudflareRelatedUrl(referrer)) return;
@@ -251,10 +251,10 @@
        게시판 종류
     ===================================================== */
     function initBoardType($) {
-        var $boardWrap = $('.ec-base-table.typeList');
+        const $boardWrap = $('.ec-base-table.typeList');
         if ($boardWrap.length === 0) return;
 
-        var currentBoardNo = getCurrentBoardNo($);
+        const currentBoardNo = getCurrentBoardNo($);
 
         if (currentBoardNo === BOARD_NO_FAQ) {
             $boardWrap.addClass('board-type-faq');
@@ -268,7 +268,7 @@
     }
 
     function getCurrentBoardNo($) {
-        var boardNo = $('input[name="board_no"]').first().val();
+        let boardNo = $('input[name="board_no"]').first().val();
 
         if (!boardNo) {
             boardNo = new URLSearchParams(window.location.search).get('board_no');
@@ -291,7 +291,7 @@
 
     // 현재 FAQ 카테고리와 동일하면 true (전체 탭: category_no 없음/빈 문자열)
     function isSameFaqCategory(categoryNo) {
-        var currentCategoryNo =
+        const currentCategoryNo =
             new URL(window.location.href).searchParams.get('category_no') ||
             '';
 
@@ -314,12 +314,12 @@
 
         $select.data('tabified', true);
 
-        var $tabList = $('<ul>', { class: 'category-tab-list inner-m' });
-        var activeOption = null;
+        const $tabList = $('<ul>', { class: 'category-tab-list inner-m' });
+        let activeOption = null;
 
         $select.find('option').each(function () {
-            var $option = $(this);
-            var optionData = {
+            const $option = $(this);
+            const optionData = {
                 value: $option.val(),
                 label: $option.text().trim(),
                 isActive: $option.is(':selected')
@@ -329,7 +329,7 @@
             $tabList.append(createTabItem(optionData, $));
         });
 
-        var $tabWrap = $('<div>', { class: 'category-tab-wrap' }).append($tabList);
+        const $tabWrap = $('<div>', { class: 'category-tab-wrap' }).append($tabList);
 
         $select.addClass('a11y-hidden');
         $select.after($tabWrap);
@@ -354,9 +354,9 @@
 
                 if ($tabWrap.data('wasDragging')) return;
 
-                var $link = $(this);
-                var $item = $link.closest('.category-tab-item');
-                var selected = {
+                const $link = $(this);
+                const $item = $link.closest('.category-tab-item');
+                const selected = {
                     value: $link.attr('data-value'),
                     label: $link.attr('data-label')
                 };
@@ -394,7 +394,7 @@
     }
 
     function createTabItem(optionData, $) {
-        var $link = $('<a>', {
+        const $link = $('<a>', {
             href: '#none',
             'data-value': optionData.value,
             'data-label': optionData.label,
@@ -407,10 +407,10 @@
     }
 
     function initTabWheelScroll($tabWrap) {
-        var wrapElement = $tabWrap.get(0);
+        const wrapElement = $tabWrap.get(0);
 
         $tabWrap.on('wheel.boardCategory', function (event) {
-            var originalEvent = event.originalEvent;
+            const originalEvent = event.originalEvent;
             if (!originalEvent || originalEvent.deltaY === 0) return;
 
             event.preventDefault();
@@ -419,11 +419,11 @@
     }
 
     function initTabDragScroll($tabWrap, $) {
-        var wrapElement = $tabWrap.get(0);
-        var namespace = '.tabDrag' + (++dragEventId);
-        var isPointerDown = false;
-        var startX = 0;
-        var initialScrollLeft = 0;
+        const wrapElement = $tabWrap.get(0);
+        const namespace = '.tabDrag' + (++dragEventId);
+        let isPointerDown = false;
+        let startX = 0;
+        let initialScrollLeft = 0;
 
         $tabWrap.on('mousedown' + namespace, function (event) {
             isPointerDown = true;
@@ -437,8 +437,8 @@
 
             event.preventDefault();
 
-            var currentX = event.pageX - wrapElement.offsetLeft;
-            var distance = currentX - startX;
+            const currentX = event.pageX - wrapElement.offsetLeft;
+            const distance = currentX - startX;
 
             if (Math.abs(distance) > DRAG_THRESHOLD) {
                 $tabWrap.data('wasDragging', true);
@@ -462,9 +462,9 @@
     function scrollTabIntoView($tabWrap, $activeTab) {
         if ($activeTab.length === 0) return;
 
-        var wrapElement = $tabWrap.get(0);
-        var tabElement = $activeTab.get(0);
-        var targetScroll =
+        const wrapElement = $tabWrap.get(0);
+        const tabElement = $activeTab.get(0);
+        const targetScroll =
             tabElement.offsetLeft -
             wrapElement.clientWidth / 2 +
             tabElement.offsetWidth / 2;
@@ -476,18 +476,18 @@
        FAQ 아코디언
     ===================================================== */
     function initFaqAccordion($boardWrap, $) {
-        var $list = $boardWrap.find('.board-list--normal');
+        const $list = $boardWrap.find('.board-list--normal');
 
         $list.on('click.faqAccordion', '.subject-link', function (event) {
             event.preventDefault();
 
-            var $link = $(this);
+            const $link = $(this);
             toggleFaqRow($link.closest('tr'), $link.attr('href'), $);
         });
     }
 
     function toggleFaqRow($row, url, $) {
-        var isOpen = $row.hasClass('is-open');
+        const isOpen = $row.hasClass('is-open');
 
         closeOtherFaqRows($row, $);
 
@@ -503,12 +503,12 @@
             return;
         }
 
-        var $answerRow = showFaqAnswer($row, '불러오는 중...', $);
+        const $answerRow = showFaqAnswer($row, '불러오는 중...', $);
 
         $.ajax({ url: url, type: 'GET', dataType: 'html' })
             .done(function (html) {
-                var answerHtml = $(html).find('.detail').html();
-                var safeAnswer = answerHtml || '내용을 불러올 수 없습니다.';
+                const answerHtml = $(html).find('.detail').html();
+                const safeAnswer = answerHtml || '내용을 불러올 수 없습니다.';
 
                 $row.data('faqHtml', safeAnswer);
                 $answerRow.find('.faq-answer-inner').html(safeAnswer);
@@ -534,9 +534,9 @@
     }
 
     function showFaqAnswer($row, html, $) {
-        var $answerRow = $('<tr>', { class: 'faq-answer' });
-        var $cell = $('<td>', { colspan: 2 });
-        var $content = $('<div>', { class: 'faq-answer-inner' }).html(html);
+        const $answerRow = $('<tr>', { class: 'faq-answer' });
+        const $cell = $('<td>', { colspan: 2 });
+        const $content = $('<div>', { class: 'faq-answer-inner' }).html(html);
 
         $answerRow.append($cell.append($content));
         $row.after($answerRow);
@@ -549,11 +549,11 @@
        Consult 필터 탭
     ===================================================== */
     function initConsultTabs($) {
-        var $select = $('#consult');
+        const $select = $('#consult');
         if ($select.length === 0) return;
 
-        var $rows = $('.board-list > tr');
-        var result = createSelectTabs($select, $, {
+        const $rows = $('.board-list > tr');
+        const result = createSelectTabs($select, $, {
             namespace: 'consultTab',
             useDrag: false,
             useWheel: false,
@@ -570,13 +570,13 @@
 
     function filterRowsByAnswerStatus($rows, label, $) {
         $rows.each(function () {
-            var $row = $(this);
-            var answerStatus = $row
+            const $row = $(this);
+            const answerStatus = $row
                 .find('.write-count')
                 .text()
                 .replace('답변', '')
                 .trim();
-            var shouldShow = true;
+            let shouldShow = true;
 
             if (label.indexOf('완료') !== -1) {
                 shouldShow = answerStatus === 'O';
@@ -595,13 +595,13 @@
        페이지네이션 끝 버튼 처리
     ===================================================== */
     function initPaging() {
-        var pagingWrap = document.querySelector('.ec-base-paginate.typeList');
+        const pagingWrap = document.querySelector('.ec-base-paginate.typeList');
         if (!pagingWrap) return;
 
-        var prevButton = pagingWrap.querySelector('.paging-prev-button');
-        var nextButton = pagingWrap.querySelector('.paging-next-button');
-        var currentButton = pagingWrap.querySelector('.this');
-        var currentPage = getPageParam(currentButton);
+        const prevButton = pagingWrap.querySelector('.paging-prev-button');
+        const nextButton = pagingWrap.querySelector('.paging-next-button');
+        const currentButton = pagingWrap.querySelector('.this');
+        const currentPage = getPageParam(currentButton);
 
         if (currentPage === null) return;
 
@@ -612,10 +612,10 @@
     function getPageParam(button) {
         if (!button) return null;
 
-        var href = button.getAttribute('href');
+        const href = button.getAttribute('href');
         if (!href) return null;
 
-        var queryString = href.split('?')[1] || '';
+        const queryString = href.split('?')[1] || '';
         return new URLSearchParams(queryString).get('page');
     }
 
@@ -630,17 +630,17 @@
 (function () {
     'use strict';
 
-    var PROMOTION_BOARD_NO = 8;
-    var ENDED_CATEGORY_NO = 2;
-    var LIST_URL = '/board/gallery/list.html';
-    var JQUERY_WAIT_INTERVAL = 50;
-    var JQUERY_WAIT_MAX_TRY = 100;
-    var ARTICLE_NO_PATTERN = /\/article\/[^\/]+\/\d+\/(\d+)\//;
+    const PROMOTION_BOARD_NO = 8;
+    const ENDED_CATEGORY_NO = 2;
+    const LIST_URL = '/board/gallery/list.html';
+    const JQUERY_WAIT_INTERVAL = 50;
+    const JQUERY_WAIT_MAX_TRY = 100;
+    const ARTICLE_NO_PATTERN = /\/article\/[^\/]+\/\d+\/(\d+)\//;
 
     waitForJQuery(init);
 
     function waitForJQuery(callback, tryCount) {
-        var currentTry = tryCount || 0;
+        const currentTry = tryCount || 0;
 
         if (window.jQuery) {
             callback(window.jQuery);
@@ -664,7 +664,7 @@
     }
 
     function initPromotionEndedBadge($) {
-        var $promotionList = $('.promotion-list');
+        const $promotionList = $('.promotion-list');
         if ($promotionList.length === 0) return;
 
         if (getCurrentBoardNo($) !== PROMOTION_BOARD_NO) return;
@@ -673,7 +673,7 @@
     }
 
     function getCurrentBoardNo($) {
-        var boardNo = $('input[name="board_no"]').first().val();
+        let boardNo = $('input[name="board_no"]').first().val();
 
         if (!boardNo) {
             boardNo = new URLSearchParams(window.location.search).get('board_no');
@@ -683,7 +683,7 @@
     }
 
     function getArticleNo(href) {
-        var match = href && href.match(ARTICLE_NO_PATTERN);
+        const match = href && href.match(ARTICLE_NO_PATTERN);
         return match ? match[1] : null;
     }
 
@@ -695,18 +695,18 @@
             data: { board_no: PROMOTION_BOARD_NO, category_no: ENDED_CATEGORY_NO },
             type: 'GET',
             success: function (response) {
-                var endedNoSet = {};
+                const endedNoSet = {};
 
                 $(response).find('.promotion-list a').each(function () {
-                    var no = getArticleNo($(this).attr('href'));
+                    const no = getArticleNo($(this).attr('href'));
                     if (no) endedNoSet[no] = true;
                 });
 
                 console.log('[promotion] 종료 게시물 번호', endedNoSet);
 
                 $promotionList.find('> li').each(function () {
-                    var $li = $(this);
-                    var no = getArticleNo($li.find('a').attr('href'));
+                    const $li = $(this);
+                    const no = getArticleNo($li.find('a').attr('href'));
                     $li.find('.thumbnail').toggleClass('is-ended', !!(no && endedNoSet[no]));
                 });
             },

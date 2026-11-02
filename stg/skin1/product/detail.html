@@ -1,4 +1,5 @@
 <!--@layout(/layout/basic/layout.html)-->
+<!--@js(/_aisoul/js/owned-coupon.js)-->
 <!--@js(/_aisoul/js/detail.js)-->
 <!--@js(/_aisoul/js/sale.js)-->
 
@@ -86,14 +87,7 @@ js -> /_aisoul/js/detail.js
                 <h1>{$name}</h1>
                 <span class="delivery {$delvtype_display|display}">(해외배송 가능상품)</span>
             </div>
-
-            <!------------------------------------------------------------ 
             
-            네이버페이 적립 배너 자리 (JS 주입)
-            
-            ------------------------------------------------------------->
-            <div class="npay-benefit-banner" id="npayBenefitBanner"></div>
-
             <!-- 건기식 상품에만 /_aisoul/js/detail.js에서 내용을 주입합니다. -->
             <div class="actual-price-slot" id="actualPriceSlot"></div>
             
@@ -102,6 +96,27 @@ js -> /_aisoul/js/detail.js
                 <span>{$supply_top_logo}</span>
                 <a href="#none" onclick="{$supply_go_action}"><img src="{$supply_go_img}" alt="공급사 바로가기"></a>
             </div>
+            
+
+
+            <style>
+            .xans-product-detaildesign:not(.is-detail-price-ready) { position: relative; overflow: hidden; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) > * { visibility: hidden !important; pointer-events: none !important; }
+            .xans-product-detaildesign:not(.is-detail-price-ready)::before { content: ""; position: absolute; inset: 0; z-index: 1; background: #fff; visibility: visible; }
+            .xans-product-detaildesign:not(.is-detail-price-ready)::after { content: ""; position: absolute; z-index: 2; left: 2px; right: 2px; top: 12px; height: 96px; pointer-events: none; visibility: visible; border-radius: 0; background: linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size: 220% 100%; animation: detail-price-skeleton-shimmer 1.8s ease-in-out infinite; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0); mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0); -webkit-mask-size: 48px 12px, 48px 12px, 36px 12px, 84px 14px, 148px 22px, 36px 12px; mask-size: 48px 12px, 48px 12px, 36px 12px, 84px 14px, 148px 22px, 36px 12px; -webkit-mask-position: left 0 top 2px, left 0 top 36px, left 0 top 74px, right 0 top 1px, right 0 top 30px, right 0 top 74px; mask-position: left 0 top 2px, left 0 top 36px, left 0 top 74px, right 0 top 1px, right 0 top 30px, right 0 top 74px; }
+            @keyframes detail-price-skeleton-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+            @media (prefers-reduced-motion: reduce) {
+                .xans-product-detaildesign:not(.is-detail-price-ready)::after { animation: none; }
+            }
+            </style>
+            <noscript>
+            <style>
+            .xans-product-detaildesign { overflow: visible !important; }
+            .xans-product-detaildesign > * { visibility: visible !important; pointer-events: auto !important; }
+            .xans-product-detaildesign::before,
+            .xans-product-detaildesign::after { content: none !important; }
+            </style>
+            </noscript>
             <div module="product_detaildesign">
                 <!--
                     출력 갯수 지정 변수, 없으면 설정된 전체가 나옵니다.
@@ -120,7 +135,102 @@ js -> /_aisoul/js/detail.js
                         </tr>
                     </tbody>
                 </table>
+
+                
+                <!------------------------------------------------------------ 
+                
+                네이버페이 적립 배너 자리 (JS 주입)
+                
+                ------------------------------------------------------------->
+                <div class="npay-benefit-banner" id="npayBenefitBanner"></div>
+                
+                <!------------------------------------------------------------ 
+                
+                할인 산출 내역 배너 자리 (JS 주입)
+                
+                ------------------------------------------------------------->
+                <div class="discount-breakdown-banner" id="discountBreakdownBanner"></div>
             </div>
+            <script>
+            (function () {
+                var DETAIL_PRICE_RECOVERY_MS = window.GC_OWNED_COUPON_RECOVERY_MS || 8000;
+                if (window.__detailPriceLoadingBooted) return;
+                window.__detailPriceLoadingBooted = true;
+                window.__detailPriceRecoveryMs = DETAIL_PRICE_RECOVERY_MS;
+                window.__detailPriceLookupToken = window.__detailPriceLookupToken || 1;
+                window.__couponPriceStartedAt = window.__couponPriceStartedAt || Date.now();
+                window.__couponPriceLog = function (event, extra) {
+                    var payload = { event: event, elapsedMs: Date.now() - window.__couponPriceStartedAt };
+                    if (extra) {
+                        for (var key in extra) {
+                            if (Object.prototype.hasOwnProperty.call(extra, key)) payload[key] = extra[key];
+                        }
+                    }
+                    console.info('[DETAIL][OWNED_COUPON]', payload);
+                };
+
+                var timer = 0;
+                function revealDetailPrice(event, extra) {
+                    if (timer) {
+                        window.clearTimeout(timer);
+                        timer = 0;
+                    }
+                    window.__detailPriceAllowSalePercent = true;
+                    try {
+                        if (typeof window.__runDetailSalePercent === 'function') window.__runDetailSalePercent();
+                    } finally {
+                        window.__detailPriceAllowSalePercent = false;
+                    }
+                    var root = document.querySelector('.xans-product-detaildesign');
+                    if (root) {
+                        root.classList.add('is-detail-price-ready');
+                        root.removeAttribute('aria-busy');
+                    }
+                    console.info('[DETAIL][PRICE_TIMING]', {
+                        event: '스켈레톤 해제',
+                        now: Math.round(window.performance && window.performance.now ? window.performance.now() : 0),
+                        reason: event || '조회 완료'
+                    });
+                    if (event) window.__couponPriceLog(event, extra);
+                }
+                function armDetailPriceRecovery() {
+                    if (timer) window.clearTimeout(timer);
+                    timer = window.setTimeout(function () {
+                        window.__detailPriceLookupAborted = true;
+                        window.__detailPriceLookupToken = (window.__detailPriceLookupToken || 1) + 1;
+                        if (typeof window.__finalizeDetailActualPrice === 'function') {
+                            window.__finalizeDetailActualPrice();
+                        }
+                        revealDetailPrice('복구 제한', {
+                            reason: '기존 가격으로 확정',
+                            requestClosed: true,
+                            limitMs: DETAIL_PRICE_RECOVERY_MS,
+                            temporaryLimit: true
+                        });
+                    }, DETAIL_PRICE_RECOVERY_MS);
+                }
+                window.__releaseDetailPriceLoading = function () {
+                    revealDetailPrice('', null);
+                };
+                window.__holdDetailPriceLoading = function () {
+                    if (window.__detailPriceLookupAborted) return;
+                    var priceRoot = document.querySelector('.xans-product-detaildesign');
+                    if (!priceRoot) return;
+                    priceRoot.classList.remove('is-detail-price-ready');
+                    priceRoot.setAttribute('aria-busy', 'true');
+                    armDetailPriceRecovery();
+                };
+
+                var root = document.querySelector('.xans-product-detaildesign');
+                if (!root) {
+                    window.__couponPriceLog('스켈레톤 대상 없음', { reason: '가격표 없음' });
+                    return;
+                }
+                root.setAttribute('aria-busy', 'true');
+                window.__couponPriceLog('스켈레톤 시작', { limitMs: DETAIL_PRICE_RECOVERY_MS, temporaryLimit: true });
+                armDetailPriceRecovery();
+            }());
+            </script>
 
             <!--- 렌탈서비스 -->
             <table border="1" summary class="{$rental_information_display|display}">
@@ -1063,5 +1173,6 @@ js -> /_aisoul/js/detail.js
 </div>
 <!-- //:하단 상세 정보 섹션 -->
 
+<!--@import(/_aisoul/myshop/owned_coupon_data.html)-->
 
 <!--@define(cmc_log)-->

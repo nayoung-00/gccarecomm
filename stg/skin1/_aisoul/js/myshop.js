@@ -1,13 +1,16 @@
 $(function () {
     $('.period-toggle').on('click', function () {
-        var $button = $(this);
-        var $periodSearch = $button.closest('.period-search');
-        var isOpen = $periodSearch
-            .toggleClass('is-open')
-            .hasClass('is-open');
+        const $button = $(this);
+        const $periodSearch = $button.closest('.period-search');
+        const isOpen = $periodSearch.toggleClass('is-open').hasClass('is-open');
 
         $button.attr('aria-expanded', isOpen);
     });
+
+    // 기간 버튼 클릭 시 selected 이동 
+    // $('.period-search .period').on('click', 'a[days]', function () {
+    //     $(this).addClass('selected').siblings('a[days]').removeClass('selected');
+    // });
 
     initOrderHistoryTabReplace();
 });
@@ -24,15 +27,15 @@ function isOrderListPath(pathname) {
 // pathname + query 전체 비교 (파라미터 순서 무시)
 function isSameOrderHistoryUrl(href) {
     try {
-        var next = new URL(href, window.location.origin);
-        var current = new URL(window.location.href);
+        const next = new URL(href, window.location.origin);
+        const current = new URL(window.location.href);
 
         if (next.pathname !== current.pathname) {
             return false;
         }
 
-        var nextParams = Array.from(next.searchParams.entries()).sort();
-        var currentParams = Array.from(current.searchParams.entries()).sort();
+        const nextParams = Array.from(next.searchParams.entries()).sort();
+        const currentParams = Array.from(current.searchParams.entries()).sort();
 
         return JSON.stringify(nextParams) === JSON.stringify(currentParams);
     } catch (e) {
@@ -47,7 +50,7 @@ function initOrderHistoryTabReplace() {
             'click.orderHistoryTabReplace',
             '.myshopArea .xans-myshop-orderhistorytab .menu a',
             function (event) {
-                var href = $(this).attr('href');
+                const href = $(this).attr('href');
 
                 if (!href || href === '#none' || href.indexOf('javascript:') === 0) {
                     return;
@@ -58,16 +61,12 @@ function initOrderHistoryTabReplace() {
                 }
 
                 if (
-                    event.metaKey ||
-                    event.ctrlKey ||
-                    event.shiftKey ||
-                    event.altKey ||
-                    event.which === 2
+                    event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.which === 2
                 ) {
                     return;
                 }
 
-                var nextUrl;
+                let nextUrl;
 
                 try {
                     nextUrl = new URL(href, window.location.origin);
@@ -77,8 +76,7 @@ function initOrderHistoryTabReplace() {
 
                 // list.html ↔ list.html 탭만 replace (list_old / list_past는 push 유지)
                 if (
-                    !isOrderListPath(window.location.pathname) ||
-                    !isOrderListPath(nextUrl.pathname)
+                    !isOrderListPath(window.location.pathname) || !isOrderListPath(nextUrl.pathname)
                 ) {
                     return;
                 }

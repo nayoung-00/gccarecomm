@@ -1,6 +1,6 @@
 $(function () {
-    var $header = $('#header .header');
-    var $logoLink = $header.find('.xans-layout-logotop > a');
+    const $header = $('#header .header');
+    const $logoLink = $header.find('.xans-layout-logotop > a');
 
     if (!$header.length) {
         return;
@@ -9,7 +9,7 @@ $(function () {
     $logoLink.text('주문/결제');
 
     if (!$header.find('.back-btn-wrap').length) {
-        var backButtonHtml =
+        const backButtonHtml =
             '<span class="back-btn-wrap">' +
                 '<a href="#none" class="back-btn" aria-label="뒤로가기">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" ' +

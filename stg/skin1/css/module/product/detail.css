@@ -34,7 +34,7 @@
 .xans-product-detail .infoArea td #span_product_coupon_dc_price { color:#070705; } 
 .xans-product-detail .infoArea td.fileInfo { color:#757575; } 
 .xans-product-detail .infoArea td.fileInfo input { width:288px; } 
-.xans-product-detail .infoArea td.fileInfo .infoDesc { margin:0 0 10px 0; } 
+.xans-product-detail .infoArea td.fileInfo .infoDesc { margin:0 0 10px 0; }
 .xans-product-detail .infoArea td.fileInfo li { margin:4px 0 0; color:#757575; font-size:11px; } 
 .xans-product-detail .infoArea td.fileInfo li img { vertical-align:bottom; } 
 .xans-product-detail .delv_price_B strong { font-weight:normal; } 
@@ -111,7 +111,8 @@
 .xans-product-detail .productSet .guide .sizeGuide:before { content:""; position:absolute; top:0; left:0; display:inline-block; width:100%; border-top:1px solid #e8e8e8; } 
 .xans-product-detail .productSet .guide .sizeGuide a { display:inline-block; padding:0 15px 0 24px; } 
 .xans-product-detail .productSet.additional .toggle { position:absolute; top:0px; right:8px; display:block; width:20px; height:20px; overflow:hidden; white-space:nowrap; text-indent:150%; font-size:1px; color:transparent; line-height:1px; } 
-.xans-product-detail .productSet.additional .toggle .icon { display:block; margin:3px 0 0 5px; } 
+.xans-product-detail .productSet.additional .toggle .icon { display:block; margin:3px 0 0 5px; rotate:180deg; transition:rotate .2s ease; }
+.xans-product-detail .productSet.additional.is-closed .toggle .icon { rotate:0deg; }
 .xans-product-detail .productSet.hide .product { display:none; } 
 .xans-product-detail .productSet .ec-base-desc { padding:0 0 10px; border-top:0; border-bottom:1px solid #ddd; } 
 .xans-product-detail .productSet .ec-base-desc dt { width:135px; padding:0 0 0 20px; } 
@@ -646,22 +647,30 @@
 
 
 /* 임시 건기식 시안 노출용 UI: 실제 API 연동 시 클래스는 그대로 재사용할 수 있습니다. */
-.xans-product-detail .infoArea .xans-product-detaildesign tr span.actual-price-label { color:var(--neutral-800) !important; font-size:14px; font-weight:600; } 
+.xans-product-detail .infoArea .xans-product-detaildesign tr .actual-price-label { color:var(--neutral-800) !important; font-size:14px; font-weight:600; } 
+/* .xans-product-detail .infoArea .xans-product-detaildesign .prd-sale-price th span */
 .actual-price-value, .xans-product-detail .infoArea td #span_product_price_text { color:var(--common-black); font-size:20px; font-weight:700; letter-spacing: -2%; } 
-.prd-actual-price th { display:flex; align-items:center; gap:4px; } 
+.xans-product-detail .prd-best-discount-price td span#span_optimum_discount_price{color: var(--common-black);}
+.prd-actual-price th,
+.prd-sale-price th,
+.prd-best-discount-price th { display:flex; align-items:center; gap:4px; }
+.xans-product-detaildesign:has(.prd-best-discount-price) .prd-sale-price, .xans-product-detaildesign .prd-best-discount-price #span_optimum_discount_price span {display: none;}
+.xans-product-detaildesign:has(.prd-best-discount-price) tr.prd-sale-price.is-coupon-sale-display { display:table-row; }
 
 .prd-actual-price td { text-align:right; } 
 .prd-actual-price .actual-price-slot { margin:0 !important; } 
-.prd-actual-price th .price-tooltip { display:inline-flex; position:relative; align-items:center;gap: 4px; vertical-align:middle; } 
+.prd-actual-price th .price-tooltip,
+.prd-sale-price th .price-tooltip,
+.prd-best-discount-price th .price-tooltip { display:inline-flex; position:relative; align-items:center;gap: 4px; vertical-align:middle; } 
 .price-tooltip { position:relative;vertical-align:middle; }
-.price-tooltip-trigger { display:inline-flex; width:12px; height:12px; align-items:center; justify-content:center; padding:0; border:1px solid var(--neutral-800); border-radius:50%; background:#fff; color:var(--neutral-800); font-size:8px; font-weight:700; line-height:1; cursor:pointer; } 
-.npay-benefit-inner .price-tooltip-trigger { border-color: #0AC262; color: #0AC262;}
+.price-tooltip-trigger { display:inline-flex; width:16px; height:16px; align-items:center; justify-content:center;  color:var(--neutral-800); cursor:pointer; } 
+.npay-benefit-inner .price-tooltip-trigger svg path {stroke: var(--brand-color);}
 .xans-product-detail .infoArea .price-tooltip-panel {    
     display: none;
     position: absolute;
     z-index: 10;
     top: calc(100% + 8px);
-    left: -70px;
+    left: -30px;
     min-width: 200px !important;
     max-width: 220px;
     padding: 12px;
@@ -673,24 +682,75 @@
     line-height: 1.5;
     word-break: keep-all;
     color: var(--neutral-0) !important;}
-.xans-product-detail .infoArea .price-tooltip-panel::before {content: "";display: block; position: absolute; top: -7px; left: 75px; width: 20px; height: 8px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='8' viewBox='0 0 20 8'%3E%3Cpath d='M0 8h1.64c1.47 0 2.25-.04 3.19-.63.41-.27.77-.64 1.47-1.38l2.37-2.52C9.48 2.61 9.89 2.18 10.36 2.02a2 2 0 0 1 1.28 0c.47.16.88.59 1.69 1.45l2.37 2.52c.7.74 1.05 1.11 1.47 1.38.94.59 1.72.63 2.83.63H0Z' fill='%232F74EB'/%3E%3C/svg%3E") no-repeat center / 100% 100%; transform: translateX(-50%); pointer-events: none;}
+.xans-product-detail .infoArea .price-tooltip-panel::before {content: "";display: block; position: absolute; top: -7px; left: 35px; width: 20px; height: 8px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='8' viewBox='0 0 20 8'%3E%3Cpath d='M0 8h1.64c1.47 0 2.25-.04 3.19-.63.41-.27.77-.64 1.47-1.38l2.37-2.52C9.48 2.61 9.89 2.18 10.36 2.02a2 2 0 0 1 1.28 0c.47.16.88.59 1.69 1.45l2.37 2.52c.7.74 1.05 1.11 1.47 1.38.94.59 1.72.63 2.83.63H0Z' fill='%232F74EB'/%3E%3C/svg%3E") no-repeat center / 100% 100%; transform: translateX(-50%); pointer-events: none;}
 .price-tooltip:hover .price-tooltip-panel,
 .price-tooltip:focus-within .price-tooltip-panel { display:block; } 
 .prd-actual-price th .price-tooltip .reward-unit {margin: 0 !important;font-size: 12px;color: var(--neutral-300);}
-
-
+.xans-product-detail .infoArea .npay-benefit-banner .price-tooltip-panel {left: -140px;}
+.xans-product-detail .infoArea .npay-benefit-banner .price-tooltip-panel::before {left: 145px;}
 /* 네이버 */
 .npay-benefit-banner:empty { display: none; } 
-
+.npay-benefit-banner {padding: 12px 10px 14px;background: #E6FAED;margin-top: 12px;}
 .npay-benefit-inner .price-tooltip { line-height: 0; } 
-.npay-benefit-banner .npay-benefit-inner { display: flex; align-items: center; gap: 2px; padding: 10px 2px; border-bottom: 1px solid var(--line-normal); font-size: 12px; font-weight: 700; color: #0AC262;line-height: 1.5;} 
+.npay-benefit-banner .prd-actual-price { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.npay-benefit-banner .actual-price-head { display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
+.npay-benefit-banner .actual-price-label { color:#46484d; font-size:14px; }
+.npay-benefit-banner .actual-price-note { color:#7a7c80; font-size:11px; font-weight:400; line-height:1.4; }
+.npay-benefit-banner .actual-price-value.is-pending { visibility:hidden; }
+/* [기존] 캐시백 안내 가로 한 줄 배치
+.npay-benefit-banner .npay-benefit-inner { display: flex; align-items: center; gap: 2px; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: var(--brand-color);line-height: 1.5;}
+*/
+/* 캐시백 안내: 1행(제목 좌 / 금액 우) + 2행(보조 문구) */
+.npay-benefit-banner .npay-benefit-inner { display: flex; flex-direction: column; gap: 4px; line-height: 1.5; }
+.npay-benefit-banner .npay-benefit-inner > .npay-benefit__title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.npay-benefit-banner .npay-benefit-inner > .npay-benefit__title strong , .npay-benefit-banner .npay-benefit-inner > .npay-benefit__title span {font-size: 14px;line-height: 1.5;letter-spacing: -2%;}
+.npay-benefit-banner .npay-benefit-inner > .npay-benefit__title strong  { color: #69716c; font-weight: 500; }
+.npay-benefit-banner .npay-benefit-inner > .npay-benefit__title span {color: var(--brand-color);font-weight: 600;}
+.npay-benefit-banner .npay-benefit-inner > span { color: #949996; font-size: 12px; font-weight: 500;line-height: 1.5;letter-spacing: -2%; }
+.npay-benefit-banner .actual-price-value, .npay-benefit-banner .actual-price-value .price-unit {font-size: 14px; color: var(--brand-color);}
 
-.npay-fixed-button { display:flex; width:100%; height:100%; align-items:center; justify-content:center; gap:2px; padding:0; border:0; border-radius:8px; background:#0AC262;; color:#050505; font-size:14px; font-weight:700; cursor:pointer; } 
-.npay-mark { display:inline-flex; width:17px; height:17px; align-items:center; justify-content:center; border-radius:50%; background:#050505; color:#0AC262; font-size:11px; font-weight:800; } 
+/* 쿠폰 적용가(최적할인가 행) 금액 앞 할인율 */
+.xans-product-detail .infoArea .xans-product-detaildesign .prd-best-discount-price td .coupon-price-group { display:flex; align-items:baseline; justify-content:flex-end; gap:6px; }
+.xans-product-detail .infoArea .xans-product-detaildesign .prd-best-discount-price td .coupon-discount-rate { display:inline; margin:0; color:#F5222D !important; font-size:20px; font-weight:700; }
+.xans-product-detail .infoArea .xans-product-detaildesign .prd-best-discount-price td .coupon-discount-rate .percent-sign { display:inline; margin:0 0 0 1px; font-size:14px; }
 
-.prd-sale-price td { display: flex; align-items: baseline; gap: 6px; } 
-.prd-sale-price .discount-rate { color: #FF3B30; font-weight: 700; font-size: 18px; } 
-.prd-sale-price td span { font-size: 20px; font-weight: 700; } 
+/* 할인 산출 내역 */
+.discount-breakdown-banner:empty { display:none; }
+.discount-breakdown-banner { margin-top:10px; padding:12px 10px; border-radius:8px; background:#F0F5FE; }
+.discount-breakdown-head { display:flex; width:100%; align-items:center; gap:6px; color:#2F74EB; font-size:14px; font-weight:700; line-height:1.5; text-align:left; cursor:pointer; }
+.discount-breakdown-icon { display:inline-flex; flex-shrink:0; width:14px; height:14px; align-items:center; justify-content:center; border:1px solid currentColor; border-radius:50%; font-size:10px; font-weight:800; line-height:1; }
+.discount-breakdown-title { flex:1; font-size: 12px;font-weight: 500; }
+.discount-breakdown-head .discount-breakdown-arrow {transition: 0.2s; }
+.discount-breakdown-head[aria-expanded="false"] .discount-breakdown-arrow { transform:rotate(-180deg); }
+.discount-breakdown-body { margin-top:12px; }
+.discount-breakdown-body[hidden] { display:none; }
+.discount-breakdown-list { display:flex; flex-direction:column; gap:6px; margin:0; padding-bottom:14px; border-bottom:1px solid #D5DFF0; }
+.discount-breakdown-row { display:flex; align-items:center; justify-content:space-between; font-size:14px; line-height:1.5; }
+.discount-breakdown-row dt, .discount-breakdown-row dd {font-size: 12px;line-height: 1.5;letter-spacing: -.24px;}
+.discount-breakdown-row dt { color:#74777d; font-weight:500;}
+.discount-breakdown-row dd { color:#46484d; font-weight:600;}
+.discount-breakdown-total { display:flex; align-items:center; justify-content:space-between; margin-top:14px; font-size:14px; font-weight:600; color: #46484d; }
+.discount-breakdown-total strong { color:#F5222D; font-size:14px; font-weight: 700; }
+.discount-breakdown-note { margin-top:16px; color:var(--neutral-300); font-size:12px; line-height:1.5; }
+
+/* 보유 쿠폰 예상 금액. prd-sale-price 클래스를 쓰지 않아 최적할인가가 있을 때 같이 숨겨지지 않는다. */
+.xans-product-detail .infoArea .xans-product-detaildesign tr.prd-owned-coupon-estimate { display:table-row; }
+.xans-product-detail .infoArea .xans-product-detaildesign tr.prd-owned-coupon-estimate > td { padding:6px 0 8px; text-align:left; }
+.owned-coupon-estimate { box-sizing:border-box; width:100%; padding:12px 10px; border-radius:8px; background:var(--neutral-50); }
+.owned-coupon-estimate__basis { margin:0 0 10px; color:#8b8d94; font-size:12px; line-height:1.4; text-align:left; }
+.owned-coupon-estimate__row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:4px; color:var(--neutral-500); font-size:12px; line-height:1.5; font-weight: 500; letter-spacing: -2%; }
+.owned-coupon-estimate__row .owned-coupon-estimate__value { color:var(--neutral-600); }
+.xans-product-detaildesign tr.prd-owned-coupon-estimate .owned-coupon-estimate__row--result {padding-top: 6px;border-top: 1px solid var(--line-normal);margin-top: 10px;}
+.xans-product-detaildesign tr.prd-owned-coupon-estimate .owned-coupon-estimate__row--result .owned-coupon-estimate__label {  color:var(--neutral-700); font-weight:600; }
+.xans-product-detaildesign tr.prd-owned-coupon-estimate .owned-coupon-estimate__row--result strong.owned-coupon-estimate__value { color:#F5222D; font-size:14px; font-weight:600; }
+.owned-coupon-estimate__note { padding-top: 8px; color:var(--neutral-400); font-size:12px; line-height:1.5; text-align:left; word-break:keep-all; }
+
+.npay-fixed-button { display:flex; width:100%; height:100%; align-items:center; justify-content:center; gap:2px; padding:0; border:0; border-radius:8px; background:var(--brand-color); color:#050505; font-size:14px; font-weight:700; cursor:pointer; } 
+.npay-mark { display:inline-flex; width:17px; height:17px; align-items:center; justify-content:center; border-radius:50%; background:#050505; color:var(--brand-color); font-size:11px; font-weight:800; } 
+
+/* .prd-sale-price td { display: flex; align-items: baseline; gap: 6px; }  */
+.prd-sale-price .discount-rate { color: #F5222D; font-weight: 700; font-size: 18px; } 
+.prd-sale-price td span { font-size: 20px; font-weight: 700; }  
 
 .actual-price-slot:empty,
 .npay-footer-slot:empty { display:none; } 
@@ -723,7 +783,7 @@
  .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .prev,
  .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .next { display:none; } 
  .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe > span { display:flex; align-items:center; gap:6px; } 
- .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .circle { display:block; width:8px; height:8px; margin:0; padding:0; overflow:hidden; border:0; border-radius:50%; background:#aaa; font-size:0; line-height:0; opacity:.75; } 
+ .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .circle { display:block; width:8px; height:8px; margin:0; padding:0; overflow:hidden; border:0; border-radius:50%; background:#aaa; font-size:0; line-height:0; opacity:.75; }
  .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .circle.selected { background:#222; opacity:1; } 
  .xans-product-detail .xans-product-mobileimage .paginate.typeSwipe .circle span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); } 
  .xans-product-detail .infoArea { box-sizing:border-box; margin:0; } 
@@ -736,25 +796,45 @@
 
 
  /* '원' 단위 price unit */
-.price-unit {padding-left: 2px;font-size: 14px;}
+ .quantity_price, .totalPrice .price {display: flex;align-items:end;gap: 2px;}
+ .totalPrice .total {align-items: center;display: flex;gap: 2px;}
+.price-unit {padding-left: 2px;font-size: 14px; text-decoration: none;display: inline-block;}
 .totalPrice .price-unit, #totalProducts .price-unit {padding-left: 0;font-size: 12px;} 
  .actual-price-slot:not(:empty) { margin:0 0 12px; } 
 
 .xans-product-detail .infoArea .xans-product-detaildesign {
-    padding: 12px 0 20px;
+    padding: 12px 2px 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--line-normal);
 }
  .xans-product-detail .infoArea .xans-product-detaildesign table { margin:0; } 
- .xans-product-detail .infoArea .xans-product-detaildesign tr { min-height:38px; } 
- .xans-product-detaildesign tr span {display: block;margin-bottom: 10px;  color: var(--neutral-600) !important; } 
+ /* .xans-product-detail .infoArea .xans-product-detaildesign tr { min-height:38px; }  */
+ /* 판매가, 리워드 혜택가, 최대혜택가 */
+.xans-product-detaildesign .prd-sale-price td .sale-price-group, .prd-consumer-price td span {display: block;margin-bottom: 10px; } 
+ .xans-product-detaildesign .prd-delivery-fee td span {color: var(--neutral-500); } 
  .xans-product-detaildesign tr.prd-discount-period td span {margin: 0;}
  .xans-product-detaildesign tr.prd-discount-period td > span {margin-bottom: 10px;}
- .xans-product-detail .infoArea .xans-product-detaildesign th { padding: 0 2px; font-size:12px; font-weight: 500; letter-spacing: -.24px; color: var(--neutral-600); } 
+ .xans-product-detail .infoArea .xans-product-detaildesign th { padding: 0 2px; font-size:12px; font-weight: 500; letter-spacing: -.24px;  } 
  .xans-product-detail .infoArea .xans-product-detaildesign td { text-align:right; } 
  .xans-product-detail .prd-consumer-price td span { font-size:16px; letter-spacing: -2%; } 
- .xans-product-detail .prd-sale-price td { justify-content:flex-end; } 
- .xans-product-detail .prd-sale-price td span { font-size:22px; } 
+ /* .xans-product-detail .prd-sale-price td { justify-content:flex-end; }  */
+ .xans-product-detail .prd-sale-price td .sale-price-group { display: flex;align-items: center;justify-content: end;gap: 4px; }
+ .xans-product-detail .prd-sale-price td .sale-price-group > span { display: flex;align-items: center;gap: 6px; }
+ .xans-product-detail .prd-sale-price td .sale-price-group { display:flex; align-items:baseline; gap:6px;}
+ .xans-product-detail .prd-sale-price td .consumer-price-inline,
+ .xans-product-detail .prd-sale-price td .consumer-price-inline span { font-size:14px; font-weight:400; letter-spacing:-2%; color:var(--neutral-300) !important; text-decoration:line-through !important; }
+ .xans-product-detail .prd-sale-price td .consumer-price-inline span { margin:0; }
+ .xans-product-detail .prd-sale-price td .consumer-price-inline .price-unit { font-weight:400; color:var(--neutral-300); }
+ .xans-product-detail .prd-sale-price td #span_product_price_text { color:var(--common-black) !important; }
+ /* .xans-product-detail .prd-sale-price .discount-rate { display:none; } */
+ /* [임시 수정] 할인율 strong이 'tr strong { display:block }'에 걸려 줄바꿈되는 것 방지 */
+ .xans-product-detail .prd-sale-price td .discount-rate { display:inline; margin:0; }
+ .xans-product-detail .prd-sale-price.is-coupon-sale-display td #span_product_price_text.coupon-sale-origin { position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0, 0, 0, 0) !important; white-space:nowrap !important; border:0 !important; }
+ /* [임시 수정 끝] */
+ .xans-product-detail .prd-best-discount-price td,
+ .xans-product-detail .prd-best-discount-price td span { font-size:20px; font-weight:700; letter-spacing:-2%; }
+ /* .xans-product-detail .prd-best-discount-price td #span_optimum_discount_price span {display: none;} */
+ /* .xans-product-detail .prd-best-discount-price td .price-unit { color:#F5222D; } */
 
  .xans-product-detail .xans-product-option td select { height:50px; margin:0; padding:0 42px 0 16px; border:1px solid #ddd; border-radius:9px; background-color:#fff; font-size:15px; } 
 .xans-product-detail .guideArea {

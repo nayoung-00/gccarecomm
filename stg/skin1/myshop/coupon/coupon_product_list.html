@@ -2,15 +2,26 @@
 <div module="Myshop_couponProductPackage" class="ec-base-layer">
     <!--@css(/css/module/myshop/couponProductPackage.css)-->
     <div class="header">
-        <h1>쿠폰적용 가능상품</h1>
+        <button type="button" class="close-btn" onclick="couponProductClose()" aria-label="닫기"><!--@import(/svg/icon-go-back.html)--></button>
+        <h1 class="jcsb">쿠폰적용 가능상품</h1>
+        <script>
+            // 팝업(window.open)으로 열렸으면 창 닫기, 일반 페이지로 열렸으면 쿠폰 목록으로 이동
+            function couponProductClose() {
+                if (window.opener && !window.opener.closed) {
+                    window.close();
+                    return;
+                }
+                location.href = '/myshop/coupon/coupon.html';
+            }
+        </script>
     </div>
 
     <div class="content">
         <div module="myshop_CouponProductSearch" class="ec-base-box typeThinBg">
             <fieldset>
                 <legend>쿠폰선택 및 상품검색</legend>
-                <p>{$form.coupon_no} 의 적용가능 상품목록입니다.</p>
-                <p>{$form.search_key} {$form.search} <a href="#none" class="btnSubmit" onclick="{$action_form_submit}">검색하기</a></p>
+                <p>{$form.coupon_no}</p>
+                <p class="myshop-coupon__searchProd">{$form.search_key} {$form.search} <a href="#none" class="btnSubmit" onclick="{$action_form_submit}">검색하기</a></p>
             </fieldset>
         </div>
 
@@ -22,11 +33,11 @@
             <div class="ec-base-table">
                 <table border="1" >
                     <caption>{$cate_name}</caption>
-                    <colgroup>
+                    <!-- <colgroup>
                         <col style="width:92px" />
                         <col style="width:auto" />
                         <col style="width:95px" />
-                    </colgroup>
+                    </colgroup> -->
                     <thead>
                         <tr>
                             <th scope="col">이미지</th>

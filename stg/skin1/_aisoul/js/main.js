@@ -48,6 +48,9 @@
             slidesPerView: 1,
             spaceBetween: 16,
             speed: 500,
+            autoplay: {
+                delay: 3000, 
+            },
             pagination: {
                 el: '.visual-pagination',
                 type: 'fraction'
