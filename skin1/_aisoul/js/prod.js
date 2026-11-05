@@ -21,7 +21,6 @@
     // const productCodeRequested = {};
     // let productCodeFetchPromise = null;
 
-    const GC_PRODUCT_NOTICE_BASE_URL = 'https://stg-cafe24.howcare.co.kr/api/products';
     const PRODUCT_NOTICE_EMPTY_CODES = [
         'PRODUCT_INFORMATION_TYPE_MISSING',
         'PRODUCT_INFORMATION_INVALID'
@@ -409,12 +408,24 @@
     /* =====================================================
        GC information-notice → 상품별 캐시백
     ===================================================== */
+    function getProductNoticeApiBaseUrl() {
+        const host = location.hostname;
+        if (host === 'gccarecomm.cafe24.com') return 'https://cafe24.howcare.co.kr/api/products';
+        if (host === 'gccarecommstg.cafe24.com') return 'https://stg-cafe24.howcare.co.kr/api/products';
+        return '';
+    }
+
     function fetchProductCashbackNotice(productNo) {
+        const apiBaseUrl = getProductNoticeApiBaseUrl();
+        if (!apiBaseUrl) {
+            return Promise.resolve({ amount: 0 });
+        }
+
         const requestUrl =
-            GC_PRODUCT_NOTICE_BASE_URL + '/' +
+            apiBaseUrl + '/' +
             encodeURIComponent(productNo) + '/information-notice';
 
-        return fetch(requestUrl)
+        return fetch(requestUrl, {})
             .then(function (res) {
                 return res.text().then(function (text) {
                     let body = text;

@@ -197,13 +197,19 @@
     사이드 메뉴 카테고리 중 특정 카테고리 섹션 제거
     ===================================================== */
     function initNavigationCategoryExclude() {
-        const EXCLUDED_CATEGORY_NO = '23';
+        const host = location.hostname;
+        const allProductsCategoryNo =
+            host === 'gccarecomm.cafe24.com' ? '47' :
+            host === 'gccarecommstg.cafe24.com' ? '23' :
+            '';
+        if (!allProductsCategoryNo) return;
+
         const links = document.querySelectorAll(
             '#navigation-category .navigation-title a'
         );
 
         for (let i = 0; i < links.length; i++) {
-            if (getCategoryNo(links[i].href) !== EXCLUDED_CATEGORY_NO) continue;
+            if (getCategoryNo(links[i].href) !== allProductsCategoryNo) continue;
 
             const section = links[i].closest('.navigation-section');
             if (section) section.remove();

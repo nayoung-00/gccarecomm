@@ -3,12 +3,14 @@
 .xans-myshop-couponlist .couponList .ec-base-table,
 .xans-myshop-couponlist .couponList .ec-base-prdEmpty { border-top:0; }
 .xans-myshop-couponlist .couponList .ec-base-prdEmpty { padding-top:6px; }
+.coupon-serial__search {display: flex;align-items: center;gap: 4px;}
+.myshopArea #frmSerialCoupon .xans-myshop-couponserial .couponSerial .coupon-serial__search a {width: auto;min-width: fit-content;}
 
 /********************* Mobile / Tablet *********************/
 @media all and (max-width:1024px) {
     .xans-myshop-couponserial .couponSerial { margin:0 0 34px; }
     .xans-myshop-couponserial .couponSerial #coupon_code { width:100%; }
-    .xans-myshop-couponserial .couponSerial #coupon_code + .btnSubmitFix { width:100%; margin:10px 0 0; }
+    .xans-myshop-couponserial .couponSerial #coupon_code + .btnSubmitFix { width:100%;  }
 }
 
 /********************* PC *********************/

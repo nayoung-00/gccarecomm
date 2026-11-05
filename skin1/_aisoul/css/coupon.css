@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+/*******************************************
+ 쿠폰함 (coupon.html)
+ Cafe24 optimizer는 모듈 CSS를 레이아웃 CSS보다 앞에 붙이므로
+ #wrap으로 우선순위를 높여 리셋/공통 스타일 뒤에 적용되게 한다.
+*******************************************/
+#wrap .myshopArea .xans-myshop-couponserial .couponSerial { border-top: none; }
+#wrap .xans-myshop-couponserial .couponSerial { text-align: center; }
+#wrap .xans-myshop-couponlist .couponList .ec-base-table,
+#wrap .xans-myshop-couponlist .couponList .ec-base-prdEmpty { border-top: 0; }
+#wrap .xans-myshop-couponlist .couponList .ec-base-prdEmpty { padding-top: 6px; }
+#wrap .coupon-serial__search { display: flex; align-items: center; gap: 4px; }
+#wrap .myshopArea #frmSerialCoupon .xans-myshop-couponserial .couponSerial .coupon-serial__search a { width: auto; min-width: fit-content; }
+
+#wrap .xans-myshop-couponlist .contents { display: none; background-color: #f9f9f9; }
+#wrap .xans-myshop-couponlist tr.selected .contents { display: table-cell; }
+#wrap .xans-myshop-couponlist .empty { margin: 30px 0 0; font-size: 12px; text-align: center; }
+
+#wrap .xans-myshop-couponlist .layer { position: relative; padding: 0; font-size: 0; }
+#wrap .xans-myshop-couponlist .layer a { display: inline; }
+#wrap .xans-myshop-couponlist .layer:after {
+    content: "";
+    overflow: hidden;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-left: 1px solid #888;
+    border-bottom: 1px solid #888;
+    margin-top: -5px;
+    margin-left: 5px;
+    transform-origin: 25% 75%;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+}
+#wrap .xans-myshop-couponlist .layer.selected:after {
+    position: relative;
+    top: 0;
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+}
+
+#wrap .xans-myshop-couponlist ul { padding: 6px 13px; text-align: left; line-height: 19px; }
+#wrap .xans-myshop-couponlist ul li { display: flex; line-height: 28px; }
+#wrap .xans-myshop-couponlist ul li:before { content: "-"; display: inline-block; margin: 0 3px 0 0; color: var(--neutral-600); }
+#wrap .xans-myshop-couponlist ul li.gButton { align-items: center; }
+#wrap .xans-myshop-couponlist ul li strong { width: 96px; font-size: 14px; font-weight: 500; color: var(--neutral-600); }
+#wrap .xans-myshop-couponlist ul li .content { flex: 1; font-size: 14px; }
+
+#wrap .xans-myshop-couponlist .title { overflow: hidden; margin: 40px 0 10px 10px; }
+#wrap .xans-myshop-couponlist .title h3 { float: left; color: #353535; font-size: 12px; }
+#wrap .xans-myshop-couponlist .title p { float: right; color: #757575; }
+
+#wrap .xans-myshop-couponlist .ec-base-table table td { border-bottom: 0; border-top: 1px solid #e5e5e5; }
+#wrap .xans-myshop-couponlist .ec-base-table table td span { font-size: 14px; }
+#wrap .xans-myshop-couponlist .ec-base-table table .selected td { border-top: 0; }
+#wrap .xans-myshop-couponlist .ec-base-table table td .display_tablet_only { font-size: 14px; color: var(--neutral-600); }
+
+#wrap .coupon-view__btn .content { display: flex; align-items: center; }
+#wrap .coupon-view__btn .content img { width: 80px; }
+#wrap .xans-myshop-couponlist .coupon_name span { display: none !important; }
+
+@media all and (max-width: 1024px) {
+    #wrap .xans-myshop-couponserial .couponSerial { margin: 0 0 34px; }
+    #wrap .xans-myshop-couponserial .couponSerial #coupon_code { width: 100%; }
+    #wrap .xans-myshop-couponserial .couponSerial #coupon_code + .btnSubmitFix { width: 100%; }
+
+    #wrap .xans-myshop-couponlist ul { padding: 0; }
+    #wrap .xans-myshop-couponlist .ec-base-table table tr { margin-bottom: 25px; display: block; }
+    #wrap .xans-myshop-couponlist .ec-base-table table colgroup,
+    #wrap .xans-myshop-couponlist .ec-base-table table thead { display: none; }
+    #wrap .xans-myshop-couponlist .ec-base-table table td { display: flex; align-items: center; height: auto; text-align: left; border-top: 0; border-bottom: 1px solid #e5e5e5; }
+    #wrap .xans-myshop-couponlist .ec-base-table table td.contents { display: none; }
+    #wrap .xans-myshop-couponlist .ec-base-table table tr.selected { margin-top: -25px; }
+    #wrap .xans-myshop-couponlist .ec-base-table table tr.selected .contents { display: block; }
+    #wrap .xans-myshop-couponlist .ec-base-table table td .display_tablet_only { width: 27%; color: var(--neutral-600); }
+    #wrap .xans-myshop-couponlist .ec-base-table table td.coupon_name { padding: 16px 20px; line-height: 1.5; background: #f6f6f6; font-size: 14px; font-weight: 500; }
+    #wrap .xans-myshop-couponlist .layer .display_tablet_only { font-size: 13px; padding: 14px 0 14px 20px; }
+}
+
+@media all and (min-width: 1025px) {
+    #wrap .xans-myshop-couponserial .couponSerial { margin: 0 0 50px; }
+}
+
+/*******************************************
+ 쿠폰적용 가능상품 (coupon_product_list.html)
+ popup 레이아웃에는 #wrap이 없으므로 #popup으로 적용한다.
+*******************************************/
+#popup { width: 700px; }
+#popup .xans-myshop-couponproductsearch p { padding: 0 0 16px; }
+#popup .xans-myshop-couponproductlist .title { overflow: hidden; margin: 18px 0 8px; }
+#popup .xans-myshop-couponproductlist .title .result { float: left; }
+#popup .xans-myshop-couponproductlist .title select { float: right; }
+#popup .xans-myshop-couponproductlist table td.thumb img { width: 80px; }
+#popup .xans-myshop-couponproductlist table td.price strong { display: block; }
+
+#popup .xans-myshop-couponproductpackage.ec-base-layer > .content { padding: 40px 16px 20px; }
+#popup .xans-myshop-couponproductpackage select { border-radius: 4px; }
+#popup .xans-myshop-couponproductsearch { border-radius: 8px; }
+#popup .xans-myshop-couponproductsearch fieldset select,
+#popup .xans-myshop-couponproductsearch fieldset input,
+#popup .xans-myshop-couponproductsearch fieldset a { display: inline-flex;width: 100%; border-radius: 4px; justify-content: center; }
+#popup .xans-myshop-couponproductsearch fieldset select { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#popup .xans-myshop-couponproductsearch .myshop-coupon__searchProd { display: flex; flex-direction: column; }
+#popup .xans-myshop-couponproductpackage .ec-base-table th,
+#popup .xans-myshop-couponproductpackage .ec-base-table td { padding: 12px 10px; }
+#popup .xans-myshop-couponproductpackage .ec-base-table td .thumb { border-radius: 4px; overflow: hidden; }
+
+#popup .xans-myshop-couponproductlist .ec-base-table { width: 100%; overflow-x: auto; }
+#popup .xans-myshop-couponproductlist .ec-base-table table { min-width: 450px; }
+#popup .xans-myshop-couponproductpackage .header h1.jcsb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; font-weight: 500; }
+#popup .xans-myshop-couponproductpackage .header .btnClose,
+#popup .xans-myshop-couponproductpackage .header .close-btn { display: flex; align-items: center; justify-content: center; padding: 6px; cursor: pointer; }
+#popup .xans-myshop-couponproductpackage.ec-base-layer .header { position: relative; height: 50px !important; padding: 0 16px; display: flex; align-items: center; }

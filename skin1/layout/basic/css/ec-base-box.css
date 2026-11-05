@@ -1,11 +1,11 @@
 /* base */
-.ec-base-box { padding:16px; margin-left:auto; margin-right:auto; border:5px solid #e5e5e5; }
+.ec-base-box { padding:20px; margin-left:auto; margin-right:auto; border:5px solid #e5e5e5; }
 .ec-base-box.gHalf { position:relative; padding:20px 0; }
 .ec-base-box.gHalf:before { position:absolute; top:0; left:50%; display:block; content:""; width:1px; height:100%; background-color:#e6e6e6; }
 .ec-base-box.typeBg { background-color:#fbfafa; }
 .ec-base-box.typeThin { border-width:1px; border-color:#e5e5e5; }
 .ec-base-box.typeThin h3.boxTitle { margin:0 0 20px; font-size:16px; font-weight:normal; text-align:center; }
-.ec-base-box.typeThinBg { border-width:1px; border-color:var(--line-normal); background-color:#fbfafa; }
+.ec-base-box.typeThinBg { border-width:1px; border-color:#d7d5d5; background-color:#fbfafa; }
 .ec-base-box.center { text-align:center; }
 .ec-base-box .headDesc { margin:0 0 40px; font-size:16px; line-height:22px; color:var(--font-color-heading); }
     .ec-base-box.typeThin > .agree { color:#6d6d6d; font-size:12px; line-height:20px; background:#fff; }

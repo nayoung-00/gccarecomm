@@ -1,4 +1,5 @@
 <!--@layout(/layout/basic/layout.html)-->
+<!--@css(/_aisoul/css/coupon.css)-->
 <!-- <div class="section path">
     <span>현재 위치</span>
     <ol>
@@ -10,7 +11,7 @@
 <div class="myshopArea">
     
 <!-- 동적 타이틀 (게시판) -->
-<span class="page-title-source" hidden>쿠폰 내역</span>
+<span class="page-title-source" hidden>쿠폰함</span>
     
     <!-- <div class="titleArea titleArea--myshop">
         <h2>쿠폰내역</h2>
@@ -23,9 +24,12 @@
             <!--
                 $login_page_url = /member/login.html
             -->
-            <fieldset><legend>쿠폰번호 등록</legend>
-                {$form.coupon_code}
-                <a href="#none" class="btnSubmitFix sizeM" onclick="{$action_coupon_submit}">쿠폰번호인증</a>
+            <fieldset>
+                <legend>쿠폰번호 등록</legend>
+                <div class="coupon-serial__search">
+                    {$form.coupon_code}
+                    <a href="#none" class="btnSubmitFix sizeM" onclick="{$action_coupon_submit}">쿠폰 등록</a>
+                </div>
                 <p class="txtInfo">반드시 쇼핑몰에서 발행한 쿠폰번호만 입력해주세요.<br class="display_tablet_only">(10~35자 일련번호 "-" 제외)</p>
             </fieldset>
         </div>
@@ -61,7 +65,7 @@
                         <tr>
                             <td class="RW">{$coupon_no}</td>
                             <td class="coupon_name"><span class="display_tablet_only">쿠폰명</span>{$coupon_name}</td>
-                            <td><span class="display_tablet_only">할인</span>{$coupon_discount}<br>{$coupon_discount_max_benefit_price}</td>
+                            <td class=" coupon-discount"><span class="display_tablet_only">할인</span>{$coupon_discount}<br>{$coupon_discount_max_benefit_price}</td>
                             <td><span class="display_tablet_only">적립</span>{$coupon_mileage}<br>{$coupon_mileage_max_benefit_price}</td>
                             <td class="layer"><span class="display_tablet_only">쿠폰 상세보기</span>
                                 <a href="#none">상세</a>
@@ -78,7 +82,7 @@
                                     <li><strong>적립액(률)</strong><span class="content">{$coupon_mileage}</span></li>
                                     <li><strong>예치금</strong><span class="content">{$coupon_deposit}</span></li>
                                     <li><strong>사용가능 기간</strong><span class="content">{$coupon_start_end_date}</span></li>
-                                    <li class="gButton"><strong>쿠폰적용상품</strong><span class="content">{$coupon_use_product_icon}</span></li>
+                                    <li class="gButton coupon-view__btn"><strong>쿠폰적용상품</strong><span class="content">{$coupon_use_product_icon}</span></li>
                                 </ul>
                             </td>
                         </tr>
@@ -87,7 +91,7 @@
                         <tr>
                             <td class="RW">{$coupon_no}</td>
                             <td class="coupon_name"><span class="display_tablet_only">쿠폰명</span>{$coupon_name}</td>
-                            <td><span class="display_tablet_only">할인</span>{$coupon_discount}<br>{$coupon_discount_max_benefit_price}</td>
+                            <td class=" coupon-discount"><span class="display_tablet_only">할인</span>{$coupon_discount}<br>{$coupon_discount_max_benefit_price}</td>
                             <td><span class="display_tablet_only">적립</span>{$coupon_mileage}<br>{$coupon_mileage_max_benefit_price}</td>
                             <td class="layer"><span class="display_tablet_only">쿠폰 상세보기</span>
                                 <a href="#none">상세</a>
@@ -104,7 +108,7 @@
                                     <li><strong>적립액(률)</strong><span class="content">{$coupon_mileage}</span></li>
                                     <li><strong>예치금</strong><span class="content">{$coupon_deposit}</span></li>
                                     <li><strong>사용가능 기간</strong><span class="content">{$coupon_start_end_date}</span></li>
-                                    <li class="gButton"><strong>쿠폰적용상품</strong><span class="content">{$coupon_use_product_icon}</span></li>
+                                    <li class="gButton coupon-view__btn"><strong>쿠폰적용상품</strong><span class="content">{$coupon_use_product_icon}</span></li>
                                 </ul>
                             </td>
                         </tr>
@@ -123,16 +127,16 @@
         </div>
     </div>
 
-    <div module="myshop_CouponListPaging" class="ec-base-paginate typeList inner-m">
-        <a href="{$first_url}" class="first">첫 페이지</a>
-        <a href="{$prev_url}">이전 페이지</a>
+    <div module="myshop_CouponListPaging" class="section ec-base-paginate typeList inner-m">
+        <!-- <a href="{$first_url}" class="first">첫 페이지</a> -->
+        <a href="{$prev_url}" class="paging-btn paging-prev-button"><i class="sr-only">이전 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
         <ol>
             <li><a href="{$url_query}" class="{$param_class}">{$n}</a></li>
             <li><a href="{$url_query}" class="{$param_class}">{$n}</a></li>
             <li><a href="{$url_query}" class="{$param_class}">{$n}</a></li>
         </ol>
-        <a href="{$next_url}">다음 페이지</a>
-        <a href="{$last_url}" class="last">마지막 페이지</a>
+        <a href="{$next_url}"class="paging-btn paging-next-button"><i class="sr-only">다음 페이지</i><!--@import(/_aisoul/svg/arrow_bt.html)--></a>
+        <!-- <a href="{$last_url}" class="last">마지막 페이지</a> -->
     </div>
 
     <div class="ec-base-help inner-m">
@@ -150,3 +154,21 @@
     </div>
     <!--@import(/myshop/myshop_main.html)-->
 </div>
+
+<script>
+    // 쿠폰 보기 버튼 이미지 변경
+    document.querySelectorAll('.coupon-view__btn img').forEach((img) => {
+        img.src = '/_aisoul/img/btn_coupon_view.png';
+    });
+
+    // 쿠폰 번호 입력 placeholder 변경
+    const couponCode = document.getElementById('coupon_code');
+    if (couponCode) {
+        couponCode.placeholder = '쿠폰 번호를 입력해주세요';
+    }
+
+    // 쿠폰 할인 정보 내 br 태그 제거
+    document.querySelectorAll('.couponList .coupon-discount br').forEach((br) => {
+        br.remove();
+    });
+</script>

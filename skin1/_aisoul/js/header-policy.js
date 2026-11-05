@@ -298,23 +298,48 @@
 
 
     // 사이드바 메뉴/뒤로가기 판정
+    // 카테고리 번호는 클릭 시점에 hostname으로 선택한다.
+    // 미등록 호스트는 카테고리 경로를 만들지 않는다.
 
-    var SIDEBAR_ENTRY_PATHS = [
+    var SIDEBAR_FIXED_ENTRY_PATHS = [
       '/product/promotion_list.html',
-      '/product/list.html?cate_no=50',
-      '/product/list.html?cate_no=51',
       '/myshop/index.html',
       '/member/login.html',
       '/board/consult/list.html',
       '/board/free/list.html?board_no=3',
       '/board/free/list.html?board_no=1'
-    ].map(function (href) {
-      return toComparablePath(href);
-    });
+    ];
+
+    function getHeaderEntryCategoryNos() {
+      var host = location.hostname;
+      if (host === 'gccarecomm.cafe24.com') return ['50', '51'];
+      if (host === 'gccarecommstg.cafe24.com') return ['42', '43'];
+      return [];
+    }
+
+    function getSidebarEntryPaths() {
+      var hrefs = SIDEBAR_FIXED_ENTRY_PATHS.slice();
+      var nos = getHeaderEntryCategoryNos();
+      for (var i = 0; i < nos.length; i++) {
+        hrefs.push('/product/list.html?cate_no=' + nos[i]);
+      }
+      return hrefs.map(function (href) {
+        return toComparablePath(href);
+      });
+    }
+
+    function isSameOriginHref(href) {
+      try {
+        return new URL(href, window.location.origin).origin === window.location.origin;
+      } catch (e) {
+        return false;
+      }
+    }
   
     function isSidebarEntryLink(link) {
       if (!link || !link.href) return false;
       if (!link.closest || !link.closest('#aside')) return false;
+      if (!isSameOriginHref(link.href)) return false;
   
       var destination;
   
@@ -324,12 +349,13 @@
         return false;
       }
   
-      return SIDEBAR_ENTRY_PATHS.indexOf(destination) !== -1;
+      return getSidebarEntryPaths().indexOf(destination) !== -1;
     }
 
     // Store Home 링크 판별
     function isSubHeaderStoreHomeEntryLink(link) {
       if (!link || !link.href) return false;
+      if (!isSameOriginHref(link.href)) return false;
       if (
         !link.matches ||
         !link.matches('.sub-header .title a, .main-header .logo a')

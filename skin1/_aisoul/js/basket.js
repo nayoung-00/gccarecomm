@@ -35,5 +35,19 @@ $(function () {
         }
     );
 
+    function applyAllProductsLink() {
+        const host = location.hostname;
+        const categoryNo =
+            host === 'gccarecomm.cafe24.com' ? '47' :
+            host === 'gccarecommstg.cafe24.com' ? '23' :
+            '';
+        if (!/^\d+$/.test(categoryNo)) return;
+
+        document.querySelectorAll('[data-all-products-link]').forEach(function (link) {
+            link.href = '/product/list.html?cate_no=' + encodeURIComponent(categoryNo);
+        });
+    }
+
+    applyAllProductsLink();
     updateSelectAllCheckbox();
 });

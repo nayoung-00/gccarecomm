@@ -41,8 +41,13 @@
 .xans-myshop-couponlist .title p { float:right; color:#757575; }
 
 .xans-myshop-couponlist .ec-base-table table td { border-bottom:0; border-top:1px solid #e5e5e5; }
+.xans-myshop-couponlist .ec-base-table table td span {font-size: 14px; }
 .xans-myshop-couponlist .ec-base-table table .selected td { border-top:0; }
 .xans-myshop-couponlist .ec-base-table table td .display_tablet_only {font-size: 14px;color: var(--neutral-600);}
+
+/* 쿠폰 다운로드 버튼 */
+.coupon-view__btn .content {display: flex;align-items: center;}
+.coupon-view__btn .content img {width: 80px;}
 
 /********************* Mobile / Tablet *********************/
 @media all and (max-width:1024px) {
@@ -59,3 +64,4 @@
 	.xans-myshop-couponlist .layer .display_tablet_only {font-size:13px;padding:14px 0 14px 20px;}
 	/* .xans-myshop-couponlist .layer:after {margin-top:-6px; margin-left: 4px;} */
 }
+.xans-myshop-couponlist .coupon_name span {display: none !important;}

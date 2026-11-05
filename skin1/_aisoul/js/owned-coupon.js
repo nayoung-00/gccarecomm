@@ -14,31 +14,18 @@
     var KST_OFFSET_MS = 9 * 60 * 60 * 1000;
 
     var catalogToken = 0;
-    var catalogRun = 0;
     var catalogKey = '';
     var catalogPromise = null;
     var productCache = new Map();
     var productInflight = new Map();
     var confirmedLoginState = '';
     var detailWatchers = [];
+    var mainWatchers = [];
     var activeDetailBridge = null;
-    var detailTimingArmed = false;
-    var detailConfirmAt = 0;
-    var catalogCompletedAt = 0;
     var LOGIN_STATE_WAIT_MS = 50;
     var LOGIN_STATE_WAIT_TRIES = 20;
 
     window.GC_OWNED_COUPON_RECOVERY_MS = RECOVERY_MS;
-
-    /* front/config.js 와 같다. ?debug=1 이거나 FRONT.config.DEBUG 일 때만 상세 로그를 낸다. */
-    function ownedCouponDebugEnabled() {
-        try {
-            if (window.FRONT && window.FRONT.config && window.FRONT.config.DEBUG === true) return true;
-            return /[?&]debug=1/.test(String(window.location.search || ''));
-        } catch (e) {
-            return false;
-        }
-    }
 
     /* logged-in / logged-out / unknown 은 로그인 모듈이 보이는지만 나타낸다.
        모듈 문구나 장바구니 수량은 포함하지 않으며, 회원 식별자로 쓰지 않는다. */
@@ -80,11 +67,6 @@
                 }
                 tries += 1;
                 if (tries >= LOGIN_STATE_WAIT_TRIES) {
-                    console.info('[OWNED_COUPON][LOGIN_STATE]', {
-                        event: '로그인 모듈 미확정',
-                        reason: '보이는 로그인·로그아웃 모듈이 없어 상태를 확정하지 않음',
-                        tries: tries
-                    });
                     resolve('unknown');
                     return;
                 }
@@ -103,22 +85,15 @@
         return false;
     }
 
-    function reset(reason) {
-        console.info('[OWNED_COUPON][RESET]', {
-            reason: reason || '미지정',
-            run: catalogRun,
-            loginState: readLoginState()
-        });
+    function reset() {
         catalogToken += 1;
         catalogKey = '';
         catalogPromise = null;
         productCache = new Map();
         productInflight = new Map();
         detailWatchers = [];
+        mainWatchers = [];
         activeDetailBridge = null;
-        detailTimingArmed = false;
-        detailConfirmAt = 0;
-        catalogCompletedAt = 0;
     }
 
     function noteLoginState(next, reason) {
@@ -303,21 +278,6 @@
         }
     }
 
-    function logOwnedCouponDiagnosis(entry) {
-        var payload = {
-            discountRaw: entry.discountRaw || '',
-            parsed: entry.parsed || '',
-            productNo: entry.productNo == null ? '' : String(entry.productNo),
-            applicableCount: (entry.applicableProductNos || []).length,
-            reason: entry.reason || ''
-        };
-        if (ownedCouponDebugEnabled()) {
-            payload.lookupNo = entry.lookupNo == null ? '' : String(entry.lookupNo);
-            payload.applicableProductNos = entry.applicableProductNos || [];
-        }
-        console.info('[DETAIL][OWNED_COUPON]', payload);
-    }
-
     function couponDetailItem(tbody, label) {
         var items = tbody.querySelectorAll('li');
         for (var i = 0; i < items.length; i++) {
@@ -415,31 +375,22 @@
         var lookupNo = couponLookupNo(tbody);
         var discountRaw = couponDetailText(tbody, '할인액(률)');
         var discount = parseOwnedCouponDiscount(discountRaw);
-        var diagnosis = {
-            lookupNo: lookupNo,
-            discountRaw: discountRaw,
-            parsed: formatOwnedCouponParsed(discount),
-            productNo: '',
-            applicableProductNos: []
-        };
 
-        function exclude(reason) {
-            diagnosis.reason = reason;
-            logOwnedCouponDiagnosis(diagnosis);
+        function exclude() {
             return null;
         }
 
-        if (!lookupNo) return exclude('보유 쿠폰 추출: 조회용 번호 없음');
-        if (!discount) return exclude('정액·정률 판별: 할인액(률) 파싱 실패');
-        if (!benefitAgrees(discount, benefitResultText(tbody))) return exclude('정액·정률 판별: 쿠폰혜택 숫자·단위 불일치');
-        if (!purchaseAllowsEstimate(tbody)) return exclude('구매금액 조건 미확인');
-        if (!paymethodAllowsEstimate(tbody)) return exclude('결제수단 조건 미확인');
+        if (!lookupNo) return exclude();
+        if (!discount) return exclude();
+        if (!benefitAgrees(discount, benefitResultText(tbody))) return exclude();
+        if (!purchaseAllowsEstimate(tbody)) return exclude();
+        if (!paymethodAllowsEstimate(tbody)) return exclude();
 
         var period = parseKstPeriod(couponDetailText(tbody, '사용가능 기간'));
-        if (!period || !isKstPeriodActive(period, nowMs)) return exclude('사용기간 아님');
+        if (!period || !isKstPeriodActive(period, nowMs)) return exclude();
 
         var cap = resolvePrintedCap(tbody);
-        if (!cap.ok) return exclude('할인한도 표기 해석 불가');
+        if (!cap.ok) return exclude();
 
         return {
             lookupNo: String(lookupNo),
@@ -537,23 +488,14 @@
         var page = rawPage == null || rawPage === '' || Number(rawPage) === 1 ? '1' : String(rawPage);
         var isProductList = /coupon_product_list\.html$/.test(parsed.pathname);
         var pairs = [];
-        var names = [];
         parsed.searchParams.forEach(function (value, key) {
             if (key === 'page') return;
             if (isProductList && (key === 'limit' || key === 'search' || key === 'search_key') && value === '') return;
             pairs.push(key + '=' + value);
-            names.push(key);
         });
         pairs.sort();
-        names.sort();
-        var requestKind = /coupon_product_list\.html$/.test(parsed.pathname) ? '적용상품' : '쿠폰목록';
         return {
-            identity: parsed.origin + parsed.pathname + '|p=' + page + '|' + pairs.join('&'),
-            log: {
-                kind: requestKind,
-                page: page,
-                params: names.join(',') || '없음'
-            }
+            identity: parsed.origin + parsed.pathname + '|p=' + page + '|' + pairs.join('&')
         };
     }
 
@@ -567,17 +509,7 @@
             var absolute = toSameOriginUrl(href, baseUrl, origin);
             if (!absolute || !pagingAllowed(absolute, origin, kind, lookupNo)) return;
             var key = pageRequestKey(absolute);
-            if (visited.has(key.identity)) {
-                if (ownedCouponDebugEnabled()) {
-                    console.info('[OWNED_COUPON][PAGE]', {
-                        kind: key.log.kind,
-                        page: key.log.page,
-                        params: key.log.params,
-                        duplicate: true
-                    });
-                }
-                return;
-            }
+            if (visited.has(key.identity)) return;
             visited.add(key.identity);
             queue.push(absolute);
         }
@@ -592,13 +524,6 @@
             }
 
             var pageUrl = queue.shift();
-            var started = pageRequestKey(pageUrl);
-            console.info('[OWNED_COUPON][PAGE]', {
-                kind: started.log.kind,
-                page: started.log.page,
-                params: started.log.params,
-                duplicate: false
-            });
             var loaded = await fetchHtmlDocument(pageUrl);
             if (requestToken !== catalogToken) throw staleError();
             docs.push(loaded.doc);
@@ -644,14 +569,6 @@
     }
 
     function couponWithProducts(coupon, productNos) {
-        logOwnedCouponDiagnosis({
-            lookupNo: coupon.lookupNo,
-            discountRaw: coupon.discountRaw,
-            parsed: coupon.parsed,
-            productNo: '',
-            applicableProductNos: productNos,
-            reason: '적용 상품 목록 적재'
-        });
         return {
             lookupNo: coupon.lookupNo,
             type: coupon.type,
@@ -753,32 +670,6 @@
         };
     }
 
-    function timingNow() {
-        if (typeof performance !== 'undefined' && typeof performance.now === 'function') return performance.now();
-        return 0;
-    }
-
-    function logDetailTiming(event, extra) {
-        if (!detailTimingArmed) return;
-        var payload = { event: event, now: Math.round(timingNow()) };
-        if (extra) {
-            for (var key in extra) {
-                if (Object.prototype.hasOwnProperty.call(extra, key) && extra[key] != null) payload[key] = extra[key];
-            }
-        }
-        console.info('[DETAIL][PRICE_TIMING]', payload);
-    }
-
-    function logCatalogCompleted(requestToken, result) {
-        if (requestToken !== catalogToken) return result;
-        catalogCompletedAt = timingNow();
-        logDetailTiming('전체 카탈로그 완료', {
-            status: result && result.status ? result.status : '',
-            earlierMs: detailConfirmAt ? Math.round(catalogCompletedAt - detailConfirmAt) : 0
-        });
-        return result;
-    }
-
     function watcherSalePrice() {
         for (var i = 0; i < detailWatchers.length; i++) {
             if (typeof detailWatchers[i].getSalePrice !== 'function') continue;
@@ -867,12 +758,22 @@
                     }
                     watcher.onDecision(decideDetailDiscount(watcher.productNo, salePrice, bridge.coupons, snapshot));
                 }
+                var mains = mainWatchers.slice();
+                for (var m = 0; m < mains.length; m++) {
+                    var mainWatcher = mains[m];
+                    if (typeof mainWatcher.getCards !== 'function' || typeof mainWatcher.onDecision !== 'function') continue;
+                    var cards = mainWatcher.getCards() || [];
+                    for (var c = 0; c < cards.length; c++) {
+                        var card = cards[c];
+                        if (!card) continue;
+                        mainWatcher.onDecision(card, decideDetailDiscount(card.productNo, card.salePrice, bridge.coupons, snapshot));
+                    }
+                }
             },
             publishConditions: function (coupons) {
                 if (requestToken !== catalogToken) return;
                 bridge.coupons = coupons || [];
                 bridge.listClosed = true;
-                logDetailTiming('전체 쿠폰 조건 수집 완료', { couponCount: bridge.coupons.length });
                 bridge.sync();
             }
         };
@@ -910,8 +811,21 @@
         return { status: 'ready', loginState: loginState, coupons: withProducts };
     }
 
+    /* 메인 카드 구독은 detailWatchers에 넣지 않는다. 조건 수집 중 적용 상품 조회 중지는 상세 구독자만 대상으로 한다. */
+    function watchMainPrices(spec) {
+        var watcher = {
+            getCards: spec && spec.getCards,
+            onDecision: spec && spec.onDecision
+        };
+        mainWatchers.push(watcher);
+        if (activeDetailBridge && typeof activeDetailBridge.sync === 'function') activeDetailBridge.sync();
+        return function () {
+            var index = mainWatchers.indexOf(watcher);
+            if (index !== -1) mainWatchers.splice(index, 1);
+        };
+    }
+
     function watchProductDiscount(spec) {
-        detailTimingArmed = true;
         var watcher = {
             productNo: String(spec && spec.productNo || ''),
             getSalePrice: spec && spec.getSalePrice,
@@ -931,9 +845,7 @@
         return true;
     }
 
-    function noteDetailPriceConfirmed() {
-        if (!detailConfirmAt) detailConfirmAt = timingNow();
-    }
+    function noteDetailPriceConfirmed() {}
 
     function emptyCatalog(status) {
         return { status: status, coupons: [] };
@@ -1047,16 +959,6 @@
         return { state: 'unusable' };
     }
 
-    function logCouponListSummary(entry) {
-        console.info('[OWNED_COUPON][LIST]', {
-            event: '쿠폰 목록 집계',
-            reason: entry.reason || '',
-            domCount: entry.domCount,
-            extraPages: entry.extraPages,
-            couponCount: entry.couponCount
-        });
-    }
-
     async function fetchOtherCouponPages(seedPages, seenPages, requestToken, onPageRecords) {
         var records = [];
         var fetched = 0;
@@ -1076,12 +978,6 @@
             if (!page || seenPages.has(page)) continue;
             seenPages.add(page);
             var pageUrl = couponListUrlForPage(page);
-            console.info('[OWNED_COUPON][PAGE]', {
-                kind: '쿠폰목록',
-                page: page,
-                params: '없음',
-                duplicate: false
-            });
             var loaded = await fetchHtmlDocument(pageUrl);
             if (requestToken !== catalogToken) throw staleError();
             fetched += 1;
@@ -1114,10 +1010,6 @@
             };
         }
 
-        console.info('[OWNED_COUPON][LIST]', {
-            event: '전체 조회',
-            reason: embedded.state === 'absent' ? '모듈 없음' : '모듈 사용 불가'
-        });
         var docs = await fetchPagedDocuments(LIST_URL, '.xans-myshop-couponlistpaging', 'coupon', '', requestToken);
         var hasList = docs.some(function (doc) {
             return !!doc.querySelector('.xans-myshop-couponlist');
@@ -1161,12 +1053,6 @@
         }
 
         scheduler.closeList();
-        logCouponListSummary({
-            reason: 'DOM',
-            domCount: embedded.records.length,
-            extraPages: extra.fetched,
-            couponCount: merged.length
-        });
         bridge.publishConditions(merged);
         scheduler.hold(false);
         var outcomes = await scheduler.finished();
@@ -1188,12 +1074,6 @@
             return emptyCatalog('fetch-fail');
         }
         if (loaded.status === 'none') {
-            logCouponListSummary({
-                reason: loaded.reason || '쿠폰 없음',
-                domCount: loaded.domCount || 0,
-                extraPages: loaded.extraPages || 0,
-                couponCount: 0
-            });
             publishStandaloneConditions([], requestToken);
             return emptyCatalog('none');
         }
@@ -1205,12 +1085,6 @@
         var parsed = mergeCouponCandidates(records.map(function (tbody) {
             return readCouponCandidate(tbody, nowMs);
         }));
-        logCouponListSummary({
-            reason: loaded.reason || '',
-            domCount: loaded.domCount || 0,
-            extraPages: loaded.extraPages || 0,
-            couponCount: parsed.length
-        });
         if (!parsed.length) {
             publishStandaloneConditions([], requestToken);
             return emptyCatalog('no-match');
@@ -1234,62 +1108,35 @@
     function loadCatalog() {
         var stateNow = readLoginState();
         if (catalogPromise && catalogKey && catalogKey !== 'pending' && sameKnownLoginState(catalogKey, stateNow)) {
-            console.info('[OWNED_COUPON][CATALOG]', { event: '기존 조회 공유', run: catalogRun, loginState: stateNow });
             return catalogPromise;
         }
         if (catalogPromise && catalogKey === 'pending') {
-            console.info('[OWNED_COUPON][CATALOG]', { event: '진행 중 조회 공유', run: catalogRun });
             return catalogPromise;
         }
         if (catalogPromise && catalogKey === 'unknown' && stateNow === 'unknown') {
-            console.info('[OWNED_COUPON][CATALOG]', { event: '기존 조회 공유', run: catalogRun, loginState: 'unknown' });
             return catalogPromise;
         }
 
-        catalogRun += 1;
-        var run = catalogRun;
         var requestToken = ++catalogToken;
         catalogKey = 'pending';
         productCache = new Map();
         productInflight = new Map();
-        var textLengthAtStart = 0;
-        console.info('[OWNED_COUPON][CATALOG]', { event: '조회 시작', run: run, productConcurrency: FETCH_CONCURRENCY });
 
         var promise = whenLoginStateKnown().then(function (loginState) {
             if (requestToken !== catalogToken) return emptyCatalog('stale');
             catalogKey = loginState;
-            textLengthAtStart = loginState === 'logged-in' ? logonTextLength() : 0;
             noteLoginState(loginState);
-            console.info('[OWNED_COUPON][CATALOG]', { event: '로그인 상태 확정', run: run, loginState: loginState });
             return buildCatalog(loginState, requestToken);
         }).then(function (result) {
             if (requestToken !== catalogToken) return emptyCatalog('stale');
             var nowState = readLoginState();
-            if (catalogKey === 'logged-in' && nowState === 'logged-in') {
-                var nowLength = logonTextLength();
-                if (nowLength !== textLengthAtStart) {
-                    console.info('[OWNED_COUPON][CATALOG]', {
-                        event: '로그인 문구 변화 무시',
-                        run: run,
-                        loginState: 'logged-in',
-                        textLengthBefore: textLengthAtStart,
-                        textLengthAfter: nowLength
-                    });
-                }
-            }
             if (nowState !== 'unknown' && catalogKey !== 'unknown' && catalogKey !== 'pending' && nowState !== catalogKey) {
-                console.info('[OWNED_COUPON][CATALOG]', {
-                    event: '조회 무효',
-                    reason: '로그인 상태 전환',
-                    run: run,
-                    loginState: nowState
-                });
-                return logCatalogCompleted(requestToken, emptyCatalog('stale'));
+                return emptyCatalog('stale');
             }
-            return logCatalogCompleted(requestToken, result);
+            return result;
         }).catch(function () {
             if (requestToken !== catalogToken) return emptyCatalog('stale');
-            return logCatalogCompleted(requestToken, emptyCatalog('fetch-fail'));
+            return emptyCatalog('fetch-fail');
         });
 
         catalogPromise = promise;
@@ -1318,6 +1165,7 @@
         reset: reset,
         loadCatalog: loadCatalog,
         watchProductDiscount: watchProductDiscount,
+        watchMainPrices: watchMainPrices,
         reevaluateProductDiscount: reevaluateProductDiscount,
         noteDetailPriceConfirmed: noteDetailPriceConfirmed,
         selectLargest: selectLargest,

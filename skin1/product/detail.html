@@ -100,21 +100,30 @@ js -> /_aisoul/js/detail.js
 
 
             <style>
-            .xans-product-detaildesign:not(.is-detail-price-ready) { position: relative; overflow: hidden; }
-            .xans-product-detaildesign:not(.is-detail-price-ready) > * { visibility: hidden !important; pointer-events: none !important; }
-            .xans-product-detaildesign:not(.is-detail-price-ready)::before { content: ""; position: absolute; inset: 0; z-index: 1; background: #fff; visibility: visible; }
-            .xans-product-detaildesign:not(.is-detail-price-ready)::after { content: ""; position: absolute; z-index: 2; left: 2px; right: 2px; top: 12px; height: 96px; pointer-events: none; visibility: visible; border-radius: 0; background: linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size: 220% 100%; animation: detail-price-skeleton-shimmer 1.8s ease-in-out infinite; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0); mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0); -webkit-mask-size: 48px 12px, 48px 12px, 36px 12px, 84px 14px, 148px 22px, 36px 12px; mask-size: 48px 12px, 48px 12px, 36px 12px, 84px 14px, 148px 22px, 36px 12px; -webkit-mask-position: left 0 top 2px, left 0 top 36px, left 0 top 74px, right 0 top 1px, right 0 top 30px, right 0 top 74px; mask-position: left 0 top 2px, left 0 top 36px, left 0 top 74px, right 0 top 1px, right 0 top 30px, right 0 top 74px; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) > *:not(table) { visibility: hidden !important; pointer-events: none !important; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > th,
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > td { position: relative; color: transparent !important; pointer-events: none !important; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > th > *,
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > td > * { visibility: hidden !important; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > th::after,
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > td::after { content: ""; position: absolute; top: 50%; height: 14px; visibility: visible !important; pointer-events: none; border-radius: 4px; transform: translateY(-50%); background: linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size: 220% 100%; animation: detail-price-skeleton-shimmer 1.8s ease-in-out infinite; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > th::after { left: 0; width: 72px; }
+            .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > td::after { right: 0; width: 132px; }
             @keyframes detail-price-skeleton-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
             @media (prefers-reduced-motion: reduce) {
-                .xans-product-detaildesign:not(.is-detail-price-ready)::after { animation: none; }
+                .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > th::after,
+                .xans-product-detaildesign:not(.is-detail-price-ready) tr:not(.prd-consumer-price):not(.displaynone) > td::after { animation: none; }
             }
             </style>
             <noscript>
             <style>
-            .xans-product-detaildesign { overflow: visible !important; }
             .xans-product-detaildesign > * { visibility: visible !important; pointer-events: auto !important; }
-            .xans-product-detaildesign::before,
-            .xans-product-detaildesign::after { content: none !important; }
+            .xans-product-detaildesign tr > th,
+            .xans-product-detaildesign tr > td { color: inherit !important; pointer-events: auto !important; }
+            .xans-product-detaildesign tr > th > *,
+            .xans-product-detaildesign tr > td > * { visibility: visible !important; }
+            .xans-product-detaildesign tr > th::after,
+            .xans-product-detaildesign tr > td::after { content: none !important; }
             </style>
             </noscript>
             <div module="product_detaildesign">
@@ -135,6 +144,20 @@ js -> /_aisoul/js/detail.js
                         </tr>
                     </tbody>
                 </table>
+                <script>
+                (function () {
+                    var scope = document.currentScript && document.currentScript.parentNode;
+                    if (!scope || !scope.querySelectorAll) return;
+                    var rows = scope.querySelectorAll('table tr');
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].classList.contains('displaynone')) continue;
+                        var heading = rows[i].querySelector('th');
+                        if (!heading) continue;
+                        var label = String(heading.textContent || '').replace(/\s+/g, '').replace(/[:：]+$/g, '');
+                        if (label === '소비자가' || label === '정가') rows[i].classList.add('prd-consumer-price');
+                    }
+                }());
+                </script>
 
                 
                 <!------------------------------------------------------------ 
@@ -158,19 +181,9 @@ js -> /_aisoul/js/detail.js
                 window.__detailPriceLoadingBooted = true;
                 window.__detailPriceRecoveryMs = DETAIL_PRICE_RECOVERY_MS;
                 window.__detailPriceLookupToken = window.__detailPriceLookupToken || 1;
-                window.__couponPriceStartedAt = window.__couponPriceStartedAt || Date.now();
-                window.__couponPriceLog = function (event, extra) {
-                    var payload = { event: event, elapsedMs: Date.now() - window.__couponPriceStartedAt };
-                    if (extra) {
-                        for (var key in extra) {
-                            if (Object.prototype.hasOwnProperty.call(extra, key)) payload[key] = extra[key];
-                        }
-                    }
-                    console.info('[DETAIL][OWNED_COUPON]', payload);
-                };
 
                 var timer = 0;
-                function revealDetailPrice(event, extra) {
+                function revealDetailPrice() {
                     if (timer) {
                         window.clearTimeout(timer);
                         timer = 0;
@@ -186,12 +199,6 @@ js -> /_aisoul/js/detail.js
                         root.classList.add('is-detail-price-ready');
                         root.removeAttribute('aria-busy');
                     }
-                    console.info('[DETAIL][PRICE_TIMING]', {
-                        event: '스켈레톤 해제',
-                        now: Math.round(window.performance && window.performance.now ? window.performance.now() : 0),
-                        reason: event || '조회 완료'
-                    });
-                    if (event) window.__couponPriceLog(event, extra);
                 }
                 function armDetailPriceRecovery() {
                     if (timer) window.clearTimeout(timer);
@@ -201,16 +208,11 @@ js -> /_aisoul/js/detail.js
                         if (typeof window.__finalizeDetailActualPrice === 'function') {
                             window.__finalizeDetailActualPrice();
                         }
-                        revealDetailPrice('복구 제한', {
-                            reason: '기존 가격으로 확정',
-                            requestClosed: true,
-                            limitMs: DETAIL_PRICE_RECOVERY_MS,
-                            temporaryLimit: true
-                        });
+                        revealDetailPrice();
                     }, DETAIL_PRICE_RECOVERY_MS);
                 }
                 window.__releaseDetailPriceLoading = function () {
-                    revealDetailPrice('', null);
+                    revealDetailPrice();
                 };
                 window.__holdDetailPriceLoading = function () {
                     if (window.__detailPriceLookupAborted) return;
@@ -222,12 +224,8 @@ js -> /_aisoul/js/detail.js
                 };
 
                 var root = document.querySelector('.xans-product-detaildesign');
-                if (!root) {
-                    window.__couponPriceLog('스켈레톤 대상 없음', { reason: '가격표 없음' });
-                    return;
-                }
+                if (!root) return;
                 root.setAttribute('aria-busy', 'true');
-                window.__couponPriceLog('스켈레톤 시작', { limitMs: DETAIL_PRICE_RECOVERY_MS, temporaryLimit: true });
                 armDetailPriceRecovery();
             }());
             </script>

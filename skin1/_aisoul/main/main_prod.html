@@ -1,24 +1,65 @@
 <section class="main-prod" data-ez="module-1q5eyaz-1">
     <style>
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li { position:relative; }
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li > * { visibility:hidden !important; pointer-events:none !important; }
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li:nth-child(1)::after,
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li:nth-child(2)::after { content:""; position:absolute; left:0; top:50%; z-index:1; visibility:visible; pointer-events:none; border-radius:4px; transform:translateY(-50%); background:linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size:220% 100%; animation:list-price-skeleton-shimmer 1.8s ease-in-out infinite; }
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li:nth-child(1)::after { width:72px; height:8px; }
-    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li:nth-child(2)::after { width:132px; height:14px; }
+    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li[data-main-price-row="sale"] { position:relative; }
+    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li[data-main-price-row="sale"] > * { visibility:hidden !important; pointer-events:none !important; }
+    .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li[data-main-price-row="sale"]::after { content:""; position:absolute; left:0; top:50%; z-index:1; width:132px; height:14px; visibility:visible; pointer-events:none; border-radius:4px; transform:translateY(-50%); background:linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size:220% 100%; animation:list-price-skeleton-shimmer 1.8s ease-in-out infinite; }
     .main-prod .list-coupon-sale-origin { position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0, 0, 0, 0) !important; white-space:nowrap !important; border:0 !important; }
     .main-prod .list-coupon-rate { color:#e53935; font-weight:700; }
     @keyframes list-price-skeleton-shimmer { 0% { background-position:100% 0; } 100% { background-position:0 0; } }
     @media (prefers-reduced-motion: reduce) {
-        .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li::after { animation:none; }
+        .main-prod .prdList__item:not(.is-list-price-ready) ul.spec > li[data-main-price-row="sale"]::after { animation:none; }
     }
     </style>
     <noscript>
     <style>
-    .main-prod .prdList__item ul.spec > li > * { visibility:visible !important; pointer-events:auto !important; }
-    .main-prod .prdList__item ul.spec > li::after { content:none !important; }
+    .main-prod .prdList__item ul.spec > li[data-main-price-row="sale"] > * { visibility:visible !important; pointer-events:auto !important; }
+    .main-prod .prdList__item ul.spec > li[data-main-price-row="sale"]::after { content:none !important; }
     </style>
     </noscript>
+    <script>
+    (function () {
+        if (window.__markMainProdPriceRows) return;
+
+        function specTitle(li) {
+            var titleEl = li.querySelector(':scope > .title') || li;
+            var text = '';
+            titleEl.childNodes.forEach(function (node) {
+                if (node.nodeType === 1 && (node.classList.contains('price-label') || node.classList.contains('list-coupon-label'))) return;
+                text += node.textContent;
+            });
+            return text.replace(/[\s:]/g, '');
+        }
+
+        function markNode(node) {
+            if (!node || node.nodeType !== 1) return;
+            var rows = [];
+            if (node.matches && node.matches('ul.spec > li')) rows.push(node);
+            else if (node.querySelectorAll) {
+                var found = node.querySelectorAll('ul.spec > li');
+                for (var i = 0; i < found.length; i++) rows.push(found[i]);
+            }
+            for (var j = 0; j < rows.length; j++) {
+                var title = specTitle(rows[j]);
+                var kind = (title === '판매가' || title === '구매가') ? 'sale' : (title === '소비자가' ? 'consumer' : 'other');
+                if (kind === 'consumer') rows[j].classList.add('consumer-li');
+                if (rows[j].getAttribute('data-main-price-row') !== kind) rows[j].setAttribute('data-main-price-row', kind);
+            }
+        }
+
+        window.__markMainProdPriceRows = function (root) {
+            if (root) markNode(root);
+        };
+
+        var root = document.querySelector('.main-prod');
+        if (!root || typeof MutationObserver === 'undefined') return;
+        new MutationObserver(function (records) {
+            for (var i = 0; i < records.length; i++) {
+                var added = records[i].addedNodes;
+                for (var n = 0; n < added.length; n++) markNode(added[n]);
+            }
+        }).observe(root, { childList: true, subtree: true });
+    }());
+    </script>
     <div class="inner-m">
         <!-- 메인진열 -->
         <div class="prod-tab-contents-box">
@@ -38,6 +79,24 @@
                             <ul class="prdList grid-col" data-ez-role="layout ez-discount-tag">
                                 <!--@import(/product/list_product.html)-->
                             </ul>
+                            <script>
+                            (function () {
+                                var script = document.currentScript;
+                                var list = script && script.previousElementSibling;
+                                if (!list || !list.matches || !list.matches('ul.prdList')) {
+                                    list = script && script.parentElement && script.parentElement.querySelector('ul.prdList');
+                                }
+                                try {
+                                    if (window.__markMainProdPriceRows && list) {
+                                        window.__markMainProdPriceRows(list);
+                                        return;
+                                    }
+                                } catch (e) {}
+                                if (!list) return;
+                                var items = list.querySelectorAll('.prdList__item');
+                                for (var i = 0; i < items.length; i++) items[i].classList.add('is-list-price-ready');
+                            }());
+                            </script>
                         </div>
                         <div module="product_listmore_1" class="more">
                             <a href="#none" onclick="{$more_action}" class="btnMore more-btn-comm">
@@ -61,8 +120,6 @@
         window.__listPriceRecoveryMs = LIMIT;
         window.__listPriceLookupToken = 1;
         window.__listPriceLookupAborted = false;
-        window.__listPriceStartedAt = Date.now();
-
         function items() {
             return document.querySelectorAll('.main-prod .prdList__item');
         }
@@ -77,23 +134,6 @@
             });
             var root = document.querySelector('.main-prod');
             if (root) root.removeAttribute('aria-busy');
-            console.info('[LIST][PRICE_TIMING]', {
-                event: '스켈레톤 해제',
-                now: Math.round(window.performance.now()),
-                reason: reason || '조회 완료',
-                cardLoading: !!document.querySelector('.normalpackage_box.is-product-loading'),
-                cardSkeleton: !!document.querySelector('.product-card-skeleton'),
-                readyState: document.readyState
-            });
-            if (reason) {
-                console.info('[LIST][OWNED_COUPON]', {
-                    event: reason,
-                    elapsedMs: Date.now() - window.__listPriceStartedAt,
-                    limitMs: LIMIT,
-                    temporaryLimit: true,
-                    requestClosed: true
-                });
-            }
         }
 
         window.__releaseListPriceLoading = function () {
@@ -120,7 +160,6 @@
         var root = document.querySelector('.main-prod');
         if (!root) return;
         root.setAttribute('aria-busy', 'true');
-        console.info('[LIST][OWNED_COUPON]', { event: '스켈레톤 시작', elapsedMs: 0, limitMs: LIMIT, temporaryLimit: true });
         window.__listPriceTimer = window.setTimeout(abort, LIMIT);
     }());
     </script>

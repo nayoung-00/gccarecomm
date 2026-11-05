@@ -2,20 +2,7 @@
     'use strict';
 
     window.__saleJsBootCount = (window.__saleJsBootCount || 0) + 1;
-    if (window.__saleJsBootCount > 1) {
-        console.info('[DETAIL][OWNED_COUPON]', {
-            event: 'sale.js 중복 실행',
-            bootCount: window.__saleJsBootCount,
-            elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0,
-            reason: '두 번째 실행은 초기화하지 않음'
-        });
-        return;
-    }
-    console.info('[DETAIL][OWNED_COUPON]', {
-        event: 'sale.js 로드',
-        bootCount: window.__saleJsBootCount,
-        elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0
-    });
+    if (window.__saleJsBootCount > 1) return;
 
     var JQUERY_WAIT_INTERVAL = 50;
     var JQUERY_WAIT_MAX_TRY = 100;

@@ -2,20 +2,7 @@
     'use strict';
 
     window.__detailJsBootCount = (window.__detailJsBootCount || 0) + 1;
-    if (window.__detailJsBootCount > 1) {
-        console.info('[DETAIL][OWNED_COUPON]', {
-            event: 'detail.js 중복 실행',
-            bootCount: window.__detailJsBootCount,
-            elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0,
-            reason: '두 번째 실행은 초기화하지 않음'
-        });
-        return;
-    }
-    console.info('[DETAIL][OWNED_COUPON]', {
-        event: 'detail.js 로드',
-        bootCount: window.__detailJsBootCount,
-        elapsedMs: window.__couponPriceStartedAt ? Date.now() - window.__couponPriceStartedAt : 0
-    });
+    if (window.__detailJsBootCount > 1) return;
     /**
      * 상품상세 커스텀 JS
      *
@@ -68,21 +55,6 @@
     // 임시 건기식 시안 확인용: 실제 Cafe24 고시 데이터/건기식 분기 연동 후 삭제
     // var DEMO_HEALTH_PRODUCT_NAME =
     //     'gc녹십자웰빙pnt액상-마그네슘-플러스-20ml-x-30포-x-1박스1개월분-망고맛-저당설계';
-
-    const PRODUCT_NOTICE_CONFIG = {
-        development: {
-            baseUrl: 'https://nervy-founder-schematic.ngrok-free.dev/api/products',
-            fetchOptions: {
-                headers: {
-                    'ngrok-skip-browser-warning': 'true'
-                }
-            }
-        },
-        production: {
-            baseUrl: 'https://stg-cafe24.howcare.co.kr/api/products',
-            fetchOptions: {}
-        }
-    };
 
     const PRODUCT_NOTICE_EMPTY_CODES = [
         'PRODUCT_INFORMATION_TYPE_MISSING',
@@ -235,12 +207,11 @@
         gmo: 'geneticallyModifiedFoodStatus', // 유전자변형식품 여부
     }
 
-    function getProductNoticeApiConfig() {
-        const host = window.location.hostname;
-        const isProduction = host === 'gc.aisoul.co.kr' || host.indexOf('cafe24.com') !== -1;
-        return isProduction
-            ? PRODUCT_NOTICE_CONFIG.production
-            : PRODUCT_NOTICE_CONFIG.development;
+    function getProductNoticeApiBaseUrl() {
+        const host = location.hostname;
+        if (host === 'gccarecomm.cafe24.com') return 'https://cafe24.howcare.co.kr/api/products';
+        if (host === 'gccarecommstg.cafe24.com') return 'https://stg-cafe24.howcare.co.kr/api/products';
+        return '';
     }
 
     // ===== 상품정보고시 =====
@@ -589,14 +560,19 @@
             return;
         }
 
+        const apiBaseUrl = getProductNoticeApiBaseUrl();
+        if (!apiBaseUrl) {
+            settleRewardNotice($, 0);
+            return;
+        }
+
         const requestId = ++productNoticeRequestId;
         productNoticeApiRequested = true;
+
+        const requestUrl = apiBaseUrl + '/' + encodeURIComponent(productNo) + '/information-notice';
   
-        const apiConfig = getProductNoticeApiConfig();
-        const requestUrl = apiConfig.baseUrl + '/' + encodeURIComponent(productNo) + '/information-notice';
   
-  
-        fetch(requestUrl, apiConfig.fetchOptions)
+        fetch(requestUrl, {})
             .then(function (res) {
                 return res.text().then(function (text) {
                     let body = text;
@@ -862,16 +838,20 @@
             return;
         }
 
+        const apiBaseUrl = getProductNoticeApiBaseUrl();
+        if (!apiBaseUrl) {
+            return;
+        }
+
         relatedProductsApiRequested = true;
 
-        const apiConfig = getProductNoticeApiConfig();
         const requestUrl =
-            apiConfig.baseUrl +
+            apiBaseUrl +
             '/' +
             encodeURIComponent(productNo) +
             '/related-products';
 
-        fetch(requestUrl, apiConfig.fetchOptions)
+        fetch(requestUrl, {})
             .then(function (res) {
                 return res.text().then(function (text) {
                     let body = null;
@@ -2051,14 +2031,7 @@
         }
 
         const origin = saleRow.querySelector('#span_product_price_text');
-        if (!origin || !origin.parentNode) {
-            logOwnedCouponDiagnosis({
-                productNo: currentDetailProductNo(),
-                parsed: 'discount ' + discount,
-                reason: '판매가 원본 요소 없음'
-            });
-            return;
-        }
+        if (!origin || !origin.parentNode) return;
 
         // [기존] 판매가 대비 쿠폰 % (예: 14%)
         // const percent = couponSalePercent(discount, salePrice);
@@ -2093,28 +2066,6 @@
         if (origin.getAttribute('aria-hidden') !== 'true') origin.setAttribute('aria-hidden', 'true');
     }
 
-    function logOwnedCouponDiagnosis(entry) {
-        const payload = {
-            discountRaw: entry.discountRaw || '',
-            parsed: entry.parsed || '',
-            productNo: entry.productNo == null ? '' : String(entry.productNo),
-            applicableCount: (entry.applicableProductNos || []).length,
-            reason: entry.reason || ''
-        };
-        let debug = false;
-        try {
-            debug = !!(window.FRONT && window.FRONT.config && window.FRONT.config.DEBUG === true) ||
-                /[?&]debug=1/.test(String(window.location.search || ''));
-        } catch (e) {
-            debug = false;
-        }
-        if (debug) {
-            payload.lookupNo = entry.lookupNo == null ? '' : String(entry.lookupNo);
-            payload.applicableProductNos = entry.applicableProductNos || [];
-        }
-        console.info('[DETAIL][OWNED_COUPON]', payload);
-    }
-
     function loadOwnedCouponCandidates(productNo) {
         if (!window.GcOwnedCoupon || typeof window.GcOwnedCoupon.loadCatalog !== 'function') {
             return Promise.resolve({ status: 'fetch-fail', candidates: [] });
@@ -2130,14 +2081,6 @@
             (catalog.coupons || []).forEach(function (coupon) {
                 const productNos = coupon.productNos || [];
                 const applies = productNos.indexOf(String(productNo)) !== -1;
-                logOwnedCouponDiagnosis({
-                    lookupNo: coupon.lookupNo,
-                    discountRaw: coupon.discountRaw,
-                    parsed: coupon.parsed,
-                    productNo: productNo,
-                    applicableProductNos: productNos,
-                    reason: applies ? '제외 없음' : '적용 상품번호 불일치'
-                });
                 if (applies) candidates.push(coupon);
             });
             if (!candidates.length) return { status: 'no-match', candidates: [] };
@@ -2157,8 +2100,8 @@
         for (let j = 0; j < toggles.length; j++) toggles[j].remove();
     }
 
-    /* 최대할인가 라벨 옆 화살표 토글 — 누르면 예상 금액 내역 행(tr.prd-owned-coupon-estimate)이 열리고 닫힌다 */
-    let ownedCouponEstimateOpen = true;
+    /* 최대할인가 라벨 옆 화살표 토글  */
+    let ownedCouponEstimateOpen = false;
 
     function setOwnedCouponEstimateOpen(row, toggle, open) {
         ownedCouponEstimateOpen = open;
@@ -2218,10 +2161,6 @@
     function renderOwnedCouponEstimate(salePrice, discount) {
         const saleRow = getDetailSaleRow();
         if (!saleRow || !saleRow.parentNode) {
-            logOwnedCouponDiagnosis({
-                productNo: currentDetailProductNo(),
-                reason: '판매가 행 없음으로 박스 숨김'
-            });
             removeOwnedCouponEstimate();
             return;
         }
@@ -2275,10 +2214,6 @@
             clearCouponSaleDisplay();
             if (!salePrice && ownedCouponCandidates.length) {
                 ownedCouponEstimateStatus = 'no-sale';
-                logOwnedCouponDiagnosis({
-                    productNo: currentDetailProductNo(),
-                    reason: '판매가 없음으로 박스 숨김'
-                });
             }
             removeOwnedCouponEstimate();
             refreshActualPriceFromCoupon();
@@ -2290,11 +2225,6 @@
         if (best <= 0) {
             ownedCouponAppliedDiscount = 0;
             ownedCouponEstimateStatus = 'no-discount';
-            logOwnedCouponDiagnosis({
-                productNo: currentDetailProductNo(),
-                parsed: 'discount 0',
-                reason: '예상 할인금액 0으로 박스 숨김'
-            });
             clearCouponSaleDisplay();
             removeOwnedCouponEstimate();
             refreshActualPriceFromCoupon();
@@ -2306,41 +2236,13 @@
         renderOwnedCouponEstimate(salePrice, best);
         try {
             syncCouponSaleDisplay(salePrice, best);
-        } catch (error) {
-            logOwnedCouponDiagnosis({
-                productNo: currentDetailProductNo(),
-                parsed: 'discount ' + best,
-                reason: '판매가 표시 갱신 실패'
-            });
-        }
+        } catch (error) {}
 
-        logOwnedCouponDiagnosis({
-            productNo: currentDetailProductNo(),
-            parsed: 'discount ' + best,
-            reason: ownedCouponDisplayReason()
-        });
         refreshActualPriceFromCoupon();
     }
 
     function refreshActualPriceFromCoupon() {
         if (couponPriceReady) paintActualPriceValue();
-    }
-
-    function ownedCouponDisplayReason() {
-        const saleRow = getDetailSaleRow();
-        const estimate = document.querySelector('tr.prd-owned-coupon-estimate');
-        const amount = saleRow ? saleRow.querySelector('.coupon-sale-amount') : null;
-        return '박스 표시'
-            + ' / 판매가행:' + elementDisplayState(saleRow)
-            + ' / 예상행:' + elementDisplayState(estimate)
-            + ' / 표시금액:' + elementDisplayState(amount);
-    }
-
-    function elementDisplayState(el) {
-        if (!el || !window.getComputedStyle) return '없음';
-        const style = window.getComputedStyle(el);
-        if (style.display === 'none' || style.visibility === 'hidden' || el.hidden) return '숨김';
-        return '표시';
     }
 
     function watchOwnedCouponSalePrice() {
@@ -2383,60 +2285,6 @@
         });
     }
 
-    function logCouponPriceTrace(event, extra) {
-        if (typeof window.__couponPriceLog === 'function') {
-            window.__couponPriceLog(event, extra);
-            return;
-        }
-        const payload = { event: event, elapsedMs: 0 };
-        if (extra) {
-            Object.keys(extra).forEach(function (key) {
-                payload[key] = extra[key];
-            });
-        }
-        console.info('[DETAIL][OWNED_COUPON]', payload);
-    }
-
-    function couponPriceUiState() {
-        const root = document.querySelector('.xans-product-detaildesign');
-        const saleRow = getDetailSaleRow();
-        const estimate = document.querySelector('tr.prd-owned-coupon-estimate');
-        const amount = saleRow ? saleRow.querySelector('.coupon-sale-amount') : null;
-        const content = root ? root.firstElementChild : null;
-        let designVisibility = '';
-        let contentVisibility = '';
-        let designPointerEvents = '';
-        if (root && window.getComputedStyle) {
-            const style = window.getComputedStyle(root);
-            designVisibility = style.visibility;
-            designPointerEvents = style.pointerEvents;
-            if (content) contentVisibility = window.getComputedStyle(content).visibility;
-        }
-        return {
-            loading: !!(root && !root.classList.contains('is-detail-price-ready')),
-            ready: !!(root && root.classList.contains('is-detail-price-ready')),
-            designVisibility: designVisibility,
-            contentVisibility: contentVisibility,
-            designPointerEvents: designPointerEvents,
-            couponAmount: amount ? '생성/' + elementDisplayState(amount) : '없음',
-            estimateRow: estimate ? '생성/' + elementDisplayState(estimate) : '없음',
-            saleRow: saleRow ? elementDisplayState(saleRow) : '없음'
-        };
-    }
-
-    function logDetailPriceTiming(event, extra) {
-        const payload = {
-            event: event,
-            now: Math.round(typeof performance !== 'undefined' && performance.now ? performance.now() : 0)
-        };
-        if (extra) {
-            Object.keys(extra).forEach(function (key) {
-                if (extra[key] != null) payload[key] = extra[key];
-            });
-        }
-        console.info('[DETAIL][PRICE_TIMING]', payload);
-    }
-
     function detailLookupCurrent(seq, productNo, requestToken) {
         if (window.__detailPriceLookupAborted) return false;
         if (requestToken !== (window.__detailPriceLookupToken || 1)) return false;
@@ -2471,7 +2319,6 @@
         if (detailPriceConfirmed && sale === detailConfirmedSale) return;
         detailPriceConfirmed = true;
         detailConfirmedSale = sale;
-        logDetailPriceTiming('상세 가격 확정', { status: result.status || '' });
         if (window.GcOwnedCoupon && typeof window.GcOwnedCoupon.noteDetailPriceConfirmed === 'function') {
             window.GcOwnedCoupon.noteDetailPriceConfirmed();
         }
@@ -2494,37 +2341,10 @@
     }
 
     function acceptOwnedCouponResult(seq, productNo, requestToken, result) {
-        logCouponPriceTrace('조회 완료', {
-            seq: seq,
-            productNo: String(productNo),
-            status: result.status,
-            candidates: result.candidates.length
-        });
-        if (window.__detailPriceLookupAborted || requestToken !== (window.__detailPriceLookupToken || 1)) {
-            logCouponPriceTrace('응답 무효', {
-                reason: '복구 제한',
-                seq: seq,
-                productNo: String(productNo)
-            });
-            return;
-        }
-        if (seq !== ownedCouponEstimateSeq) {
-            logCouponPriceTrace('응답 무효', {
-                reason: '이전 실행',
-                seq: seq,
-                currentSeq: ownedCouponEstimateSeq
-            });
-            return;
-        }
+        if (window.__detailPriceLookupAborted || requestToken !== (window.__detailPriceLookupToken || 1)) return;
+        if (seq !== ownedCouponEstimateSeq) return;
         const currentProductNo = currentDetailProductNo();
-        if (String(productNo) !== String(currentProductNo || '')) {
-            logCouponPriceTrace('응답 무효', {
-                reason: '이전 상품',
-                productNo: String(productNo),
-                currentProductNo: String(currentProductNo || '')
-            });
-            return;
-        }
+        if (String(productNo) !== String(currentProductNo || '')) return;
         ownedCouponCandidates = result.candidates;
         ownedCouponEstimateStatus = result.status;
         watchOwnedCouponSalePrice();
@@ -2538,7 +2358,6 @@
         }
         markCouponPriceReady();
         settleCouponPricePending();
-        logCouponPriceTrace('UI 표시', couponPriceUiState());
     }
 
     function initOwnedCouponEstimate($) {
@@ -2548,7 +2367,6 @@
         function start() {
             if (window.__detailPriceLookupAborted) {
                 ownedCouponEstimateStatus = 'recovery';
-                logCouponPriceTrace('조회 종료', { reason: '복구 제한' });
                 finalizeDetailActualPrice();
                 return;
             }
@@ -2565,8 +2383,6 @@
                 removeOwnedCouponEstimate();
                 markCouponPriceReady();
                 settleCouponPricePending();
-                logCouponPriceTrace('조회 완료', { status: 'no-product', candidates: 0 });
-                logCouponPriceTrace('UI 표시', couponPriceUiState());
                 return;
             }
 
@@ -2578,8 +2394,6 @@
             detailConfirmedSale = 0;
             const seq = ++ownedCouponEstimateSeq;
             const requestToken = window.__detailPriceLookupToken || 1;
-            logDetailPriceTiming('조회 시작', {});
-            logCouponPriceTrace('쿠폰 조회 시작', { seq: seq, productNo: String(productNo), requestToken: requestToken });
             if (window.GcOwnedCoupon && typeof window.GcOwnedCoupon.watchProductDiscount === 'function') {
                 detailDiscountUnwatch = window.GcOwnedCoupon.watchProductDiscount({
                     productNo: String(productNo),

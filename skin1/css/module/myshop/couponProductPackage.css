@@ -20,7 +20,8 @@
 .xans-myshop-couponproductlist .ec-base-table { width: 100%; overflow-x: auto; }
 .xans-myshop-couponproductlist .ec-base-table table { min-width: 450px; } 
 .xans-myshop-couponproductpackage .header h1.jcsb {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%); font-size: 16px; font-weight: 500; }
-.xans-myshop-couponproductpackage .header .btnClose { display: flex; align-items: center;justify-content: center; padding: 6px; cursor: pointer; }
+.xans-myshop-couponproductpackage .header .btnClose,
+.xans-myshop-couponproductpackage .header .close-btn { display: flex; align-items: center;justify-content: center; padding: 6px; cursor: pointer; }
 .xans-myshop-couponproductpackage.ec-base-layer .header {position: relative; height: 50px !important; padding: 0 16px; display: flex;align-items: center; }
 /* 
 .xans-myshop-couponproductpackage .ec-base-paginate.typeList > a:first-child::before, .xans-myshop-couponproductpackage .ec-base-paginate.typeList > a:first-child::after, .xans-myshop-couponproductpackage .ec-base-paginate.typeList > a:last-child::before, .xans-myshop-couponproductpackage .ec-base-paginate.typeList > a:last-child::after {display: none;}

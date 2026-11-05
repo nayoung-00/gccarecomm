@@ -9,11 +9,11 @@
     var settledLoginState = '';
     var startSeq = 0;
     var loginRetries = 0;
-    var differLog = {};
 
     var suppressObserver = false;
     var pendingCards = false;
     var paintGeneration = 0;
+    var mainPriceUnwatch = null;
 
     function listRoots() {
         var found = [];
@@ -103,10 +103,15 @@
         }, 0);
     }
 
+    function mainConfirmed(item) {
+        return item.getAttribute('data-main-coupon-confirmed') === '1';
+    }
+
     function finishWithoutCoupon(root) {
         suppressObserver = true;
         try {
             eachItem(function (item) {
+                if (mainConfirmed(item)) return;
                 removeBlanketCouponLabel(item);
                 clearCouponPrice(item);
                 item.classList.add('is-list-price-ready');
@@ -153,6 +158,63 @@
         start();
     }
 
+    /* 같은 상한은 기다리지 않는다. 적용되면 할인액이 같고, 화면의 금액·할인율도 같다. 더 큰 상한만 확정을 막는다. */
+    function applyMainDecision(card, decision, token) {
+        if (!card || !card.item || !decision || decision.pending) return;
+        if (decision.status !== 'ready' && decision.status !== 'no-match') return;
+        var item = card.item;
+        var root = item.closest ? item.closest('.main-prod') : null;
+        if (!root || rootAborted(root) || rootToken(root) !== token || mainConfirmed(item)) return;
+        if (decision.status === 'no-match') {
+            clearCouponPrice(item);
+            item.classList.add('is-list-price-ready');
+            item.setAttribute('data-main-coupon-confirmed', '1');
+            item.setAttribute('data-main-coupon-discount', '0');
+            return;
+        }
+        var discount = window.GcOwnedCoupon.selectLargest(card.salePrice, decision.candidates || []);
+        if (!(discount > 0)) return;
+        paintCouponPrice(item, card.salePrice, discount);
+        if (!item.classList.contains('is-list-price-ready')) return;
+        item.setAttribute('data-main-coupon-confirmed', '1');
+        item.setAttribute('data-main-coupon-discount', String(discount));
+    }
+
+    function bindMainEarlyConfirm(token) {
+        if (mainPriceUnwatch) {
+            mainPriceUnwatch();
+            mainPriceUnwatch = null;
+        }
+        if (!window.GcOwnedCoupon || typeof window.GcOwnedCoupon.watchMainPrices !== 'function') return;
+        var roots = activeRoots();
+        var hasMain = false;
+        for (var i = 0; i < roots.length; i++) {
+            if (isMainRoot(roots[i])) hasMain = true;
+        }
+        if (!hasMain) return;
+        mainPriceUnwatch = window.GcOwnedCoupon.watchMainPrices({
+            getCards: function () {
+                var cards = [];
+                var current = activeRoots();
+                for (var r = 0; r < current.length; r++) {
+                    var root = current[r];
+                    if (!isMainRoot(root) || rootAborted(root) || rootToken(root) !== token) continue;
+                    eachItem(function (item) {
+                        if (mainConfirmed(item)) return;
+                        var productNo = productNoFromItem(item);
+                        var salePrice = readOriginSalePrice(item);
+                        if (!productNo || !(salePrice > 0)) return;
+                        cards.push({ item: item, productNo: productNo, salePrice: salePrice });
+                    }, root);
+                }
+                return cards;
+            },
+            onDecision: function (card, decision) {
+                applyMainDecision(card, decision, token);
+            }
+        });
+    }
+
     function start() {
         var roots = activeRoots();
         if (!roots.length) {
@@ -169,11 +231,11 @@
         });
         var seq = ++startSeq;
         var loginState = window.GcOwnedCoupon.readLoginState();
-        console.info('[LIST][OWNED_COUPON]', {
-            event: '쿠폰 조회 시작',
-            loginState: loginState,
-            requestToken: captured[0].token
-        });
+        var mainEntry = null;
+        for (var m = 0; m < captured.length; m++) {
+            if (isMainRoot(captured[m].root)) mainEntry = captured[m];
+        }
+        if (mainEntry) bindMainEarlyConfirm(mainEntry.token);
 
         window.GcOwnedCoupon.loadCatalog().then(function (result) {
             if (seq !== startSeq) return;
@@ -181,11 +243,6 @@
             var loginChanged = !!result && result.status === 'stale' ||
                 (loginState !== 'unknown' && nowState !== 'unknown' && nowState !== loginState);
             if (!result || loginChanged) {
-                console.info('[LIST][OWNED_COUPON]', {
-                    event: '응답 무효',
-                    reason: '로그인 상태 전환',
-                    requestToken: captured[0].token
-                });
                 settled = null;
                 settledLoginState = '';
                 if (loginRetries < 1) {
@@ -199,12 +256,10 @@
             }
 
             loginRetries = 0;
-            console.info('[LIST][PRICE_TIMING]', { event: '조회 완료', now: Math.round(performance.now()) });
             var applied = false;
             captured.forEach(function (entry) {
                 if (rootAborted(entry.root) || rootToken(entry.root) !== entry.token) {
                     finishWithoutCoupon(entry.root);
-                    console.info('[LIST][OWNED_COUPON]', { event: '응답 무효', reason: '복구 제한', requestToken: entry.token });
                     return;
                 }
                 applyRoot(entry.root, result);
@@ -214,14 +269,6 @@
             if (!applied) return;
             settled = result;
             settledLoginState = nowState === 'unknown' ? loginState : nowState;
-            console.info('[LIST][PRICE_TIMING]', { event: '가격 반영 완료', now: Math.round(performance.now()) });
-            console.info('[LIST][OWNED_COUPON]', {
-                event: 'UI 표시',
-                status: result.status,
-                coupons: (result.coupons || []).length,
-                cards: countItems(false),
-                shown: countItems(true)
-            });
         });
     }
 
@@ -282,6 +329,7 @@
         suppressObserver = true;
         try {
             eachItem(function (item) {
+                if (isMainRoot(root) && mainConfirmed(item)) return;
                 removeBlanketCouponLabel(item);
                 if (!result || result.status !== 'ready') {
                     clearCouponPrice(item);
@@ -290,7 +338,7 @@
                 }
 
                 var productNo = productNoFromItem(item);
-                var salePrice = readOriginSalePrice(item, productNo);
+                var salePrice = readOriginSalePrice(item);
                 var coupons = (result.coupons || []).filter(function (coupon) {
                     return productNo && (coupon.productNos || []).indexOf(String(productNo)) !== -1;
                 });
@@ -322,7 +370,7 @@
         return Number.isFinite(value) && value > 0 ? value : 0;
     }
 
-    function readOriginSalePrice(item, productNo) {
+    function readOriginSalePrice(item) {
         var stored = Number(item.getAttribute('data-origin-sale-price'));
         if (stored > 0) return stored;
 
@@ -340,17 +388,6 @@
                 for (var i = 0; i < extras.length; i++) extras[i].remove();
                 fromText = parseWon(clone.textContent);
             }
-        }
-
-        if (fromText && fromAttr && fromText !== fromAttr && productNo && !differLog[productNo]) {
-            differLog[productNo] = true;
-            console.info('[LIST][OWNED_COUPON]', {
-                event: '판매가 기준',
-                productNo: String(productNo),
-                rendered: fromText,
-                ecDataPrice: fromAttr,
-                reason: '화면 판매가를 쿠폰 차감 기준으로 사용'
-            });
         }
 
         var value = fromText || fromAttr;
@@ -544,6 +581,8 @@
     function clearCouponPrice(item) {
         item.classList.remove('is-owned-coupon-price');
         item.removeAttribute('data-applied-coupon-discount');
+        item.removeAttribute('data-main-coupon-confirmed');
+        item.removeAttribute('data-main-coupon-discount');
         var movedLabels = item.querySelectorAll('.list-coupon-label');
         for (var j = 0; j < movedLabels.length; j++) movedLabels[j].remove();
         // restoreSaleBox(item);

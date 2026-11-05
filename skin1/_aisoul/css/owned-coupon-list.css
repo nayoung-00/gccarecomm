@@ -1,0 +1,10 @@
+[data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row] { position: relative; visibility: hidden !important; }
+[data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row]::after { content: ""; position: absolute; left: 0; top: 50%; z-index: 1; visibility: visible !important; pointer-events: none; border-radius: 4px; transform: translateY(-50%); background: linear-gradient(90deg, #f3f3f3 0%, #f3f3f3 32%, #e6e6e6 50%, #f3f3f3 68%, #f3f3f3 100%); background-size: 220% 100%; animation: list-price-skeleton-shimmer 1.8s ease-in-out infinite; }
+[data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row="consumer"]::after { width: 72px; height: 8px; }
+[data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row="sale"]::after { width: 132px; height: 14px; }
+[data-owned-coupon-list] .list-coupon-sale-origin { position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+[data-owned-coupon-list] .list-coupon-rate { color: #e53935; font-weight: 700; }
+@keyframes list-price-skeleton-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+    [data-owned-coupon-list] .prdList__item:not(.is-list-price-ready) [data-owned-coupon-price-row]::after { animation: none; }
+}
